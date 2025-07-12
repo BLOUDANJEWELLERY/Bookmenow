@@ -1,0 +1,35 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.hero {
+  background: url('assets/images/hero.jpg') center/cover no-repeat;
+  height: 90vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 60px;
+  border-radius: 12px;
+}
+
+.overlay h1 {
+  font-size: 3rem;
+}
+
+form input,
+form select {
+  border-radius: 8px;
+}
+
+button {
+  border-radius: 8px;
+}
+
+footer {
+  font-size: 0.9rem;
+}
