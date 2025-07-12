@@ -1,23 +1,243 @@
+/* === Global Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #ffffff;
+  --text: #222;
+  --accent: #007bff;
+  --card: #f9f9f9;
+  --nav: #f0f0f0;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+body.dark {
+  --bg: #121212;
+  --text: #eeeeee;
+  --accent: #1e90ff;
+  --card: #1f1f1f;
+  --nav: #1a1a1a;
+  --shadow: rgba(255, 255, 255, 0.1);
+}
+
 body {
   font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
 }
 
-.hero-image img {
-  max-height: 500px;
-  object-fit: cover;
+/* === Navbar === */
+.navbar {
+  background-color: var(--nav);
+  box-shadow: 0 2px 4px var(--shadow);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-links li a,
+.nav-links li button {
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 500;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.nav-links li a.active,
+.nav-links li a:hover,
+.nav-links li button:hover {
+  color: var(--accent);
+}
+
+/* === Hero === */
+.hero {
+  position: relative;
   width: 100%;
-  display: block;
+  height: 400px;
+  overflow: hidden;
 }
 
-form input,
-form select {
-  border-radius: 8px;
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-button {
-  border-radius: 8px;
+.hero-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 2rem;
+  border-radius: 10px;
+  color: white;
 }
 
+.hero-text h1 {
+  font-size: 2.5rem;
+}
+
+.hero-text p {
+  margin: 1rem 0;
+}
+
+.btn {
+  background-color: var(--accent);
+  color: #fff;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+/* === Sections === */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+}
+
+.features, .testimonials, .service-cards, .booking-form, .contact {
+  margin-top: 3rem;
+}
+
+.features h2,
+.testimonials h2,
+.service-cards h2,
+.booking-form h2,
+.about h2,
+.contact h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.feature-cards, .testimonial-wrapper, .service-cards {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background-color: var(--card);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: transform 0.3s ease;
+  width: 280px;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.testimonial {
+  background-color: var(--card);
+  padding: 1.2rem;
+  border-radius: 10px;
+  text-align: center;
+  width: 250px;
+}
+
+.testimonial img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+/* === Booking Form === */
+.booking-form {
+  max-width: 600px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.booking-form input,
+.booking-form select,
+.booking-form button {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.booking-form button {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.booking-form button:hover {
+  background-color: #0056b3;
+}
+
+/* === Footer === */
 footer {
-  font-size: 0.9rem;
+  background-color: var(--nav);
+  color: var(--text);
+  text-align: center;
+  padding: 1rem;
+  margin-top: 3rem;
+}
+
+/* === Thank You === */
+body.thankyou {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+body.thankyou .container {
+  text-align: center;
+}
+
+/* === Dark Mode Toggle === */
+#theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
 }
