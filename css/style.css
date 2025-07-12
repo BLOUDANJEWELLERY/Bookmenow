@@ -1,4 +1,4 @@
-/* === Global Reset === */
+/* === Reset & Variables === */
 * {
   margin: 0;
   padding: 0;
@@ -28,16 +28,17 @@ body {
   background-color: var(--bg);
   color: var(--text);
   line-height: 1.6;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 /* === Navbar === */
 .navbar {
   background-color: var(--nav);
-  box-shadow: 0 2px 4px var(--shadow);
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: 0 2px 4px var(--shadow);
 }
 
 .navbar .container {
@@ -47,7 +48,7 @@ body {
 }
 
 .logo {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: bold;
   color: var(--accent);
   text-decoration: none;
@@ -56,7 +57,7 @@ body {
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
 .nav-links li a,
@@ -68,7 +69,7 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.3s;
 }
 
 .nav-links li a.active,
@@ -77,11 +78,48 @@ body {
   color: var(--accent);
 }
 
-/* === Hero === */
+/* === Hamburger === */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: var(--text);
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 65px;
+    left: 0;
+    right: 0;
+    background: var(--nav);
+    flex-direction: column;
+    display: none;
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* === Hero Section === */
 .hero {
   position: relative;
-  width: 100%;
   height: 400px;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -97,14 +135,14 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
   padding: 2rem;
   border-radius: 10px;
-  color: white;
 }
 
 .hero-text h1 {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
 }
 
 .hero-text p {
@@ -113,72 +151,62 @@ body {
 
 .btn {
   background-color: var(--accent);
-  color: #fff;
-  padding: 0.7rem 1.5rem;
+  color: white;
+  padding: 0.7rem 1.3rem;
   border: none;
   border-radius: 5px;
   text-decoration: none;
   font-weight: 600;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
 .btn:hover {
   background-color: #0056b3;
 }
 
-/* === Sections === */
+/* === Containers & Sections === */
 .container {
   max-width: 1200px;
   margin: auto;
   padding: 2rem;
 }
 
-.features, .testimonials, .service-cards, .booking-form, .contact {
-  margin-top: 3rem;
+section {
+  padding: 2rem 0;
 }
 
-.features h2,
-.testimonials h2,
-.service-cards h2,
-.booking-form h2,
-.about h2,
-.contact h2 {
+section h2 {
   text-align: center;
   margin-bottom: 2rem;
 }
 
-.feature-cards, .testimonial-wrapper, .service-cards {
+/* === Cards === */
+.feature-cards,
+.testimonial-wrapper,
+.service-cards {
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.card {
+.card, .testimonial {
   background-color: var(--card);
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 5px 15px var(--shadow);
-  transition: transform 0.3s ease;
   width: 280px;
   text-align: center;
+  transition: transform 0.3s;
 }
 
 .card:hover {
   transform: translateY(-5px);
 }
 
-.testimonial {
-  background-color: var(--card);
-  padding: 1.2rem;
-  border-radius: 10px;
-  text-align: center;
-  width: 250px;
-}
-
 .testimonial img {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   object-fit: cover;
   border-radius: 50%;
   margin-bottom: 1rem;
@@ -197,8 +225,8 @@ body {
 .booking-form select,
 .booking-form button {
   padding: 0.8rem;
-  border: 1px solid #ccc;
   border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .booking-form button {
@@ -206,7 +234,6 @@ body {
   color: white;
   border: none;
   cursor: pointer;
-  font-weight: bold;
 }
 
 .booking-form button:hover {
@@ -216,13 +243,12 @@ body {
 /* === Footer === */
 footer {
   background-color: var(--nav);
-  color: var(--text);
   text-align: center;
   padding: 1rem;
   margin-top: 3rem;
 }
 
-/* === Thank You === */
+/* === Thank You Page === */
 body.thankyou {
   display: flex;
   justify-content: center;
@@ -230,14 +256,10 @@ body.thankyou {
   height: 100vh;
 }
 
-body.thankyou .container {
-  text-align: center;
-}
-
-/* === Dark Mode Toggle === */
+/* === Dark Mode Button === */
 #theme-toggle {
   background: none;
   border: none;
-  cursor: pointer;
   font-size: 1.2rem;
+  cursor: pointer;
 }
