@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Booking – BookMeNow</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">BookMeNow</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="booking.html" class="active">Book</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><button id="theme-toggle">🌙</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2>Book an Appointment</h2>
+    <form action="thankyou.html" class="booking-form">
+      <input type="text" placeholder="Your Name" required>
+      <input type="tel" placeholder="Phone Number" required>
+      <select required>
+        <option value="" disabled selected>Select a Service</option>
+        <option value="haircut">Haircut</option>
+        <option value="beard">Beard Trim</option>
+        <option value="facial">Facial</option>
+      </select>
+      <input type="date" required>
+      <input type="time" required>
+      <button type="submit" class="btn">Confirm Booking</button>
+    </form>
+  </main>
+
+  <footer><div class="container"><p>© 2025 BookMeNow.</p></div></footer>
+</body>
+</html>
