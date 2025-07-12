@@ -2,97 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BookMeNow – Fast Appointment Booking</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BookMeNow – Home</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/script.js"></script>
 </head>
 <body>
-
-  <!-- Navbar -->
-  <nav class="navbar navbar-dark bg-dark px-4">
-    <a class="navbar-brand" href="#">BookMeNow</a>
-  </nav>
-
-  <!-- Hero Image Section -->
-  <div class="hero-image">
-    <img src="hero.png" alt="Appointment Booking Banner" class="img-fluid w-100">
-  </div>
-
-  <!-- Hero Text -->
-  <section class="text-center text-white bg-dark py-5">
-    <h1 class="display-5">Book Your Appointment Instantly</h1>
-    <p class="lead">No calls, no wait. Just book and show up.</p>
-    <a href="#booking" class="btn btn-warning mt-3">Book Now</a>
-  </section>
-
-  <!-- About Section -->
-  <section class="container py-5 text-center">
-    <h2>About Us</h2>
-    <p>We make appointment scheduling simple and fast for local salons, clinics, and freelancers.</p>
-  </section>
-
-  <!-- Services Section -->
-  <section class="container py-5">
-    <h2 class="text-center mb-4">Our Services</h2>
-    <div class="row text-center">
-      <div class="col-md-4">
-        <h4>Haircut</h4>
-        <p>KWD 10</p>
-      </div>
-      <div class="col-md-4">
-        <h4>Beard Trim</h4>
-        <p>KWD 5</p>
-      </div>
-      <div class="col-md-4">
-        <h4>Facial</h4>
-        <p>KWD 7</p>
+  <header>
+    <nav class="navbar">
+      <a href="index.html" class="logo">BookMeNow</a>
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="booking.html">Book</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="hero">
+      <img src="images/hero.jpg" alt="Hero Image">
+      <div class="hero-text">
+        <h1>Instant Booking. Zero Hassle.</h1>
+        <p>Modern appointment scheduling for modern businesses.</p>
+        <a href="booking.html" class="btn">Book Now</a>
       </div>
     </div>
-  </section>
+  </header>
 
-  <!-- Booking Form -->
-  <section id="booking" class="bg-light py-5">
-    <div class="container">
-      <h2 class="text-center mb-4">Book an Appointment</h2>
-      <form class="row g-3">
-        <div class="col-md-6">
-          <input type="text" class="form-control" placeholder="Your Name" required>
-        </div>
-        <div class="col-md-6">
-          <input type="tel" class="form-control" placeholder="Phone Number" required>
-        </div>
-        <div class="col-md-6">
-          <select class="form-select" required>
-            <option selected disabled>Select Service</option>
-            <option>Haircut</option>
-            <option>Beard Trim</option>
-            <option>Facial</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <input type="date" class="form-control" required>
-        </div>
-        <div class="col-md-3">
-          <input type="time" class="form-control" required>
-        </div>
-        <div class="col-12 text-center">
-          <button type="submit" class="btn btn-primary px-5">Submit</button>
-        </div>
-      </form>
-    </div>
-  </section>
+  <main>
+    <section class="features">
+      <div class="feature">
+        <h3>Fast Booking</h3>
+        <p>Skip the phone calls. Book online in seconds.</p>
+      </div>
+      <div class="feature">
+        <h3>Smart Reminders</h3>
+        <p>Get notified before your appointment.</p>
+      </div>
+      <div class="feature">
+        <h3>Mobile Ready</h3>
+        <p>Fully responsive design for all devices.</p>
+      </div>
+    </section>
+  </main>
 
-  <!-- Contact Section -->
-  <section class="container py-5 text-center">
-    <h2>Contact Us</h2>
-    <p>For any questions, call or WhatsApp us at <strong>+965-1234-5678</strong></p>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-dark text-white text-center py-3">
-    <p class="mb-0">© 2025 BookMeNow. Built by Captain.</p>
+  <footer>
+    <p>© 2025 BookMeNow. Built by Captain.</p>
   </footer>
-
 </body>
 </html>
