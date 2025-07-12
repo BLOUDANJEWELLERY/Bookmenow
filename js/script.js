@@ -1,20 +1,25 @@
-// 🌗 Toggle Dark Mode
-document.getElementById("theme-toggle").addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
-});
+// 🌙 Toggle Dark Mode
+const themeToggle = document.getElementById("theme-toggle");
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+  });
+}
 
-// 🌙 Load saved theme on page load
+// 🌙 Apply stored theme on load
 window.addEventListener("DOMContentLoaded", () => {
   if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark");
   }
 });
 
-// 🔗 Highlight active nav link (optional)
-const navLinks = document.querySelectorAll(".nav-links a");
-navLinks.forEach(link => {
-  if (link.href === window.location.href) {
-    link.classList.add("active");
-  }
-});
+// 🍔 Hamburger Toggle
+const hamburger = document.querySelector(".hamburger");
+const navLinks = document.querySelector(".nav-links");
+
+if (hamburger && navLinks) {
+  hamburger.addEventListener("click", () => {
+    navLinks.classList.toggle("show");
+  });
+}
