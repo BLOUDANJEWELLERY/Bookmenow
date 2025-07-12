@@ -5,49 +5,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BookMeNow – Home</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
   <script defer src="js/script.js"></script>
 </head>
 <body>
   <header>
     <nav class="navbar">
-      <a href="index.html" class="logo">BookMeNow</a>
-      <ul>
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="services.html">Services</a></li>
-        <li><a href="booking.html">Book</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
+      <div class="container">
+        <a href="index.html" class="logo">BookMeNow</a>
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="booking.html">Book</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><button id="theme-toggle">🌙</button></li>
+        </ul>
+      </div>
     </nav>
-    <div class="hero">
-      <img src="images/hero.jpg" alt="Hero Image">
-      <div class="hero-text">
-        <h1>Instant Booking. Zero Hassle.</h1>
-        <p>Modern appointment scheduling for modern businesses.</p>
+    <section class="hero">
+      <img src="images/hero.jpg" alt="Hero Image" />
+      <div class="hero-text" data-aos="fade-up">
+        <h1>Book Smarter. Live Better.</h1>
+        <p>Instant appointments for salons, clinics & services.</p>
         <a href="booking.html" class="btn">Book Now</a>
       </div>
-    </div>
+    </section>
   </header>
 
   <main>
-    <section class="features">
-      <div class="feature">
-        <h3>Fast Booking</h3>
-        <p>Skip the phone calls. Book online in seconds.</p>
+    <section class="features container" data-aos="fade-up">
+      <h2>Why BookMeNow?</h2>
+      <div class="feature-cards">
+        <div class="card">
+          <h3>Fast Booking</h3>
+          <p>Book any service in seconds. No more waiting on calls.</p>
+        </div>
+        <div class="card">
+          <h3>Reliable</h3>
+          <p>Instant confirmations and reminders to never miss a slot.</p>
+        </div>
+        <div class="card">
+          <h3>Mobile First</h3>
+          <p>Designed for all screen sizes. Always on the go.</p>
+        </div>
       </div>
-      <div class="feature">
-        <h3>Smart Reminders</h3>
-        <p>Get notified before your appointment.</p>
-      </div>
-      <div class="feature">
-        <h3>Mobile Ready</h3>
-        <p>Fully responsive design for all devices.</p>
+    </section>
+
+    <section class="testimonials container" data-aos="fade-up">
+      <h2>What Our Clients Say</h2>
+      <div class="testimonial-wrapper">
+        <div class="testimonial">
+          <img src="images/testimonial1.jpg" alt="Client 1" />
+          <p>"Super easy to book! My barber uses it now."</p>
+          <h4>– Fahad A.</h4>
+        </div>
+        <div class="testimonial">
+          <img src="images/testimonial2.jpg" alt="Client 2" />
+          <p>"Best tool I’ve found as a makeup artist."</p>
+          <h4>– Nour K.</h4>
+        </div>
+        <div class="testimonial">
+          <img src="images/testimonial3.jpg" alt="Client 3" />
+          <p>"Saves time and looks very professional."</p>
+          <h4>– Salem M.</h4>
+        </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>© 2025 BookMeNow. Built by Captain.</p>
+    <div class="container">
+      <p>© 2025 BookMeNow. Built with precision by Captain.</p>
+    </div>
   </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init();</script>
 </body>
 </html>
