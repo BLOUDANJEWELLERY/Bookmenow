@@ -19,7 +19,8 @@
       <p>Your appointment has been confirmed.</p>
 
       <div id="booking-summary" style="margin-top: 2rem; background: var(--card); padding: 2rem; border-radius: 10px;">
-        <!-- Booking details will load here -->
+        <!-- Booking details go here -->
+        <p><strong>Loading booking details...</strong></p>
       </div>
 
       <div style="margin-top: 1.5rem;">
@@ -35,8 +36,28 @@
   </footer>
 
   <script>
-    const data = JSON.parse(localStorage.getItem('bookingData'));
-    if (data) {
+    document.addEventListener('DOMContentLoaded', () => {
+      let data = localStorage.getItem('bookingData');
+      if (data) {
+        data = JSON.parse(data);
+      } else {
+        // Fallback if form was skipped
+        data = {
+          name: 'Guest User',
+          phone: 'Not provided',
+          service: 'N/A',
+          date: new Date().toISOString().slice(0, 10),
+          time: '--:--',
+          bookingId: 'BMN' + Math.floor(100000 + Math.random() * 900000),
+        };
+      }
+
+      // Always assign a new bookingId if missing
+      if (!data.bookingId) {
+        data.bookingId = 'BMN' + Math.floor(100000 + Math.random() * 900000);
+      }
+
+      // Display details
       document.getElementById('booking-summary').innerHTML = `
         <p><strong>Booking ID:</strong> ${data.bookingId}</p>
         <p><strong>Name:</strong> ${data.name}</p>
@@ -45,12 +66,12 @@
         <p><strong>Date:</strong> ${data.date}</p>
         <p><strong>Time:</strong> ${data.time}</p>
       `;
-    } else {
-      document.getElementById('booking-summary').innerHTML = `<p>Booking details not found.</p>`;
-    }
+    });
 
     function downloadReceipt() {
+      let data = localStorage.getItem('bookingData');
       if (!data) return alert('Booking data not found.');
+      data = JSON.parse(data);
 
       const receiptWindow = window.open('', '', 'width=600,height=700');
       receiptWindow.document.write(`
