@@ -52,19 +52,20 @@ body {
 
 .nav-links {
   display: flex;
+  align-items: center;
   gap: 1rem;
   list-style: none;
 }
 
 .nav-links li a,
 .nav-links li button {
-  text-decoration: none;
   font-weight: 500;
+  text-decoration: none;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0.5rem 0.75rem;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   color: var(--text);
 }
 
@@ -74,27 +75,25 @@ body {
   color: var(--accent);
 }
 
-/* Custom logout button styling */
+/* 🔴 BOLD RED LOGOUT BUTTON */
 .logout-btn {
-  background: var(--accent);
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  font-weight: 600;
+  background: #e63946;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .logout-btn:hover {
-  background: #005ecb;
-  transform: translateY(-1px);
+  background: #c82333;
+  transform: scale(1.03);
 }
 
-.nav-links li a.active,
-.nav-links li a:hover,
-.nav-links li button:hover {
-  color: var(--accent);
-}
-
+/* Hamburger menu icon */
 .hamburger {
   display: none;
   flex-direction: column;
