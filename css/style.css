@@ -48,6 +48,7 @@ body {
   font-size: 1.7rem;
   font-weight: bold;
   color: var(--accent);
+  user-select: none;
 }
 
 .nav-links {
@@ -67,38 +68,47 @@ body {
   padding: 0.5rem 0.75rem;
   transition: all 0.3s ease;
   color: var(--text);
+  font-size: 1rem;
+  border-radius: 6px;
+  user-select: none;
 }
 
 .nav-links li a.active,
 .nav-links li a:hover,
 .nav-links li button:hover {
   color: var(--accent);
+  background-color: rgba(0, 123, 255, 0.1);
 }
 
-/* 🔴 BOLD RED LOGOUT BUTTON */
+/* 🔴 LOGOUT BUTTON — BOLD, RED, DISTINCT & BEAUTIFUL */
 .logout-btn {
-  background: #e63946;
+  background: #e63946; /* Vivid red */
   color: white;
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1.4rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(230, 57, 70, 0.4);
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  white-space: nowrap;
 }
 
 .logout-btn:hover {
-  background: #c82333;
-  transform: scale(1.03);
+  background: #c82333; /* Darker red on hover */
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(200, 35, 51, 0.6);
 }
 
-/* Hamburger menu icon */
+/* HAMBURGER MENU ICON */
 .hamburger {
   display: none;
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
+  user-select: none;
+  z-index: 1100; /* Above nav */
 }
 
 .hamburger span {
@@ -106,6 +116,20 @@ body {
   height: 3px;
   background: var(--text);
   border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Hamburger animation when toggled */
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
 }
 
 /* HERO SECTION */
@@ -164,6 +188,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  user-select: none;
 }
 
 .btn:hover {
@@ -267,6 +292,7 @@ footer {
   background: var(--nav);
   font-size: 0.9rem;
   border-top: 1px solid #ddd;
+  user-select: none;
 }
 
 /* RESPONSIVE STYLES */
@@ -275,7 +301,6 @@ footer {
     display: flex;
   }
 
-  @media (max-width: 768px) {
   .nav-links {
     display: none;
     flex-direction: column;
@@ -287,6 +312,7 @@ footer {
     background: var(--nav);
     padding: 1rem 0;
     box-shadow: 0 4px 8px var(--shadow);
+    z-index: 999;
   }
 
   .nav-links.show {
@@ -298,11 +324,11 @@ footer {
     text-align: center;
   }
 
+  /* Full width logout button on mobile */
   .logout-btn {
     width: 90%;
-    margin-top: 0.5rem;
+    margin: 0.5rem auto 0;
   }
-}
 
   .hero-content h1 {
     font-size: 2rem;
