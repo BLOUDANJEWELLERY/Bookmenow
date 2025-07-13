@@ -1,15 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Thanks – BookMeNow</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Booking Confirmed – BookMeNow</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-<body class="thankyou">
-  <main class="container">
-    <h1>✅ Thank You!</h1>
-    <p>Your appointment has been confirmed.</p>
-    <a href="index.html" class="btn">Back to Home</a>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">BookMeNow</div>
+    </nav>
+  </header>
+
+  <main class="booking-main">
+    <section class="booking-form-section" style="text-align: center;">
+      <h1>Thank You!</h1>
+      <p>Your appointment has been confirmed.</p>
+
+      <div id="booking-summary" style="margin-top: 2rem; background: var(--card); padding: 2rem; border-radius: 10px;">
+        <!-- Booking details will load here -->
+      </div>
+
+      <div style="margin-top: 1.5rem;">
+        <button onclick="downloadReceipt()" class="btn">Download Receipt</button>
+      </div>
+
+      <a href="index.html" class="btn" style="margin-top: 2rem; display: inline-block;">Return to Home</a>
+    </section>
   </main>
+
+  <footer>
+    <p>© 2025 BookMeNow | Built by Captain</p>
+  </footer>
+
+  <script>
+    const data = JSON.parse(localStorage.getItem('bookingData'));
+    if (data) {
+      document.getElementById('booking-summary').innerHTML = `
+        <p><strong>Booking ID:</strong> ${data.bookingId}</p>
+        <p><strong>Name:</strong> ${data.name}</p>
+        <p><strong>Phone:</strong> ${data.phone}</p>
+        <p><strong>Service:</strong> ${data.service}</p>
+        <p><strong>Date:</strong> ${data.date}</p>
+        <p><strong>Time:</strong> ${data.time}</p>
+      `;
+    } else {
+      document.getElementById('booking-summary').innerHTML = `<p>Booking details not found.</p>`;
+    }
+
+    function downloadReceipt() {
+      if (!data) return alert('Booking data not found.');
+
+      const receiptWindow = window.open('', '', 'width=600,height=700');
+      receiptWindow.document.write(`
+        <html>
+        <head>
+          <title>Receipt – BookMeNow</title>
+          <style>
+            body { font-family: 'Segoe UI', sans-serif; padding: 2rem; background: #fff; color: #000; }
+            h2 { color: #007bff; text-align: center; }
+            .receipt { border: 1px solid #ccc; padding: 1.5rem; border-radius: 8px; max-width: 400px; margin: auto; }
+            .receipt p { margin: 0.5rem 0; }
+            .footer { margin-top: 2rem; text-align: center; font-size: 0.9rem; color: #888; }
+          </style>
+        </head>
+        <body>
+          <h2>Appointment Receipt</h2>
+          <div class="receipt">
+            <p><strong>Booking ID:</strong> ${data.bookingId}</p>
+            <p><strong>Name:</strong> ${data.name}</p>
+            <p><strong>Phone:</strong> ${data.phone}</p>
+            <p><strong>Service:</strong> ${data.service}</p>
+            <p><strong>Date:</strong> ${data.date}</p>
+            <p><strong>Time:</strong> ${data.time}</p>
+          </div>
+          <div class="footer">BookMeNow © 2025 | Powered by Captain</div>
+          <script>
+            window.onload = () => setTimeout(() => window.print(), 500);
+          </script>
+        </body>
+        </html>
+      `);
+      receiptWindow.document.close();
+    }
+  </script>
 </body>
 </html>
