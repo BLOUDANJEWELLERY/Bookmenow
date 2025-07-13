@@ -275,9 +275,11 @@ footer {
     display: flex;
   }
 
+  @media (max-width: 768px) {
   .nav-links {
     display: none;
     flex-direction: column;
+    align-items: center;
     position: absolute;
     top: 70px;
     left: 0;
@@ -295,6 +297,12 @@ footer {
     width: 100%;
     text-align: center;
   }
+
+  .logout-btn {
+    width: 90%;
+    margin-top: 0.5rem;
+  }
+}
 
   .hero-content h1 {
     font-size: 2rem;
