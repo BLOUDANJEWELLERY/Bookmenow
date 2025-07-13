@@ -1,4 +1,4 @@
-/* RESET & BASE */
+/* RESET & ROOT */
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +7,7 @@
 
 :root {
   --bg: #ffffff;
-  --text: #222222;
+  --text: #222;
   --accent: #007bff;
   --card: #f4f4f4;
   --nav: #f9f9f9;
@@ -27,11 +27,11 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Segoe UI', sans-serif;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background 0.3s, color 0.3s;
   line-height: 1.6;
 }
 
-/* NAVIGATION */
+/* NAVBAR */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -89,10 +89,9 @@ body {
   height: 3px;
   background: var(--text);
   border-radius: 2px;
-  transition: 0.3s;
 }
 
-/* HERO SECTION */
+/* HERO */
 .hero {
   position: relative;
   width: 100%;
@@ -137,19 +136,23 @@ body {
   color: white;
   padding: 0.65rem 1.4rem;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 600;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .btn:hover {
   background: #005ecb;
 }
 
-/* FEATURES SECTION */
+/* FEATURES */
 .features {
   padding: 4rem 2rem;
   text-align: center;
@@ -195,7 +198,7 @@ footer {
   border-top: 1px solid #ddd;
 }
 
-/* RESPONSIVE STYLES */
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
@@ -231,8 +234,8 @@ footer {
   }
 
   .btn {
-    padding: 0.6rem 1.1rem;
     font-size: 0.95rem;
+    padding: 0.6rem 1rem;
   }
 
   .cards {
@@ -257,7 +260,9 @@ footer {
 
   .btn {
     width: 100%;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    padding: 0.55rem 0.9rem;
+    text-align: center;
   }
 
   .logo {
