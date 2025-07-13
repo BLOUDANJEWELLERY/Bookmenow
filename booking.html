@@ -31,7 +31,7 @@
       <h1>Book an Appointment</h1>
       <p>Fill out the form below to reserve your spot.</p>
 
-      <form class="booking-form" action="#" method="post">
+      <form class="booking-form" id="booking-form">
         <div class="form-group">
           <label for="full-name">Full Name</label>
           <input type="text" id="full-name" name="full-name" required />
@@ -46,9 +46,12 @@
           <label for="service">Select Service</label>
           <select id="service" name="service" required>
             <option value="">-- Choose --</option>
-            <option value="salon">Salon</option>
-            <option value="clinic">Clinic</option>
-            <option value="spa">Spa</option>
+            <option value="Beard Cutting">Beard Cutting</option>
+            <option value="Haircut">Haircut</option>
+            <option value="Facial">Facial</option>
+            <option value="Hair Coloring">Hair Coloring</option>
+            <option value="Shaving">Shaving</option>
+            <option value="Head Massage">Head Massage</option>
           </select>
         </div>
 
@@ -70,5 +73,23 @@
   <footer>
     <p>© 2025 BookMeNow | Built by Captain</p>
   </footer>
+
+  <script>
+    document.getElementById('booking-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = {
+        name: document.getElementById('full-name').value,
+        phone: document.getElementById('phone').value,
+        service: document.getElementById('service').value,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        bookingId: 'BMN' + Math.floor(100000 + Math.random() * 900000),
+      };
+
+      localStorage.setItem('bookingData', JSON.stringify(formData));
+      window.location.href = 'thankyou.html';
+    });
+  </script>
 </body>
 </html>
