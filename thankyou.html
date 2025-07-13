@@ -19,7 +19,6 @@
       <p>Your appointment has been confirmed.</p>
 
       <div id="booking-summary" style="margin-top: 2rem; background: var(--card); padding: 2rem; border-radius: 10px;">
-        <!-- Booking details go here -->
         <p><strong>Loading booking details...</strong></p>
       </div>
 
@@ -36,29 +35,17 @@
   </footer>
 
   <script>
+    const summaryBox = document.getElementById('booking-summary');
+
     document.addEventListener('DOMContentLoaded', () => {
-      let data = localStorage.getItem('bookingData');
-      if (data) {
-        data = JSON.parse(data);
-      } else {
-        // Fallback if form was skipped
-        data = {
-          name: 'Guest User',
-          phone: 'Not provided',
-          service: 'N/A',
-          date: new Date().toISOString().slice(0, 10),
-          time: '--:--',
-          bookingId: 'BMN' + Math.floor(100000 + Math.random() * 900000),
-        };
+      const data = JSON.parse(localStorage.getItem('bookingData'));
+
+      if (!data) {
+        summaryBox.innerHTML = `<p><strong>No booking data found.</strong></p>`;
+        return;
       }
 
-      // Always assign a new bookingId if missing
-      if (!data.bookingId) {
-        data.bookingId = 'BMN' + Math.floor(100000 + Math.random() * 900000);
-      }
-
-      // Display details
-      document.getElementById('booking-summary').innerHTML = `
+      summaryBox.innerHTML = `
         <p><strong>Booking ID:</strong> ${data.bookingId}</p>
         <p><strong>Name:</strong> ${data.name}</p>
         <p><strong>Phone:</strong> ${data.phone}</p>
@@ -69,9 +56,8 @@
     });
 
     function downloadReceipt() {
-      let data = localStorage.getItem('bookingData');
-      if (!data) return alert('Booking data not found.');
-      data = JSON.parse(data);
+      const data = JSON.parse(localStorage.getItem('bookingData'));
+      if (!data) return alert('No booking data found.');
 
       const receiptWindow = window.open('', '', 'width=600,height=700');
       receiptWindow.document.write(`
@@ -97,9 +83,7 @@
             <p><strong>Time:</strong> ${data.time}</p>
           </div>
           <div class="footer">BookMeNow © 2025 | Powered by Captain</div>
-          <script>
-            window.onload = () => setTimeout(() => window.print(), 500);
-          </script>
+          <script>window.onload = () => setTimeout(() => window.print(), 500);</script>
         </body>
         </html>
       `);
