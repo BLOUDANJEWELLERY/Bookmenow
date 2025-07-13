@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Book an Appointment – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
-  <script defer src="js/script.js"></script>
 </head>
 <body>
   <header>
@@ -74,20 +73,24 @@
     <p>© 2025 BookMeNow | Built by Captain</p>
   </footer>
 
+  <!-- ✅ MISSING LOGIC: Added this script to handle storage -->
   <script>
     document.getElementById('booking-form').addEventListener('submit', function (e) {
       e.preventDefault();
 
       const formData = {
-        name: document.getElementById('full-name').value,
-        phone: document.getElementById('phone').value,
+        name: document.getElementById('full-name').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
         service: document.getElementById('service').value,
         date: document.getElementById('date').value,
         time: document.getElementById('time').value,
-        bookingId: 'BMN' + Math.floor(100000 + Math.random() * 900000),
+        bookingId: 'BMN' + Math.floor(100000 + Math.random() * 900000)
       };
 
+      // Store in localStorage so thankyou.html can access
       localStorage.setItem('bookingData', JSON.stringify(formData));
+
+      // Redirect
       window.location.href = 'thankyou.html';
     });
   </script>
