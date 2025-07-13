@@ -72,7 +72,7 @@
     <p>Thank you for booking with <strong>BookMeNow</strong>. Your appointment has been successfully scheduled.</p>
 
     <div class="booking-details" id="receipt-content">
-      <p><strong>Appointmen ID:</strong> <span id="booking-id"></span></p>
+      <p><strong>Appointment ID:</strong> <span id="booking-id"></span></p>
       <p><strong>Name:</strong> <span id="name"></span></p>
       <p><strong>Phone:</strong> <span id="phone"></span></p>
       <p><strong>Service:</strong> <span id="service"></span></p>
@@ -80,7 +80,7 @@
       <p><strong>Time:</strong> <span id="time"></span></p>
     </div>
 
-    <button class="btn btn-download" onclick="downloadReceipt()">📄 Download Receipt</button>
+    <button class="btn btn-download" onclick="downloadPDF()">📄 Download PDF Receipt</button>
   </main>
 
   <footer>
@@ -88,8 +88,8 @@
   </footer>
 
   <script defer src="js/script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    // Display booking data
     const data = JSON.parse(localStorage.getItem("bookingData"));
     if (data) {
       document.getElementById("booking-id").textContent = data.bookingId;
@@ -102,28 +102,29 @@
       document.querySelector(".thankyou-main").innerHTML = "<h1>⚠️ No Booking Found</h1><p>Please make a booking first.</p>";
     }
 
-    // Download receipt as PDF or printable format
-    function downloadReceipt() {
-      const content = document.getElementById("receipt-content").innerHTML;
-      const original = document.body.innerHTML;
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
 
-      document.body.innerHTML = `
-        <div style="max-width:600px;margin:auto;padding:2rem;font-family:sans-serif;">
-          <h1 style="color:#007bff;">BookMeNow - Receipt</h1>
-          ${content}
-          <p style="margin-top:2rem;">Generated on: ${new Date().toLocaleString()}</p>
-        </div>
-      `;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(18);
+      doc.text("BookMeNow - Appointment Receipt", 20, 20);
 
-      window.print();
-      document.body.innerHTML = original;
-      window.location.reload();
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "normal");
+      doc.text(`Appointment ID: ${data.bookingId}`, 20, 40);
+      doc.text(`Name: ${data.name}`, 20, 50);
+      doc.text(`Phone: ${data.phone}`, 20, 60);
+      doc.text(`Service: ${data.service}`, 20, 70);
+      doc.text(`Date: ${data.date}`, 20, 80);
+      doc.text(`Time: ${data.time}`, 20, 90);
+      doc.text(`Generated: ${new Date().toLocaleString()}`, 20, 110);
+
+      doc.save(`Receipt_${data.bookingId}.pdf`);
     }
 
-    // Clear data after displaying
-    window.addEventListener("beforeunload", () => {
-      localStorage.removeItem("bookingData");
-    });
+    // Optional: clear booking data after 1 minute
+    setTimeout(() => localStorage.removeItem("bookingData"), 60000);
   </script>
 </body>
 </html>
