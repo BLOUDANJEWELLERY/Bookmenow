@@ -301,23 +301,32 @@ footer {
     display: flex;
   }
 
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%;
-    background: var(--nav);
-    padding: 1rem 0;
-    box-shadow: 0 4px 8px var(--shadow);
-    z-index: 999;
-  }
+  /* Initially hidden with zero height and invisible */
+.nav-links {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  background: var(--nav);
+  padding: 0 0; /* No vertical padding when closed */
+  box-shadow: 0 4px 8px var(--shadow);
+  z-index: 999;
+  pointer-events: none; /* Prevent interaction when hidden */
+}
 
-  .nav-links.show {
-    display: flex;
-  }
+/* When shown, expand smoothly */
+.nav-links.show {
+  max-height: 500px; /* Enough to fit all links */
+  opacity: 1;
+  padding: 1rem 0; /* Restore vertical padding */
+  pointer-events: auto; /* Enable interaction */
+}
 
   .nav-links li {
     width: 100%;
