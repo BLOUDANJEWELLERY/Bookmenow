@@ -59,13 +59,34 @@ body {
 .nav-links li a,
 .nav-links li button {
   text-decoration: none;
-  color: var(--text);
   font-weight: 500;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0.5rem 0.75rem;
-  transition: color 0.2s;
+  transition: all 0.2s ease;
+  color: var(--text);
+}
+
+.nav-links li a.active,
+.nav-links li a:hover,
+.nav-links li button:hover {
+  color: var(--accent);
+}
+
+/* Custom logout button styling */
+.logout-btn {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #005ecb;
+  transform: translateY(-1px);
 }
 
 .nav-links li a.active,
