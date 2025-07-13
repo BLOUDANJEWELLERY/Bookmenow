@@ -9,18 +9,18 @@
     .message {
       margin-top: 1rem;
       font-size: 0.95rem;
-      color: #e63946;
       text-align: center;
+      color: #e63946;
     }
     .success {
       color: #2a9d8f;
     }
     .loader {
       border: 3px solid #f3f3f3;
-      border-top: 3px solid var(--accent);
+      border-top: 3px solid var(--accent, #007bff);
       border-radius: 50%;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       animation: spin 0.6s linear infinite;
       display: inline-block;
       margin-left: 10px;
@@ -53,7 +53,8 @@
 
         <button type="submit" class="btn" id="login-btn">Login</button>
         <div class="message" id="message"></div>
-        <p style="margin-top: 1rem;">Don't have an account? <a href="register.html">Register</a></p>
+
+        <p style="margin-top: 1rem;">Don’t have an account? <a href="register.html">Register</a></p>
       </form>
     </section>
   </main>
@@ -100,13 +101,13 @@
           window.location.href = 'booking.html';
         }, 1500);
       } catch (error) {
-        let errorMsg = "Login failed.";
+        let errorMsg = 'Login failed. Please try again.';
         if (error.code === 'auth/user-not-found') {
-          errorMsg = "No account found with this email.";
+          errorMsg = 'No account found with this email.';
         } else if (error.code === 'auth/wrong-password') {
-          errorMsg = "Incorrect password.";
+          errorMsg = 'Incorrect password.';
         } else if (error.code === 'auth/invalid-email') {
-          errorMsg = "Invalid email address.";
+          errorMsg = 'Please enter a valid email address.';
         }
         message.textContent = errorMsg;
         message.classList.remove('success');
