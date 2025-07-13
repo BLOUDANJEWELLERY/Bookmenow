@@ -83,7 +83,7 @@ body {
 /* 🔴 LOGOUT BUTTON — BOLD, RED, DISTINCT & BEAUTIFUL */
 .logout-btn {
   background: #e63946; /* Vivid red */
-  color: white;
+  color: #e63946;
   padding: 0.5rem 1.4rem;
   border: none;
   border-radius: 8px;
