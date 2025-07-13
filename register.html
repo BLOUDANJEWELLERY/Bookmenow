@@ -5,6 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Register – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .message {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      color: #e63946;
+      text-align: center;
+    }
+    .success {
+      color: #2a9d8f;
+    }
+    .loader {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--accent);
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 0.6s linear infinite;
+      display: inline-block;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
   <header class="navbar">
@@ -17,7 +43,7 @@
       <form id="register-form" class="booking-form">
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" required />
+          <input type="email" id="email" required autofocus />
         </div>
 
         <div class="form-group">
@@ -25,7 +51,8 @@
           <input type="password" id="password" required minlength="6" />
         </div>
 
-        <button type="submit" class="btn">Register</button>
+        <button type="submit" class="btn" id="register-btn">Register</button>
+        <div class="message" id="message"></div>
         <p style="margin-top: 1rem;">Already have an account? <a href="login.html">Login</a></p>
       </form>
     </section>
@@ -35,7 +62,6 @@
     <p>© 2025 BookMeNow | Built by Captain</p>
   </footer>
 
-  <!-- Firebase Auth Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
@@ -54,17 +80,40 @@
     const auth = getAuth(app);
 
     const form = document.getElementById('register-form');
+    const message = document.getElementById('message');
+    const registerBtn = document.getElementById('register-btn');
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      message.textContent = '';
+      registerBtn.disabled = true;
+      registerBtn.innerHTML = 'Registering <span class="loader"></span>';
+
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
 
       try {
         await createUserWithEmailAndPassword(auth, email, password);
-        alert("Registration successful!");
-        window.location.href = "booking.html";
+        message.textContent = 'Account created successfully! Redirecting...';
+        message.classList.add('success');
+        setTimeout(() => {
+          window.location.href = 'booking.html';
+        }, 1500);
       } catch (error) {
-        alert("Error: " + error.message);
+        const code = error.code;
+        let errorMsg = "Something went wrong.";
+        if (code === 'auth/email-already-in-use') {
+          errorMsg = "This email is already registered.";
+        } else if (code === 'auth/invalid-email') {
+          errorMsg = "Please enter a valid email address.";
+        } else if (code === 'auth/weak-password') {
+          errorMsg = "Password should be at least 6 characters.";
+        }
+        message.textContent = errorMsg;
+        message.classList.remove('success');
+      } finally {
+        registerBtn.disabled = false;
+        registerBtn.innerHTML = 'Register';
       }
     });
   </script>
