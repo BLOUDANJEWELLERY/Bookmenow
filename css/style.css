@@ -1,4 +1,4 @@
-/* RESET & ROOT */
+/* RESET & VARIABLES */
 * {
   margin: 0;
   padding: 0;
@@ -31,7 +31,7 @@ body {
   line-height: 1.6;
 }
 
-/* NAVBAR */
+/* NAVIGATION */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -68,12 +68,9 @@ body {
   transition: color 0.2s;
 }
 
+.nav-links li a.active,
 .nav-links li a:hover,
 .nav-links li button:hover {
-  color: var(--accent);
-}
-
-.nav-links li a.active {
   color: var(--accent);
 }
 
@@ -91,7 +88,7 @@ body {
   border-radius: 2px;
 }
 
-/* HERO */
+/* HERO SECTION */
 .hero {
   position: relative;
   width: 100%;
@@ -130,6 +127,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
+/* BUTTON STYLE */
 .btn {
   display: inline-block;
   background: var(--accent);
@@ -141,7 +139,7 @@ body {
   border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.3s, transform 0.2s;
+  transition: background 0.3s ease, transform 0.2s ease;
   max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -152,7 +150,7 @@ body {
   background: #005ecb;
 }
 
-/* FEATURES */
+/* FEATURES SECTION */
 .features {
   padding: 4rem 2rem;
   text-align: center;
@@ -189,7 +187,7 @@ body {
   color: var(--accent);
 }
 
-/* BOOKING PAGE */
+/* BOOKING FORM */
 .booking-main {
   padding: 4rem 2rem;
   max-width: 700px;
@@ -242,7 +240,6 @@ body {
   outline: none;
 }
 
-
 /* FOOTER */
 footer {
   text-align: center;
@@ -252,7 +249,7 @@ footer {
   border-top: 1px solid #ddd;
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE STYLES */
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
@@ -300,6 +297,10 @@ footer {
 
   .card {
     width: 90%;
+  }
+
+  .booking-main {
+    padding: 3rem 1rem;
   }
 }
 
