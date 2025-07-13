@@ -3,30 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Booking – BookMeNow</title>
+  <title>Book an Appointment – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/script.js"></script>
 </head>
 <body>
-  <header class="navbar">
-    <a href="index.html" class="logo">BookMeNow</a>
-    <div class="hamburger" id="hamburger">
-      <span></span><span></span><span></span>
-    </div>
-    <ul class="nav-links" id="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="booking.html" class="active">Booking</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><button id="theme-toggle">🌙</button></li>
-    </ul>
+  <header>
+    <nav class="navbar">
+      <div class="logo">BookMeNow</div>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="booking.html" class="active">Booking</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><button id="theme-toggle">🌙</button></li>
+      </ul>
+    </nav>
   </header>
 
-  <main class="container">
-    <h1>Our Services</h1>
-    <p>Coming soon...</p>
+  <main class="booking-main">
+    <section class="booking-form-section">
+      <h1>Book an Appointment</h1>
+      <p>Fill out the form below to reserve your spot.</p>
+
+      <form class="booking-form" action="#" method="post">
+        <div class="form-group">
+          <label for="full-name">Full Name</label>
+          <input type="text" id="full-name" name="full-name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" required />
+        </div>
+
+        <div class="form-group">
+          <label for="service">Select Service</label>
+          <select id="service" name="service" required>
+            <option value="">-- Choose --</option>
+            <option value="salon">Salon</option>
+            <option value="clinic">Clinic</option>
+            <option value="spa">Spa</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="date">Date</label>
+          <input type="date" id="date" name="date" required />
+        </div>
+
+        <div class="form-group">
+          <label for="time">Time</label>
+          <input type="time" id="time" name="time" required />
+        </div>
+
+        <button type="submit" class="btn">Confirm Booking</button>
+      </form>
+    </section>
   </main>
 
-  <footer><p>© 2025 BookMeNow</p></footer>
+  <footer>
+    <p>© 2025 BookMeNow | Built by Captain</p>
+  </footer>
 </body>
 </html>
