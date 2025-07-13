@@ -59,11 +59,11 @@
     <p>© 2025 BookMeNow | Managed by Captain</p>
   </footer>
 
-  <!-- Firebase + Firestore -->
+  <!-- Firebase + Firestore Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
@@ -84,11 +84,18 @@
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
         window.location.href = "login.html";
-      } else {
-        logoutBtn.style.display = "inline-block";
+        return;
+      }
 
-        // Fetch appointments
-        const q = query(collection(db, "bookings"), where("uid", "==", user.uid));
+      logoutBtn.style.display = "inline-block";
+
+      try {
+        const q = query(
+          collection(db, "bookings"),
+          where("userId", "==", user.uid),
+          orderBy("createdAt", "desc")
+        );
+
         const snapshot = await getDocs(q);
 
         if (snapshot.empty) {
@@ -109,10 +116,13 @@
             container.appendChild(card);
           });
         }
+      } catch (err) {
+        console.error("Failed to fetch appointments:", err);
+        container.innerHTML = `<p class="no-appointments">⚠️ Unable to load appointments. Please try again later.</p>`;
       }
     });
 
-    logoutBtn.addEventListener("click", () => {
+    logoutBtn?.addEventListener("click", () => {
       signOut(auth).then(() => window.location.href = "login.html");
     });
   </script>
