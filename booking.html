@@ -19,6 +19,7 @@
         <li><a href="booking.html" class="active">Booking</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li><button id="theme-toggle">🌙</button></li>
+        <li><button id="logout-btn" style="display: none;">Logout</button></li>
       </ul>
     </nav>
   </header>
@@ -71,7 +72,42 @@
     <p>© 2025 BookMeNow | Built by Captain</p>
   </footer>
 
-  <script>
+  <!-- Firebase Auth Protection + Logout -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
+      authDomain: "sampleportfolio-9450c.firebaseapp.com",
+      projectId: "sampleportfolio-9450c",
+      storageBucket: "sampleportfolio-9450c.appspot.com",
+      messagingSenderId: "725347523572",
+      appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const logoutBtn = document.getElementById("logout-btn");
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+      } else {
+        logoutBtn.style.display = "inline-block";
+      }
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      }).catch((error) => {
+        console.error("Logout Error:", error);
+      });
+    });
+
+    // Booking form submission logic
     document.getElementById('booking-form').addEventListener('submit', function (e) {
       e.preventDefault();
 
@@ -84,10 +120,7 @@
         bookingId: 'BMN' + Math.floor(100000 + Math.random() * 900000)
       };
 
-      // Store booking data
       localStorage.setItem('bookingData', JSON.stringify(formData));
-
-      // Redirect to confirmation page
       window.location.href = 'thankyou.html';
     });
   </script>
