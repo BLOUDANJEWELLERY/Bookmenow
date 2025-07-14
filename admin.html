@@ -6,7 +6,6 @@
   <title>Admin Panel – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/script.js"></script>
-  <script type="module" src="js/admin.js"></script>
   <style>
     .admin-main {
       max-width: 1000px;
@@ -129,7 +128,78 @@
     <p>© 2025 BookMeNow | Admin powered by Captain</p>
   </footer>
 
-  <!-- Auth.js for login/logout logic -->
+  <!-- Firebase Auth Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    import { handleAuthUI } from './js/auth.js';
+
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
+      authDomain: "sampleportfolio-9450c.firebaseapp.com",
+      projectId: "sampleportfolio-9450c",
+      storageBucket: "sampleportfolio-9450c.appspot.com",
+      messagingSenderId: "725347523572",
+      appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    handleAuthUI();
+
+    // Listen for auth and fetch bookings
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return window.location.href = "login.html";
+
+      const snapshot = await getDocs(collection(db, "bookings"));
+      const container = document.getElementById("bookings-container");
+      container.innerHTML = "";
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const div = document.createElement("div");
+        div.className = "booking-entry";
+        div.innerHTML = `
+          <p><strong>${data.service}</strong> on ${data.date} at ${data.time}</p>
+          <p>Name: ${data.name} | Phone: ${data.phone}</p>
+          <p>ID: ${data.bookingId}</p>
+        `;
+        container.appendChild(div);
+      });
+    });
+
+    // Promote User to Admin (calls Cloud Function later)
+    document.getElementById("promote-btn").addEventListener("click", async () => {
+      const email = document.getElementById("promote-email").value.trim();
+      const status = document.getElementById("status-msg");
+      if (!email) {
+        status.textContent = "Please enter an email.";
+        return;
+      }
+
+      try {
+        // ⚠️ This would call a secure Cloud Function endpoint to set the custom claim
+        // For now, we simulate it (mock)
+        await fetch("https://your-cloud-function-url/setAdmin", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email })
+        });
+
+        status.textContent = `✅ Admin privileges granted to ${email}`;
+      } catch (err) {
+        status.textContent = `❌ Failed to promote: ${err.message}`;
+      }
+    });
+  </script>
+
+  <!-- Auth Button -->
   <script type="module">
     import { handleAuthUI } from './js/auth.js';
     handleAuthUI();
