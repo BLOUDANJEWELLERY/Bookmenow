@@ -1,0 +1,118 @@
+:root {
+  --bg: #f4f6fa;
+  --card: #ffffff;
+  --accent: #007bff;
+  --text: #222;
+  --shadow: rgba(0, 0, 0, 0.08);
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.admin-header {
+  background: var(--accent);
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logout-btn {
+  background: white;
+  color: var(--accent);
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #f0f8ff;
+  transform: scale(1.05);
+}
+
+.admin-main {
+  padding: 2rem;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.dashboard-stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: var(--card);
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px var(--shadow);
+  text-align: center;
+  width: 200px;
+}
+
+.stat-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.stat-card p {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.booking-table-section h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.booking-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px var(--shadow);
+  overflow: hidden;
+}
+
+.booking-table th,
+.booking-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.booking-table th {
+  background: #f9f9f9;
+  color: #444;
+}
+
+.booking-table tr:hover {
+  background: #f1f1f1;
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #c82333;
+}
