@@ -81,75 +81,71 @@ body {
 }
 
 .logout-btn {
-  padding: 0.7rem 2rem;
-  font-size: 1.05rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 14px;
-  color: #fff;
-  background: rgba(230, 57, 70, 0.25);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow:
-    0 2px 6px rgba(230, 57, 70, 0.2),
-    0 8px 20px rgba(230, 57, 70, 0.4),
-    inset 0 0 0 1.5px rgba(255, 255, 255, 0.08);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 0.6rem;
-  font-family: 'Segoe UI', sans-serif;
+  padding: 0.75rem 1.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #ff3d3d, #c80000);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow:
+    0 4px 12px rgba(255, 61, 61, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.15);
+  transition: all 0.25s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-family: "Segoe UI", sans-serif;
 }
 
-/* 🔥 Glowing animated border ring on hover */
+/* Inner glow ring */
 .logout-btn::before {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 2px;
-  background: linear-gradient(135deg, #ff4d6d, #ff6b81, #ff4d6d);
-  background-size: 300% 300%;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle at center, rgba(255, 61, 61, 0.4), transparent 70%);
+  filter: blur(20px);
   z-index: 0;
-  opacity: 0;
   transition: opacity 0.3s ease;
-  animation: glow-ring 2s linear infinite;
+  opacity: 0;
 }
 
+/* Ring and scale on hover */
 .logout-btn:hover::before {
   opacity: 1;
 }
 
-.logout-btn span {
-  z-index: 1;
-}
-
 .logout-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.03);
   box-shadow:
-    0 6px 12px rgba(230, 57, 70, 0.3),
-    0 12px 28px rgba(230, 57, 70, 0.45);
+    0 6px 18px rgba(255, 61, 61, 0.6),
+    inset 0 1px 3px rgba(255, 255, 255, 0.2);
 }
 
 .logout-btn:active {
-  transform: scale(0.98);
-  box-shadow: 0 3px 8px rgba(230, 57, 70, 0.2);
+  transform: scale(0.97);
+  box-shadow:
+    0 3px 6px rgba(255, 61, 61, 0.3);
 }
 
-@keyframes glow-ring {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+/* Optional icon */
+.logout-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: white;
+  transition: transform 0.3s ease;
+}
+
+.logout-btn:hover svg {
+  transform: rotate(-90deg);
 }
 /* HAMBURGER MENU ICON */
 .hamburger {
