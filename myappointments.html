@@ -46,20 +46,9 @@
       font-weight: bold;
     }
 
-    .btn-download {
-      background: #28a745;
-      color: white;
-    }
-
-    .btn-cancel {
-      background: #ffc107;
-      color: #333;
-    }
-
-    .btn-delete {
-      background: #dc3545;
-      color: white;
-    }
+    .btn-download { background: #28a745; color: white; }
+    .btn-cancel { background: #ffc107; color: #333; }
+    .btn-delete { background: #dc3545; color: white; }
 
     .section-toggle {
       display: flex;
@@ -88,6 +77,31 @@
       font-size: 1rem;
       color: var(--text);
     }
+
+    /* Loading Animation */
+    #loading {
+      text-align: center;
+      font-weight: bold;
+      color: var(--accent, #007bff);
+      margin-top: 2rem;
+      font-size: 1.1rem;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid transparent;
+      border-top: 3px solid #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -114,6 +128,9 @@
       <button id="upcoming-btn" class="active">Upcoming</button>
       <button id="past-btn">Past</button>
     </div>
+
+    <!-- Loading Message -->
+    <div id="loading">🔄 Loading your appointments... <span class="spinner"></span></div>
 
     <div id="appointments-container"></div>
   </main>
@@ -145,8 +162,11 @@
     const logoutBtn = document.getElementById("logout-btn");
     const upcomingBtn = document.getElementById("upcoming-btn");
     const pastBtn = document.getElementById("past-btn");
+    const loading = document.getElementById("loading");
 
-    logoutBtn.addEventListener("click", () => signOut(auth).then(() => window.location.href = "login.html"));
+    logoutBtn.addEventListener("click", () =>
+      signOut(auth).then(() => window.location.href = "login.html")
+    );
 
     upcomingBtn.onclick = () => showSection("upcoming");
     pastBtn.onclick = () => showSection("past");
@@ -156,6 +176,9 @@
     onAuthStateChanged(auth, async (user) => {
       if (!user) return window.location.href = "login.html";
       logoutBtn.style.display = "inline-block";
+
+      loading.style.display = "block";
+      container.innerHTML = "";
 
       const snapshot = await getDocs(collection(db, "bookings"));
       const now = new Date();
@@ -168,6 +191,7 @@
           return app;
         });
 
+      loading.style.display = "none";
       showSection("upcoming");
     });
 
@@ -262,9 +286,10 @@
       doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, y);
 
       const qr = new QRious({
-  value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
-  size: 100,
-});
+        value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
+        size: 100,
+      });
+
       doc.addImage(qr.toDataURL(), 'PNG', 150, 40, 40, 40);
       doc.setFontSize(8);
       doc.text("Scan to verify", 160, 85);
