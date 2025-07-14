@@ -80,33 +80,40 @@ body {
   background-color: rgba(0, 123, 255, 0.1);
 }
 
-/* 🚪 LOGOUT BUTTON — SLEEK, BOLD & MODERN */
+/* 🚪 Modern Logout Button — Elegant, Premium Feel */
 .logout-btn {
-  background: #e63946;
-  color: white;
-  padding: 0.55rem 1.6rem;
+  background: linear-gradient(135deg, #e63946, #d62839);
+  color: #fff;
+  padding: 0.65rem 1.8rem;
   border: none;
-  border-radius: 50px;
+  border-radius: 12px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.05rem;
+  font-family: 'Segoe UI', sans-serif;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(230, 57, 70, 0.35);
-  transition: all 0.3s ease;
-  letter-spacing: 0.3px;
+  box-shadow: 0 8px 18px rgba(230, 57, 70, 0.35);
+  transition: all 0.25s ease-in-out;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .logout-btn::before {
-  content: "🚪";
-  font-size: 1.1rem;
+  content: "⇦";
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
 }
 
 .logout-btn:hover {
-  background: #c82333;
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 6px 14px rgba(200, 35, 51, 0.5);
+  background: linear-gradient(135deg, #c82333, #a31c2e);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(200, 35, 51, 0.45);
+}
+
+.logout-btn:active {
+  transform: scale(0.98);
 }
 
 /* HAMBURGER MENU ICON */
