@@ -280,10 +280,16 @@
       try {
         const user = auth.currentUser;
         await addDoc(collection(db, "bookings"), {
-          userId: user.uid,
-          name, phone, service, date, time, bookingId,
-          createdAt: serverTimestamp()
-        });
+  userId: user.uid,
+  name,
+  phone,
+  service,
+  date,
+  time,
+  bookingId,
+  done: false,             // <---- Add this line to initialize done flag
+  createdAt: serverTimestamp()
+});
 
         localStorage.setItem("bookingData", JSON.stringify({ name, phone, service, date, time, bookingId }));
         window.location.href = "thankyou.html";
