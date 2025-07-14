@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
-  <script defer src="js/script.js"></script>
   <style>
     .admin-main {
       max-width: 1000px;
@@ -15,127 +14,115 @@
 
     h1 {
       text-align: center;
-      font-size: 2.3rem;
-      color: var(--text);
-      margin-bottom: 2.5rem;
-    }
-
-    .promote-box {
-      background: var(--card);
-      border-radius: 10px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 12px var(--shadow);
-      margin-bottom: 3rem;
-    }
-
-    .promote-box h2 {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
       color: var(--accent);
     }
 
-    .promote-box input {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-bottom: 1rem;
+    .summary {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
 
-    .promote-box button {
-      padding: 0.7rem 1.4rem;
-      font-size: 1rem;
-      background: var(--accent, #007bff);
+    .summary div {
+      background: var(--card);
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px var(--shadow);
+      text-align: center;
+      min-width: 200px;
+    }
+
+    .summary h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: var(--accent);
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    .logout-btn {
+      position: absolute;
+      right: 1.5rem;
+      top: 1rem;
+      background: #e63946;
       color: white;
       border: none;
+      padding: 0.5rem 1.2rem;
       border-radius: 6px;
-      cursor: pointer;
-      transition: 0.3s ease;
       font-weight: bold;
+      cursor: pointer;
     }
 
-    .promote-box button:hover {
-      background: #0056b3;
-    }
-
-    .status-message {
-      margin-top: 0.8rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .dashboard {
-      background: var(--card);
-      border-radius: 10px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 12px var(--shadow);
-    }
-
-    .dashboard h2 {
-      color: var(--accent);
-      margin-bottom: 1rem;
-    }
-
-    .booking-entry {
-      border-bottom: 1px solid #ccc;
-      padding: 1rem 0;
-    }
-
-    .booking-entry:last-child {
-      border-bottom: none;
-    }
-
-    .booking-entry p {
-      margin: 0.2rem 0;
+    .logout-btn:hover {
+      background: #c82333;
     }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header>
-    <nav class="navbar">
-      <div class="logo">BookMeNow</div>
-      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-      <ul class="nav-links" id="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="myappointments.html">My Appointments</a></li>
-        <li><a href="booking.html">Book</a></li>
-        <li><a href="admin.html" class="active">Admin</a></li>
-        <li><button id="theme-toggle">🌙</button></li>
-        <li id="auth-button-slot"></li>
-      </ul>
-    </nav>
+  <header class="navbar">
+    <div class="logo">BookMeNow – Admin</div>
+    <button id="logout-btn" class="logout-btn">Logout</button>
   </header>
 
-  <!-- MAIN -->
   <main class="admin-main">
-    <h1>Admin Panel</h1>
+    <h1>📊 Admin Dashboard</h1>
 
-    <section class="promote-box">
-      <h2>Promote User to Admin</h2>
-      <input type="email" id="promote-email" placeholder="Enter user email" />
-      <button id="promote-btn">Promote to Admin</button>
-      <div class="status-message" id="status-msg"></div>
-    </section>
+    <div class="summary">
+      <div>
+        <h2 id="total-count">0</h2>
+        <p>Total Appointments</p>
+      </div>
+      <div>
+        <h2 id="today-count">0</h2>
+        <p>Today’s Appointments</p>
+      </div>
+    </div>
 
-    <section class="dashboard">
-      <h2>All Bookings</h2>
-      <div id="bookings-container">Loading...</div>
-    </section>
+    <table>
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Service</th>
+          <th>Date</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody id="bookings-table-body">
+        <tr><td colspan="6" style="text-align:center;">Loading...</td></tr>
+      </tbody>
+    </table>
   </main>
 
-  <footer>
-    <p>© 2025 BookMeNow | Admin powered by Captain</p>
-  </footer>
-
-  <!-- Firebase Auth Integration -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs, doc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-    import { handleAuthUI } from './js/auth.js';
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
       authDomain: "sampleportfolio-9450c.firebaseapp.com",
@@ -149,60 +136,44 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    handleAuthUI();
+    const logoutBtn = document.getElementById("logout-btn");
+    const tableBody = document.getElementById("bookings-table-body");
+    const totalCount = document.getElementById("total-count");
+    const todayCount = document.getElementById("today-count");
 
-    // Listen for auth and fetch bookings
+    logoutBtn.onclick = () => signOut(auth).then(() => location.href = "login.html");
+
     onAuthStateChanged(auth, async (user) => {
-      if (!user) return window.location.href = "login.html";
+      if (!user) return location.href = "login.html";
 
       const snapshot = await getDocs(collection(db, "bookings"));
-      const container = document.getElementById("bookings-container");
-      container.innerHTML = "";
+      const bookings = snapshot.docs.map(doc => doc.data());
 
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const div = document.createElement("div");
-        div.className = "booking-entry";
-        div.innerHTML = `
-          <p><strong>${data.service}</strong> on ${data.date} at ${data.time}</p>
-          <p>Name: ${data.name} | Phone: ${data.phone}</p>
-          <p>ID: ${data.bookingId}</p>
-        `;
-        container.appendChild(div);
-      });
-    });
+      totalCount.textContent = bookings.length;
 
-    // Promote User to Admin (calls Cloud Function later)
-    document.getElementById("promote-btn").addEventListener("click", async () => {
-      const email = document.getElementById("promote-email").value.trim();
-      const status = document.getElementById("status-msg");
-      if (!email) {
-        status.textContent = "Please enter an email.";
+      const today = new Date().toISOString().split("T")[0];
+      const todaysBookings = bookings.filter(b => b.date === today);
+      todayCount.textContent = todaysBookings.length;
+
+      if (bookings.length === 0) {
+        tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>No bookings found.</td></tr>";
         return;
       }
 
-      try {
-        // ⚠️ This would call a secure Cloud Function endpoint to set the custom claim
-        // For now, we simulate it (mock)
-        await fetch("https://your-cloud-function-url/setAdmin", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email })
-        });
-
-        status.textContent = `✅ Admin privileges granted to ${email}`;
-      } catch (err) {
-        status.textContent = `❌ Failed to promote: ${err.message}`;
-      }
+      tableBody.innerHTML = "";
+      bookings.sort((a, b) => `${a.date}T${a.time}`.localeCompare(`${b.date}T${b.time}`)).forEach(b => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${b.bookingId}</td>
+          <td>${b.name}</td>
+          <td>${b.phone}</td>
+          <td>${b.service}</td>
+          <td>${b.date}</td>
+          <td>${b.time}</td>
+        `;
+        tableBody.appendChild(row);
+      });
     });
-  </script>
-
-  <!-- Auth Button -->
-  <script type="module">
-    import { handleAuthUI } from './js/auth.js';
-    handleAuthUI();
   </script>
 </body>
 </html>
