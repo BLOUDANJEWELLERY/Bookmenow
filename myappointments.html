@@ -61,6 +61,16 @@
       margin-bottom: 1.5rem;
       line-height: 1.6;
       position: relative;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .fade-out {
+      animation: fadeOut 0.4s ease forwards;
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.95); }
     }
 
     .appointment-card h3 {
@@ -119,10 +129,52 @@
       50% { opacity: 1; }
       100% { opacity: 0.5; }
     }
+
+    .confirm-dialog {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .confirm-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 300px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .confirm-box h3 {
+      margin-bottom: 1rem;
+    }
+
+    .confirm-box button {
+      margin: 0 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .confirm-yes {
+      background: #dc3545;
+      color: white;
+    }
+
+    .confirm-no {
+      background: #ccc;
+      color: black;
+    }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
   <header>
     <nav class="navbar">
       <div class="logo">BookMeNow</div>
@@ -137,7 +189,6 @@
     </nav>
   </header>
 
-  <!-- MAIN -->
   <main class="appointments-main">
     <h1>Your Appointments</h1>
 
@@ -154,7 +205,14 @@
     <p>© 2025 BookMeNow | Managed by Captain</p>
   </footer>
 
-  <!-- FIREBASE + LOGIC -->
+  <div id="confirm-dialog" class="confirm-dialog" style="display: none;">
+    <div class="confirm-box">
+      <h3>Are you sure?</h3>
+      <button class="confirm-yes">Yes</button>
+      <button class="confirm-no">No</button>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
@@ -178,12 +236,25 @@
     const logoutBtn = document.getElementById("logout-btn");
     const upcomingBtn = document.getElementById("upcoming-btn");
     const pastBtn = document.getElementById("past-btn");
+    const confirmDialog = document.getElementById("confirm-dialog");
+    const confirmYes = document.querySelector(".confirm-yes");
+    const confirmNo = document.querySelector(".confirm-no");
 
     logoutBtn.addEventListener("click", () => signOut(auth).then(() => window.location.href = "login.html"));
     upcomingBtn.onclick = () => showSection("upcoming");
     pastBtn.onclick = () => showSection("past");
 
     let allAppointments = [];
+    let confirmCallback = null;
+
+    confirmYes.onclick = () => {
+      confirmDialog.style.display = "none";
+      if (confirmCallback) confirmCallback();
+    };
+    confirmNo.onclick = () => {
+      confirmDialog.style.display = "none";
+      confirmCallback = null;
+    };
 
     onAuthStateChanged(auth, async (user) => {
       if (!user) return window.location.href = "login.html";
@@ -243,21 +314,27 @@
             }
           </div>
         `;
-        // Event listeners
         card.querySelector(".btn-download").onclick = () => downloadPDF(appt);
-        if (type === "upcoming") {
-          card.querySelector(".btn-cancel").onclick = () => cancel(appt.id);
-        } else {
-          card.querySelector(".btn-delete").onclick = () => cancel(appt.id);
-        }
+        const deleteBtn = type === "upcoming"
+          ? card.querySelector(".btn-cancel")
+          : card.querySelector(".btn-delete");
+        deleteBtn.onclick = () => confirmDelete(appt.id, card);
+
         container.appendChild(card);
       }
     }
 
-    async function cancel(docId) {
-      if (!confirm("Are you sure?")) return;
-      await deleteDoc(doc(db, "bookings", docId));
-      location.reload();
+    function confirmDelete(docId, cardElement) {
+      confirmCallback = async () => {
+        try {
+          await deleteDoc(doc(db, "bookings", docId));
+          cardElement.classList.add("fade-out");
+          setTimeout(() => cardElement.remove(), 400);
+        } catch (err) {
+          alert("Failed to delete. Try again.");
+        }
+      };
+      confirmDialog.style.display = "flex";
     }
 
     async function downloadPDF(data) {
