@@ -58,12 +58,19 @@
 
         <div class="form-group">
           <label for="date">Date</label>
-          <input type="date" id="date" name="date" required />
+          <input 
+            type="date" 
+            id="date" 
+            name="date" 
+            required 
+            min="" />
         </div>
 
         <div class="form-group">
           <label for="time">Time</label>
-          <input type="time" id="time" name="time" required />
+          <select id="time" name="time" required>
+            <option value="">-- Choose --</option>
+          </select>
         </div>
 
         <button type="submit" class="btn">Confirm Booking</button>
@@ -99,25 +106,42 @@
 
     const logoutBtn = document.getElementById("logout-btn");
 
-    // Only allow logged-in users
     onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        window.location.href = "login.html";
-      } else {
-        logoutBtn.style.display = "inline-block";
-      }
+      if (!user) window.location.href = "login.html";
+      else logoutBtn.style.display = "inline-block";
     });
 
-    // Logout functionality
     logoutBtn?.addEventListener("click", () => {
-      signOut(auth).then(() => {
-        window.location.href = "login.html";
-      }).catch((error) => {
-        console.error("Logout Error:", error);
-      });
+      signOut(auth)
+        .then(() => window.location.href = "login.html")
+        .catch(console.error);
     });
 
-    // Handle Booking Submission
+    // Date & Time setup
+    const dateInput = document.getElementById("date");
+    const timeSelect = document.getElementById("time");
+
+    // Prevent auto default date
+    dateInput.value = "";
+
+    // Set minimum selectable date to today
+    const today = new Date().toISOString().split("T")[0];
+    dateInput.setAttribute("min", today);
+
+    // Populate time slots 08:00–23:30 in 30-min steps
+    const startHour = 8, endHour = 23, interval = 30;
+    for (let h = startHour; h <= endHour; h++) {
+      for (let m = 0; m < 60; m += interval) {
+        if (h === endHour && m > 30) break; // stop after 23:30
+        const hh = h.toString().padStart(2, "0");
+        const mm = m.toString().padStart(2, "0");
+        const option = document.createElement("option");
+        option.value = `${hh}:${mm}`;
+        option.textContent = `${hh}:${mm}`;
+        timeSelect.appendChild(option);
+      }
+    }
+
     document.getElementById("booking-form").addEventListener("submit", async function (e) {
       e.preventDefault();
 
@@ -132,15 +156,11 @@
         const user = auth.currentUser;
         await addDoc(collection(db, "bookings"), {
           userId: user.uid,
-          name,
-          phone,
-          service,
-          date,
-          time,
-          bookingId,
+          name, phone, service, date, time, bookingId,
           createdAt: serverTimestamp()
         });
 
+        localStorage.setItem("bookingData", JSON.stringify({ name, phone, service, date, time, bookingId }));
         window.location.href = "thankyou.html";
       } catch (err) {
         console.error("Firestore Error:", err);
