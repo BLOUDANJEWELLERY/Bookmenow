@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Booking Confirmed – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/script.js"></script>
+
   <style>
     .thankyou-main {
       max-width: 600px;
@@ -57,15 +59,15 @@
   <header>
     <nav class="navbar">
       <div class="logo">BookMeNow</div>
-      <div class="hamburger" id="hamburger">
-        <span></span><span></span><span></span>
-      </div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
       <ul class="nav-links" id="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="myappointments.html">My Appointments</a></li>
         <li><a href="booking.html">Book Again</a></li>
         <li><button id="theme-toggle">🌙</button></li>
-        <li><button id="logout-btn" class="logout-btn" style="display: none;">Logout</button></li>
+
+        <!-- 🔐 Dynamic login/logout -->
+        <li id="auth-button-slot"></li>
       </ul>
     </nav>
   </header>
@@ -92,10 +94,20 @@
   </footer>
 
   <!-- Scripts -->
-  <script defer src="js/script.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-  <script>
+
+  <!-- ✅ Firebase Auth -->
+  <script type="module">
+    import { handleAuthUI, redirectIfNotLoggedIn } from "./js/auth.js";
+
+    // 🔒 Ensure only logged in users can access
+    redirectIfNotLoggedIn();
+
+    // 🔘 Show login or logout in navbar
+    handleAuthUI();
+
+    // ⬇ Receipt logic
     const data = JSON.parse(localStorage.getItem("bookingData"));
 
     if (data) {
@@ -109,11 +121,11 @@
       document.querySelector(".thankyou-main").innerHTML = "<h1>⚠️ No Booking Found</h1><p>Please make a booking first.</p>";
     }
 
-    async function downloadPDF() {
+    // ⬇ PDF generation
+    window.downloadPDF = async function () {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
 
-      // Branding
       doc.setFont("helvetica", "bold");
       doc.setTextColor("#007bff");
       doc.setFontSize(20);
@@ -124,55 +136,45 @@
       doc.setFont("helvetica", "normal");
       doc.text("Appointment Confirmation Receipt", 20, 30);
 
-      // Box
       doc.setDrawColor("#cccccc");
       doc.setLineWidth(0.5);
       doc.rect(15, 35, 180, 90);
 
-      let y = 45;
-      const gap = 10;
+      let y = 45, gap = 10;
       doc.setFont("helvetica", "bold");
       doc.text("Booking Details:", 20, y);
       doc.setFont("helvetica", "normal");
 
-      y += gap;
-      doc.text(`Appointment ID: ${data.bookingId}`, 20, y);
-      y += gap;
-      doc.text(`Name: ${data.name}`, 20, y);
-      y += gap;
-      doc.text(`Phone: ${data.phone}`, 20, y);
-      y += gap;
-      doc.text(`Service: ${data.service}`, 20, y);
-      y += gap;
-      doc.text(`Date: ${data.date}`, 20, y);
-      y += gap;
-      doc.text(`Time: ${data.time}`, 20, y);
+      y += gap; doc.text(`Appointment ID: ${data.bookingId}`, 20, y);
+      y += gap; doc.text(`Name: ${data.name}`, 20, y);
+      y += gap; doc.text(`Phone: ${data.phone}`, 20, y);
+      y += gap; doc.text(`Service: ${data.service}`, 20, y);
+      y += gap; doc.text(`Date: ${data.date}`, 20, y);
+      y += gap; doc.text(`Time: ${data.time}`, 20, y);
 
-      // Timestamp
       y += gap + 5;
       doc.setFont("helvetica", "italic");
       doc.setFontSize(10);
       doc.setTextColor("#555");
       doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, y);
 
-      // QR Code for verification
       const qr = new QRious({
-  value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
-  size: 100,
-});
+        value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
+        size: 100,
+      });
       doc.addImage(qr.toDataURL(), 'PNG', 150, 40, 40, 40);
       doc.setFontSize(8);
       doc.text("Scan to verify", 160, 85);
 
-      // Footer
       doc.setFontSize(10);
       doc.setFont("helvetica", "bold");
       doc.setTextColor("#007bff");
       doc.text("Powered by Captain | BookMeNow", 20, 140);
 
       doc.save(`BookMeNow_Receipt_${data.bookingId}.pdf`);
-    }
+    };
 
+    // ⏳ Clear data after 1 min
     setTimeout(() => localStorage.removeItem("bookingData"), 60000);
   </script>
 </body>
