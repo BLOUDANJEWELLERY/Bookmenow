@@ -50,9 +50,9 @@
   </header>
 
   <main class="appointments-main">
-    <h1>All Appointments</h1>
+    <h1>Your Appointments</h1>
     <div id="appointments-container">
-      <p class="no-appointments">Loading appointments...</p>
+      <p class="no-appointments">Loading your appointments...</p>
     </div>
   </main>
 
@@ -94,11 +94,12 @@
         const snapshot = await getDocs(collection(db, "bookings"));
         container.innerHTML = ""; // Clear loading message
 
-        if (snapshot.empty) {
-          container.innerHTML = `<p class="no-appointments">No appointments found in the system.</p>`;
-        } else {
-          snapshot.forEach(doc => {
-            const data = doc.data();
+        let found = false;
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.userId === user.uid) {
+            found = true;
             const card = document.createElement("div");
             card.className = "appointment-card";
             card.innerHTML = `
@@ -110,15 +111,20 @@
               <p><strong>Appointment ID:</strong> ${data.bookingId}</p>
             `;
             container.appendChild(card);
-          });
+          }
+        });
+
+        if (!found) {
+          container.innerHTML = `<p class="no-appointments">You haven’t booked any appointments yet.</p>`;
         }
+
       } catch (err) {
-        console.error("Error loading appointments:", err);
+        console.error("Error fetching appointments:", err);
         container.innerHTML = `<p class="no-appointments">⚠️ Unable to load appointments. Please try again later.</p>`;
       }
     });
 
-    logoutBtn.addEventListener("click", () => {
+    logoutBtn?.addEventListener("click", () => {
       signOut(auth).then(() => window.location.href = "login.html");
     });
   </script>
