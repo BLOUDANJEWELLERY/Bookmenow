@@ -4,8 +4,127 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel – BookMeNow</title>
-  <link rel="stylesheet" href="css/admin.css" />
-  <script type="module" src="js/admin.js" defer></script>
+
+  <style>
+    :root {
+      --bg: #f4f6fa;
+      --card: #ffffff;
+      --accent: #007bff;
+      --text: #222;
+      --shadow: rgba(0, 0, 0, 0.08);
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .admin-header {
+      background: var(--accent);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logout-btn {
+      background: white;
+      color: var(--accent);
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #f0f8ff;
+      transform: scale(1.05);
+    }
+
+    .admin-main {
+      padding: 2rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .dashboard-stats {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--card);
+      padding: 1.5rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px var(--shadow);
+      text-align: center;
+      width: 200px;
+    }
+
+    .stat-card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .stat-card p {
+      font-size: 1.8rem;
+      margin-top: 0.5rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .booking-table-section h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .booking-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border-radius: 8px;
+      box-shadow: 0 2px 6px var(--shadow);
+      overflow: hidden;
+    }
+
+    .booking-table th,
+    .booking-table td {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    .booking-table th {
+      background: #f9f9f9;
+      color: #444;
+    }
+
+    .booking-table tr:hover {
+      background: #f1f1f1;
+    }
+
+    .delete-btn {
+      background: #dc3545;
+      color: white;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background: #c82333;
+    }
+  </style>
 </head>
 <body>
   <header class="admin-header">
@@ -39,5 +158,72 @@
       </table>
     </section>
   </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
+      authDomain: "sampleportfolio-9450c.firebaseapp.com",
+      projectId: "sampleportfolio-9450c",
+      storageBucket: "sampleportfolio-9450c.appspot.com",
+      messagingSenderId: "725347523572",
+      appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const logoutBtn = document.getElementById("admin-logout");
+    logoutBtn.onclick = () => signOut(auth).then(() => location.href = "login.html");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user || user.email !== "admin@bookmenow.com") {
+        alert("Unauthorized access.");
+        location.href = "login.html";
+        return;
+      }
+
+      const snapshot = await getDocs(collection(db, "bookings"));
+      const now = new Date();
+      let upcoming = 0, past = 0;
+
+      const tableBody = document.getElementById("booking-rows");
+      tableBody.innerHTML = "";
+
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const dt = new Date(`${data.date}T${data.time}`);
+        if (dt > now) upcoming++; else past++;
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${data.name}</td>
+          <td>${data.phone}</td>
+          <td>${data.service}</td>
+          <td>${data.date}</td>
+          <td>${data.time}</td>
+          <td><button class="delete-btn" data-id="${docSnap.id}">🗑️ Delete</button></td>
+        `;
+        tableBody.appendChild(row);
+      });
+
+      document.getElementById("total-bookings").textContent = snapshot.size;
+      document.getElementById("upcoming-bookings").textContent = upcoming;
+      document.getElementById("past-bookings").textContent = past;
+
+      document.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.onclick = async () => {
+          if (confirm("Are you sure to delete this booking?")) {
+            await deleteDoc(doc(db, "bookings", btn.dataset.id));
+            location.reload();
+          }
+        };
+      });
+    });
+  </script>
 </body>
 </html>
