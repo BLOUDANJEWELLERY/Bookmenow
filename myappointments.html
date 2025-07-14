@@ -6,16 +6,18 @@
   <title>My Appointments – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
   <style>
     .appointments-main {
-      max-width: 800px;
+      max-width: 900px;
       margin: 4rem auto;
       padding: 1.5rem;
     }
 
     .appointment-card {
       background: var(--card);
-      padding: 1rem 1.5rem;
+      padding: 1.2rem 1.5rem;
       border-radius: 8px;
       box-shadow: 0 2px 8px var(--shadow);
       margin-bottom: 1.5rem;
@@ -24,51 +26,67 @@
     }
 
     .appointment-card h3 {
-      margin-bottom: 0.5rem;
       color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .actions {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn-download, .btn-cancel, .btn-delete {
+      padding: 6px 14px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-download {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-cancel {
+      background: #ffc107;
+      color: #333;
+    }
+
+    .btn-delete {
+      background: #dc3545;
+      color: white;
+    }
+
+    .section-toggle {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .section-toggle button {
+      margin: 0 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+    }
+
+    .section-toggle button.active {
+      background: #333;
     }
 
     .no-appointments {
       text-align: center;
-      margin-top: 3rem;
-      font-size: 1.1rem;
+      margin-top: 2rem;
+      font-size: 1rem;
       color: var(--text);
-    }
-
-    .toggle-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .toggle-buttons button {
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 5px;
-      background: var(--accent);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .toggle-buttons button.active {
-      background: #333;
-    }
-
-    .btn-action {
-      margin-top: 1rem;
-      background: crimson;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-    }
-
-    .btn-action:hover {
-      background: darkred;
     }
   </style>
 </head>
@@ -92,22 +110,19 @@
   <main class="appointments-main">
     <h1>Your Appointments</h1>
 
-    <div class="toggle-buttons">
-      <button id="show-upcoming" class="active">Upcoming</button>
-      <button id="show-past">Past</button>
+    <div class="section-toggle">
+      <button id="upcoming-btn" class="active">Upcoming</button>
+      <button id="past-btn">Past</button>
     </div>
 
-    <div id="appointments-container">
-      <p class="no-appointments">Loading appointments...</p>
-    </div>
+    <div id="appointments-container"></div>
   </main>
 
-  <!-- FOOTER -->
   <footer>
     <p>© 2025 BookMeNow | Managed by Captain</p>
   </footer>
 
-  <!-- Firebase Logic -->
+  <!-- FIREBASE + LOGIC -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
@@ -126,116 +141,141 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const logoutBtn = document.getElementById("logout-btn");
     const container = document.getElementById("appointments-container");
-    const showUpcomingBtn = document.getElementById("show-upcoming");
-    const showPastBtn = document.getElementById("show-past");
+    const logoutBtn = document.getElementById("logout-btn");
+    const upcomingBtn = document.getElementById("upcoming-btn");
+    const pastBtn = document.getElementById("past-btn");
 
-    let upcomingAppointments = [];
-    let pastAppointments = [];
+    logoutBtn.addEventListener("click", () => signOut(auth).then(() => window.location.href = "login.html"));
 
-    let currentUserId = "";
+    upcomingBtn.onclick = () => showSection("upcoming");
+    pastBtn.onclick = () => showSection("past");
+
+    let allAppointments = [];
 
     onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = "login.html";
-        return;
-      }
-
-      currentUserId = user.uid;
+      if (!user) return window.location.href = "login.html";
       logoutBtn.style.display = "inline-block";
 
-      try {
-        const snapshot = await getDocs(collection(db, "bookings"));
-        const now = new Date();
-        const all = [];
+      const snapshot = await getDocs(collection(db, "bookings"));
+      const now = new Date();
 
-        snapshot.forEach(docSnap => {
-          const data = docSnap.data();
-          if (data.userId === currentUserId) {
-            all.push({ ...data, _docId: docSnap.id });
-          }
+      allAppointments = snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter(app => app.userId === user.uid)
+        .map(app => {
+          app.datetime = new Date(`${app.date}T${app.time}`);
+          return app;
         });
 
-        // Split upcoming/past
-        upcomingAppointments = all
-          .filter(a => new Date(a.date) >= now)
-          .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-        pastAppointments = all
-          .filter(a => new Date(a.date) < now)
-          .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        renderAppointments(upcomingAppointments, "upcoming");
-      } catch (err) {
-        console.error("Error fetching:", err);
-        container.innerHTML = `<p class="no-appointments">⚠️ Unable to load appointments.</p>`;
-      }
+      showSection("upcoming");
     });
 
-    function renderAppointments(list, mode) {
+    function showSection(type) {
+      upcomingBtn.classList.toggle("active", type === "upcoming");
+      pastBtn.classList.toggle("active", type === "past");
+
+      const now = new Date();
+      const filtered = allAppointments
+        .filter(a => type === "upcoming" ? a.datetime >= now : a.datetime < now)
+        .sort((a, b) => type === "upcoming"
+          ? a.datetime - b.datetime
+          : b.datetime - a.datetime
+        );
+
       container.innerHTML = "";
-      if (list.length === 0) {
-        container.innerHTML = `<p class="no-appointments">No appointments to show.</p>`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="no-appointments">No ${type} appointments.</p>`;
         return;
       }
 
-      list.forEach(data => {
+      for (const appt of filtered) {
         const card = document.createElement("div");
         card.className = "appointment-card";
         card.innerHTML = `
-          <h3>${data.service}</h3>
-          <p><strong>Date:</strong> ${data.date}</p>
-          <p><strong>Time:</strong> ${data.time}</p>
-          <p><strong>Name:</strong> ${data.name}</p>
-          <p><strong>Phone:</strong> ${data.phone}</p>
-          <p><strong>Appointment ID:</strong> ${data.bookingId}</p>
+          <h3>${appt.service}</h3>
+          <p><strong>Date:</strong> ${appt.date}</p>
+          <p><strong>Time:</strong> ${appt.time}</p>
+          <p><strong>Name:</strong> ${appt.name}</p>
+          <p><strong>Phone:</strong> ${appt.phone}</p>
+          <p><strong>Appointment ID:</strong> ${appt.bookingId}</p>
+          <div class="actions">
+            <button class="btn-download">📄 Download</button>
+            ${type === "upcoming"
+              ? `<button class="btn-cancel">❌ Cancel</button>`
+              : `<button class="btn-delete">🗑️ Delete</button>`
+            }
+          </div>
         `;
-
-        const btn = document.createElement("button");
-        btn.className = "btn-action";
-
-        if (mode === "upcoming") {
-          btn.textContent = "Cancel Appointment";
-          btn.onclick = async () => {
-            if (confirm("Are you sure you want to cancel this appointment?")) {
-              await deleteDoc(doc(db, "bookings", data._docId));
-              upcomingAppointments = upcomingAppointments.filter(a => a._docId !== data._docId);
-              renderAppointments(upcomingAppointments, "upcoming");
-            }
-          };
+        // Event listeners
+        card.querySelector(".btn-download").onclick = () => downloadPDF(appt);
+        if (type === "upcoming") {
+          card.querySelector(".btn-cancel").onclick = () => cancel(appt.id);
         } else {
-          btn.textContent = "Delete Record";
-          btn.onclick = async () => {
-            if (confirm("Are you sure you want to delete this past appointment?")) {
-              await deleteDoc(doc(db, "bookings", data._docId));
-              pastAppointments = pastAppointments.filter(a => a._docId !== data._docId);
-              renderAppointments(pastAppointments, "past");
-            }
-          };
+          card.querySelector(".btn-delete").onclick = () => cancel(appt.id);
         }
-
-        card.appendChild(btn);
         container.appendChild(card);
-      });
+      }
     }
 
-    // Toggle view
-    showUpcomingBtn.addEventListener("click", () => {
-      renderAppointments(upcomingAppointments, "upcoming");
-      showUpcomingBtn.classList.add("active");
-      showPastBtn.classList.remove("active");
-    });
+    async function cancel(docId) {
+      if (!confirm("Are you sure?")) return;
+      await deleteDoc(doc(db, "bookings", docId));
+      location.reload();
+    }
 
-    showPastBtn.addEventListener("click", () => {
-      renderAppointments(pastAppointments, "past");
-      showUpcomingBtn.classList.remove("active");
-      showPastBtn.classList.add("active");
-    });
+    async function downloadPDF(data) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
 
-    logoutBtn?.addEventListener("click", () => {
-      signOut(auth).then(() => window.location.href = "login.html");
-    });
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor("#007bff");
+      doc.setFontSize(20);
+      doc.text("BookMeNow", 20, 20);
+
+      doc.setFontSize(12);
+      doc.setTextColor("#000");
+      doc.setFont("helvetica", "normal");
+      doc.text("Appointment Confirmation Receipt", 20, 30);
+
+      doc.setDrawColor("#cccccc");
+      doc.setLineWidth(0.5);
+      doc.rect(15, 35, 180, 90);
+
+      let y = 45, gap = 10;
+      doc.setFont("helvetica", "bold");
+      doc.text("Booking Details:", 20, y);
+      doc.setFont("helvetica", "normal");
+
+      y += gap; doc.text(`Appointment ID: ${data.bookingId}`, 20, y);
+      y += gap; doc.text(`Name: ${data.name}`, 20, y);
+      y += gap; doc.text(`Phone: ${data.phone}`, 20, y);
+      y += gap; doc.text(`Service: ${data.service}`, 20, y);
+      y += gap; doc.text(`Date: ${data.date}`, 20, y);
+      y += gap; doc.text(`Time: ${data.time}`, 20, y);
+      y += gap + 5;
+
+      doc.setFont("helvetica", "italic");
+      doc.setFontSize(10);
+      doc.setTextColor("#555");
+      doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, y);
+
+      const qr = new QRious({
+        value: `https://bookmenow.com/verify?bookingId=${data.bookingId}`,
+        size: 100,
+      });
+      doc.addImage(qr.toDataURL(), 'PNG', 150, 40, 40, 40);
+      doc.setFontSize(8);
+      doc.text("Scan to verify", 160, 85);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor("#007bff");
+      doc.text("Powered by Captain | BookMeNow", 20, 140);
+
+      doc.save(`BookMeNow_Receipt_${data.bookingId}.pdf`);
+    }
   </script>
 </body>
 </html>
