@@ -52,6 +52,39 @@
       margin: 0.6rem 0;
     }
 
+    .print-btn {
+      margin-top: 2rem;
+      padding: 0.7rem 1.5rem;
+      font-weight: bold;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .print-btn:hover {
+      background-color: #0056b3;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #verify-container, #verify-container * {
+        visibility: visible;
+      }
+      #verify-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
+      .print-btn {
+        display: none;
+      }
+    }
+
     footer {
       margin-top: 4rem;
       text-align: center;
@@ -97,24 +130,18 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
     const container = document.getElementById("verify-container");
-
     const queryParams = new URLSearchParams(window.location.search);
     const bookingId = queryParams.get("bookingId");
 
     async function verifyAppointment() {
-      if (!bookingId) {
-        showInvalid("No booking ID provided in the URL.");
-        return;
-      }
+      if (!bookingId) return showInvalid("No booking ID provided in the URL.");
 
       const snapshot = await getDocs(collection(db, "bookings"));
       const match = snapshot.docs.map(doc => doc.data()).find(b => b.bookingId === bookingId);
 
       if (!match) {
-        showInvalid(`No appointment found with ID "${bookingId}".`);
-        return;
+        return showInvalid(`No appointment found with ID "${bookingId}".`);
       }
 
       container.innerHTML = `
@@ -128,14 +155,15 @@
           <p><strong>Date:</strong> ${match.date}</p>
           <p><strong>Time:</strong> ${match.time}</p>
         </div>
+        <button class="print-btn" onclick="window.print()">🖨️ Print Receipt</button>
       `;
     }
 
-    function showInvalid(msg) {
+    function showInvalid(message) {
       container.innerHTML = `
         <h1>❌ Invalid Appointment</h1>
         <div class="badge invalid">Verification Failed</div>
-        <p>${msg}</p>
+        <p>${message}</p>
         <p>If you believe this is an error, please contact support.</p>
       `;
     }
