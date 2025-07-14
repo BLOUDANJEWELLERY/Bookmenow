@@ -2,42 +2,203 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Book an Appointment – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
-  <script defer src="js/script.js"></script>
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fafb;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background: #007bff;
+      color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 8px rgb(0 123 255 / 0.3);
+    }
+    nav.navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    nav .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+    /* Main centered container */
+    main.booking-main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1rem;
+      background: #f9fafb;
+    }
+    section.booking-form-section {
+      background: white;
+      padding: 2.5rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgb(0 0 0 / 0.08);
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      transition: box-shadow 0.3s ease;
+    }
+    section.booking-form-section:hover {
+      box-shadow: 0 12px 28px rgb(0 0 0 / 0.15);
+    }
+    h1 {
+      margin-bottom: 0.4rem;
+      font-weight: 700;
+      color: #007bff;
+      font-size: 2rem;
+    }
+    p {
+      margin-top: 0;
+      margin-bottom: 1.8rem;
+      font-weight: 500;
+      color: #555;
+      font-size: 1rem;
+    }
+    form.booking-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      text-align: left;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: #444;
+      user-select: none;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.8px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      outline-offset: 2px;
+      outline-color: transparent;
+      box-shadow: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #007bff;
+      outline-color: #007bff;
+      box-shadow: 0 0 6px rgb(0 123 255 / 0.5);
+    }
+    /* Button style */
+    button.btn {
+      background-color: #007bff;
+      color: white;
+      font-weight: 700;
+      padding: 12px 0;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
+    button.btn:disabled {
+      background-color: #a3c1f9;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    button.btn:hover:not(:disabled) {
+      background-color: #0056b3;
+      box-shadow: 0 0 10px rgb(0 86 179 / 0.6);
+    }
+    /* Loader */
+    .loader {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 0.6s linear infinite;
+      display: inline-block;
+      margin-left: 12px;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    /* Footer */
+    footer {
+      background: #f1f3f5;
+      color: #666;
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.9rem;
+      user-select: none;
+      box-shadow: inset 0 1px 0 #ddd;
+    }
+    /* Responsive */
+    @media (max-width: 520px) {
+      section.booking-form-section {
+        padding: 1.8rem 1.5rem;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Header -->
   <header>
-    <nav class="navbar">
-      <div class="logo">BookMeNow</div>
-      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-      <ul class="nav-links" id="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="myappointments.html">My Appointments</a></li>
-        <li><a href="booking.html" class="active">Booking</a></li>
-        <li><button id="theme-toggle">🌙</button></li>
-        <li><button id="logout-btn" class="logout-btn" style="display: none;">Logout</button></li>
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <div class="logo" aria-label="BookMeNow logo">BookMeNow</div>
+      <div class="hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+      <ul class="nav-links" id="nav-links" role="menubar">
+        <li role="none"><a href="index.html" role="menuitem">Home</a></li>
+        <li role="none"><a href="myappointments.html" role="menuitem">My Appointments</a></li>
+        <li role="none"><a href="booking.html" class="active" role="menuitem" aria-current="page">Booking</a></li>
+        <li role="none"><button id="theme-toggle" aria-label="Toggle dark mode">🌙</button></li>
+        <li role="none"><button id="logout-btn" class="logout-btn" style="display: none;">Logout</button></li>
       </ul>
     </nav>
   </header>
 
   <!-- Main -->
   <main class="booking-main">
-    <section class="booking-form-section">
-      <h1>Book an Appointment</h1>
+    <section class="booking-form-section" aria-labelledby="booking-heading">
+      <h1 id="booking-heading">Book an Appointment</h1>
       <p>Fill out the form below to reserve your spot.</p>
 
-      <form class="booking-form" id="booking-form">
+      <form class="booking-form" id="booking-form" novalidate>
         <div class="form-group">
           <label for="full-name">Full Name</label>
-          <input type="text" id="full-name" name="full-name" required />
+          <input type="text" id="full-name" name="full-name" required autocomplete="name" />
         </div>
 
         <div class="form-group">
           <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" required />
+          <input type="tel" id="phone" name="phone" required autocomplete="tel" />
         </div>
 
         <div class="form-group">
@@ -55,7 +216,7 @@
 
         <div class="form-group">
           <label for="date">Date</label>
-          <input type="date" id="date" name="date" required min="" />
+          <input type="date" id="date" name="date" required />
         </div>
 
         <div class="form-group">
@@ -65,7 +226,7 @@
           </select>
         </div>
 
-        <button type="submit" class="btn">Confirm Booking</button>
+        <button type="submit" class="btn" id="booking-btn">Confirm Booking</button>
       </form>
     </section>
   </main>
@@ -81,7 +242,6 @@
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
       authDomain: "sampleportfolio-9450c.firebaseapp.com",
@@ -98,6 +258,7 @@
     const logoutBtn = document.getElementById("logout-btn");
     const dateInput = document.getElementById("date");
     const timeSelect = document.getElementById("time");
+    const bookingBtn = document.getElementById("booking-btn");
 
     // Auth check
     onAuthStateChanged(auth, (user) => {
@@ -174,6 +335,9 @@
     // Booking form submit
     document.getElementById("booking-form").addEventListener("submit", async function (e) {
       e.preventDefault();
+      bookingBtn.disabled = true;
+      bookingBtn.innerHTML = 'Booking <span class="loader"></span>';
+
       const name = document.getElementById("full-name").value.trim();
       const phone = document.getElementById("phone").value.trim();
       const service = document.getElementById("service").value;
@@ -194,6 +358,8 @@
       } catch (err) {
         console.error("Firestore Error:", err);
         alert("Failed to save booking. Please try again.");
+        bookingBtn.disabled = false;
+        bookingBtn.innerHTML = 'Confirm Booking';
       }
     });
   </script>
