@@ -20,6 +20,7 @@
       box-shadow: 0 2px 8px var(--shadow);
       margin-bottom: 1.5rem;
       line-height: 1.6;
+      position: relative;
     }
 
     .appointment-card h3 {
@@ -53,6 +54,21 @@
 
     .toggle-buttons button.active {
       background: #333;
+    }
+
+    .btn-action {
+      margin-top: 1rem;
+      background: crimson;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    .btn-action:hover {
+      background: darkred;
     }
   </style>
 </head>
@@ -95,7 +111,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
@@ -118,12 +134,15 @@
     let upcomingAppointments = [];
     let pastAppointments = [];
 
+    let currentUserId = "";
+
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
         window.location.href = "login.html";
         return;
       }
 
+      currentUserId = user.uid;
       logoutBtn.style.display = "inline-block";
 
       try {
@@ -131,10 +150,10 @@
         const now = new Date();
         const all = [];
 
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          if (data.userId === user.uid) {
-            all.push(data);
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          if (data.userId === currentUserId) {
+            all.push({ ...data, _docId: docSnap.id });
           }
         });
 
@@ -145,16 +164,16 @@
 
         pastAppointments = all
           .filter(a => new Date(a.date) < now)
-          .sort((a, b) => new Date(b.date) - new Date(a.date)); // Most recent past first
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        renderAppointments(upcomingAppointments);
+        renderAppointments(upcomingAppointments, "upcoming");
       } catch (err) {
         console.error("Error fetching:", err);
         container.innerHTML = `<p class="no-appointments">⚠️ Unable to load appointments.</p>`;
       }
     });
 
-    function renderAppointments(list) {
+    function renderAppointments(list, mode) {
       container.innerHTML = "";
       if (list.length === 0) {
         container.innerHTML = `<p class="no-appointments">No appointments to show.</p>`;
@@ -172,24 +191,48 @@
           <p><strong>Phone:</strong> ${data.phone}</p>
           <p><strong>Appointment ID:</strong> ${data.bookingId}</p>
         `;
+
+        const btn = document.createElement("button");
+        btn.className = "btn-action";
+
+        if (mode === "upcoming") {
+          btn.textContent = "Cancel Appointment";
+          btn.onclick = async () => {
+            if (confirm("Are you sure you want to cancel this appointment?")) {
+              await deleteDoc(doc(db, "bookings", data._docId));
+              upcomingAppointments = upcomingAppointments.filter(a => a._docId !== data._docId);
+              renderAppointments(upcomingAppointments, "upcoming");
+            }
+          };
+        } else {
+          btn.textContent = "Delete Record";
+          btn.onclick = async () => {
+            if (confirm("Are you sure you want to delete this past appointment?")) {
+              await deleteDoc(doc(db, "bookings", data._docId));
+              pastAppointments = pastAppointments.filter(a => a._docId !== data._docId);
+              renderAppointments(pastAppointments, "past");
+            }
+          };
+        }
+
+        card.appendChild(btn);
         container.appendChild(card);
       });
     }
 
     // Toggle view
     showUpcomingBtn.addEventListener("click", () => {
-      renderAppointments(upcomingAppointments);
+      renderAppointments(upcomingAppointments, "upcoming");
       showUpcomingBtn.classList.add("active");
       showPastBtn.classList.remove("active");
     });
 
     showPastBtn.addEventListener("click", () => {
-      renderAppointments(pastAppointments);
+      renderAppointments(pastAppointments, "past");
       showUpcomingBtn.classList.remove("active");
       showPastBtn.classList.add("active");
     });
 
-    // Logout
     logoutBtn?.addEventListener("click", () => {
       signOut(auth).then(() => window.location.href = "login.html");
     });
