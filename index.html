@@ -88,7 +88,7 @@
         // Show Logout button
         authSlot.innerHTML = `<button id="logout-btn" class="logout-btn">Logout</button>`;
         document.getElementById("logout-btn").addEventListener("click", () => {
-          signOut(auth).then(() => location.href = "login.html");
+          signOut(auth).then(() => location.href = "index.html");
         });
       } else {
         // Show Login button
