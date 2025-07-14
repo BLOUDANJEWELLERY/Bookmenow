@@ -15,6 +15,44 @@
       padding: 1.5rem;
     }
 
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      color: var(--text);
+      margin-bottom: 2.5rem;
+    }
+
+    .section-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-toggle button {
+      padding: 0.7rem 1.6rem;
+      border: none;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f0f0f0;
+      color: #333;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .section-toggle button:hover {
+      background: #e0e0e0;
+    }
+
+    .section-toggle button.active {
+      background: var(--accent, #007bff);
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+
     .appointment-card {
       background: var(--card);
       padding: 1.2rem 1.5rem;
@@ -46,29 +84,19 @@
       font-weight: bold;
     }
 
-    .btn-download { background: #28a745; color: white; }
-    .btn-cancel { background: #ffc107; color: #333; }
-    .btn-delete { background: #dc3545; color: white; }
-
-    .section-toggle {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 2rem;
-    }
-
-    .section-toggle button {
-      margin: 0 0.5rem;
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      background: var(--accent);
+    .btn-download {
+      background: #28a745;
       color: white;
     }
 
-    .section-toggle button.active {
-      background: #333;
+    .btn-cancel {
+      background: #ffc107;
+      color: #333;
+    }
+
+    .btn-delete {
+      background: #dc3545;
+      color: white;
     }
 
     .no-appointments {
@@ -78,29 +106,18 @@
       color: var(--text);
     }
 
-    /* Loading Animation */
-    #loading {
+    .loading-indicator {
       text-align: center;
-      font-weight: bold;
-      color: var(--accent, #007bff);
-      margin-top: 2rem;
       font-size: 1.1rem;
+      margin-top: 2rem;
+      color: var(--text);
+      animation: pulse 1.5s infinite;
     }
 
-    .spinner {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid transparent;
-      border-top: 3px solid #007bff;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      vertical-align: middle;
-      margin-left: 8px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    @keyframes pulse {
+      0% { opacity: 0.5; }
+      50% { opacity: 1; }
+      100% { opacity: 0.5; }
     }
   </style>
 </head>
@@ -129,10 +146,8 @@
       <button id="past-btn">Past</button>
     </div>
 
-    <!-- Loading Message -->
-    <div id="loading">🔄 Loading your appointments... <span class="spinner"></span></div>
-
-    <div id="appointments-container"></div>
+    <div id="loading-indicator" class="loading-indicator">Loading your appointments...</div>
+    <div id="appointments-container" style="display: none;"></div>
   </main>
 
   <footer>
@@ -159,15 +174,12 @@
     const db = getFirestore(app);
 
     const container = document.getElementById("appointments-container");
+    const loadingIndicator = document.getElementById("loading-indicator");
     const logoutBtn = document.getElementById("logout-btn");
     const upcomingBtn = document.getElementById("upcoming-btn");
     const pastBtn = document.getElementById("past-btn");
-    const loading = document.getElementById("loading");
 
-    logoutBtn.addEventListener("click", () =>
-      signOut(auth).then(() => window.location.href = "login.html")
-    );
-
+    logoutBtn.addEventListener("click", () => signOut(auth).then(() => window.location.href = "login.html"));
     upcomingBtn.onclick = () => showSection("upcoming");
     pastBtn.onclick = () => showSection("past");
 
@@ -176,9 +188,6 @@
     onAuthStateChanged(auth, async (user) => {
       if (!user) return window.location.href = "login.html";
       logoutBtn.style.display = "inline-block";
-
-      loading.style.display = "block";
-      container.innerHTML = "";
 
       const snapshot = await getDocs(collection(db, "bookings"));
       const now = new Date();
@@ -191,7 +200,9 @@
           return app;
         });
 
-      loading.style.display = "none";
+      loadingIndicator.style.display = "none";
+      container.style.display = "block";
+
       showSection("upcoming");
     });
 
@@ -289,7 +300,6 @@
         value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
         size: 100,
       });
-
       doc.addImage(qr.toDataURL(), 'PNG', 150, 40, 40, 40);
       doc.setFontSize(8);
       doc.text("Scan to verify", 160, 85);
