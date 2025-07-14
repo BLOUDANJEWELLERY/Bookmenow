@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel – BookMeNow</title>
+  <link rel="stylesheet" href="css/admin.css" />
+  <script type="module" src="js/admin.js" defer></script>
+</head>
+<body>
+  <header class="admin-header">
+    <h1>📊 BookMeNow Admin Panel</h1>
+    <div id="admin-logout" class="logout-btn">Logout</div>
+  </header>
+
+  <main class="admin-main">
+    <section class="dashboard-stats">
+      <div class="stat-card"><h3>Total Bookings</h3><p id="total-bookings">--</p></div>
+      <div class="stat-card"><h3>Upcoming</h3><p id="upcoming-bookings">--</p></div>
+      <div class="stat-card"><h3>Past</h3><p id="past-bookings">--</p></div>
+    </section>
+
+    <section class="booking-table-section">
+      <h2>📅 All Bookings</h2>
+      <table class="booking-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="booking-rows">
+          <!-- Filled by JS -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
