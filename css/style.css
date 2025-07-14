@@ -80,25 +80,33 @@ body {
   background-color: rgba(0, 123, 255, 0.1);
 }
 
-/* 🔴 LOGOUT BUTTON — BOLD, RED, DISTINCT & BEAUTIFUL */
+/* 🚪 LOGOUT BUTTON — SLEEK, BOLD & MODERN */
 .logout-btn {
-  background: #e63946; /* Vivid red */
-  color: #e63946;
-  padding: 0.5rem 1.4rem;
+  background: #e63946;
+  color: white;
+  padding: 0.55rem 1.6rem;
   border: none;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 1.05rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 8px 8px rgba(230, 57, 70, 0.4);
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(230, 57, 70, 0.35);
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logout-btn::before {
+  content: "🚪";
+  font-size: 1.1rem;
 }
 
 .logout-btn:hover {
-  background: #c82333; /* Darker red on hover */
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(200, 35, 51, 0.6);
+  background: #c82333;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 14px rgba(200, 35, 51, 0.5);
 }
 
 /* HAMBURGER MENU ICON */
