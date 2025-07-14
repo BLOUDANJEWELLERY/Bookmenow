@@ -80,42 +80,77 @@ body {
   background-color: rgba(0, 123, 255, 0.1);
 }
 
-/* 🚪 Modern Logout Button — Elegant, Premium Feel */
 .logout-btn {
-  background: linear-gradient(135deg, #e63946, #d62839);
-  color: #fff;
-  padding: 0.65rem 1.8rem;
-  border: none;
-  border-radius: 12px;
-  font-weight: 600;
+  padding: 0.7rem 2rem;
   font-size: 1.05rem;
-  font-family: 'Segoe UI', sans-serif;
+  font-weight: 600;
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  background: rgba(230, 57, 70, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 2px 6px rgba(230, 57, 70, 0.2),
+    0 8px 20px rgba(230, 57, 70, 0.4),
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.08);
   cursor: pointer;
-  box-shadow: 0 8px 18px rgba(230, 57, 70, 0.35);
-  transition: all 0.25s ease-in-out;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-family: 'Segoe UI', sans-serif;
 }
 
+/* 🔥 Glowing animated border ring on hover */
 .logout-btn::before {
-  content: "⇦";
-  font-size: 1.2rem;
-  transition: transform 0.3s ease;
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(135deg, #ff4d6d, #ff6b81, #ff4d6d);
+  background-size: 300% 300%;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: glow-ring 2s linear infinite;
+}
+
+.logout-btn:hover::before {
+  opacity: 1;
+}
+
+.logout-btn span {
+  z-index: 1;
 }
 
 .logout-btn:hover {
-  background: linear-gradient(135deg, #c82333, #a31c2e);
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(200, 35, 51, 0.45);
+  box-shadow:
+    0 6px 12px rgba(230, 57, 70, 0.3),
+    0 12px 28px rgba(230, 57, 70, 0.45);
 }
 
 .logout-btn:active {
   transform: scale(0.98);
+  box-shadow: 0 3px 8px rgba(230, 57, 70, 0.2);
 }
 
+@keyframes glow-ring {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 /* HAMBURGER MENU ICON */
 .hamburger {
   display: none;
