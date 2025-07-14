@@ -4,226 +4,135 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel – BookMeNow</title>
-
+  <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/script.js"></script>
+  <script type="module" src="js/admin.js"></script>
   <style>
-    :root {
-      --bg: #f4f6fa;
-      --card: #ffffff;
-      --accent: #007bff;
-      --text: #222;
-      --shadow: rgba(0, 0, 0, 0.08);
-    }
-
-    body {
-      font-family: "Segoe UI", sans-serif;
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    .admin-header {
-      background: var(--accent);
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logout-btn {
-      background: white;
-      color: var(--accent);
-      padding: 0.5rem 1rem;
-      font-weight: bold;
-      border-radius: 6px;
-      box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    .logout-btn:hover {
-      background: #f0f8ff;
-      transform: scale(1.05);
-    }
-
     .admin-main {
+      max-width: 1000px;
+      margin: 4rem auto;
       padding: 2rem;
-      max-width: 1100px;
-      margin: auto;
     }
 
-    .dashboard-stats {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .stat-card {
-      background: var(--card);
-      padding: 1.5rem 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px var(--shadow);
+    h1 {
       text-align: center;
-      width: 200px;
+      font-size: 2.3rem;
+      color: var(--text);
+      margin-bottom: 2.5rem;
     }
 
-    .stat-card h3 {
-      margin: 0;
-      font-size: 1.1rem;
-      color: #555;
+    .promote-box {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px var(--shadow);
+      margin-bottom: 3rem;
     }
 
-    .stat-card p {
-      font-size: 1.8rem;
-      margin-top: 0.5rem;
-      font-weight: bold;
+    .promote-box h2 {
+      margin-bottom: 1rem;
       color: var(--accent);
     }
 
-    .booking-table-section h2 {
-      text-align: center;
+    .promote-box input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
       margin-bottom: 1rem;
     }
 
-    .booking-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--card);
-      border-radius: 8px;
-      box-shadow: 0 2px 6px var(--shadow);
-      overflow: hidden;
-    }
-
-    .booking-table th,
-    .booking-table td {
-      padding: 1rem;
-      border-bottom: 1px solid #eee;
-      text-align: left;
-    }
-
-    .booking-table th {
-      background: #f9f9f9;
-      color: #444;
-    }
-
-    .booking-table tr:hover {
-      background: #f1f1f1;
-    }
-
-    .delete-btn {
-      background: #dc3545;
+    .promote-box button {
+      padding: 0.7rem 1.4rem;
+      font-size: 1rem;
+      background: var(--accent, #007bff);
       color: white;
-      padding: 6px 10px;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
+      transition: 0.3s ease;
+      font-weight: bold;
     }
 
-    .delete-btn:hover {
-      background: #c82333;
+    .promote-box button:hover {
+      background: #0056b3;
+    }
+
+    .status-message {
+      margin-top: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .dashboard {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .dashboard h2 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .booking-entry {
+      border-bottom: 1px solid #ccc;
+      padding: 1rem 0;
+    }
+
+    .booking-entry:last-child {
+      border-bottom: none;
+    }
+
+    .booking-entry p {
+      margin: 0.2rem 0;
     }
   </style>
 </head>
 <body>
-  <header class="admin-header">
-    <h1>📊 BookMeNow Admin Panel</h1>
-    <div id="admin-logout" class="logout-btn">Logout</div>
+  <!-- HEADER -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">BookMeNow</div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="myappointments.html">My Appointments</a></li>
+        <li><a href="booking.html">Book</a></li>
+        <li><a href="admin.html" class="active">Admin</a></li>
+        <li><button id="theme-toggle">🌙</button></li>
+        <li id="auth-button-slot"></li>
+      </ul>
+    </nav>
   </header>
 
+  <!-- MAIN -->
   <main class="admin-main">
-    <section class="dashboard-stats">
-      <div class="stat-card"><h3>Total Bookings</h3><p id="total-bookings">--</p></div>
-      <div class="stat-card"><h3>Upcoming</h3><p id="upcoming-bookings">--</p></div>
-      <div class="stat-card"><h3>Past</h3><p id="past-bookings">--</p></div>
+    <h1>Admin Panel</h1>
+
+    <section class="promote-box">
+      <h2>Promote User to Admin</h2>
+      <input type="email" id="promote-email" placeholder="Enter user email" />
+      <button id="promote-btn">Promote to Admin</button>
+      <div class="status-message" id="status-msg"></div>
     </section>
 
-    <section class="booking-table-section">
-      <h2>📅 All Bookings</h2>
-      <table class="booking-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Service</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="booking-rows">
-          <!-- Filled by JS -->
-        </tbody>
-      </table>
+    <section class="dashboard">
+      <h2>All Bookings</h2>
+      <div id="bookings-container">Loading...</div>
     </section>
   </main>
 
+  <footer>
+    <p>© 2025 BookMeNow | Admin powered by Captain</p>
+  </footer>
+
+  <!-- Auth.js for login/logout logic -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
-      authDomain: "sampleportfolio-9450c.firebaseapp.com",
-      projectId: "sampleportfolio-9450c",
-      storageBucket: "sampleportfolio-9450c.appspot.com",
-      messagingSenderId: "725347523572",
-      appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    const logoutBtn = document.getElementById("admin-logout");
-    logoutBtn.onclick = () => signOut(auth).then(() => location.href = "login.html");
-
-    onAuthStateChanged(auth, async (user) => {
-      if (!user || user.email !== "admin@bookmenow.com") {
-        alert("Unauthorized access.");
-        location.href = "login.html";
-        return;
-      }
-
-      const snapshot = await getDocs(collection(db, "bookings"));
-      const now = new Date();
-      let upcoming = 0, past = 0;
-
-      const tableBody = document.getElementById("booking-rows");
-      tableBody.innerHTML = "";
-
-      snapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        const dt = new Date(`${data.date}T${data.time}`);
-        if (dt > now) upcoming++; else past++;
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${data.name}</td>
-          <td>${data.phone}</td>
-          <td>${data.service}</td>
-          <td>${data.date}</td>
-          <td>${data.time}</td>
-          <td><button class="delete-btn" data-id="${docSnap.id}">🗑️ Delete</button></td>
-        `;
-        tableBody.appendChild(row);
-      });
-
-      document.getElementById("total-bookings").textContent = snapshot.size;
-      document.getElementById("upcoming-bookings").textContent = upcoming;
-      document.getElementById("past-bookings").textContent = past;
-
-      document.querySelectorAll(".delete-btn").forEach(btn => {
-        btn.onclick = async () => {
-          if (confirm("Are you sure to delete this booking?")) {
-            await deleteDoc(doc(db, "bookings", btn.dataset.id));
-            location.reload();
-          }
-        };
-      });
-    });
+    import { handleAuthUI } from './js/auth.js';
+    handleAuthUI();
   </script>
 </body>
 </html>
