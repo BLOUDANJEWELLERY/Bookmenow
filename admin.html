@@ -3,26 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Dashboard – BookMeNow</title>
+  <title>Admin Panel – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/script.js"></script>
   <style>
     body {
-      font-family: "Segoe UI", sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       background: var(--bg);
       color: var(--text);
+      margin: 0;
     }
 
-    .admin-main {
-      max-width: 960px;
+    main {
+      max-width: 1000px;
       margin: 4rem auto;
       padding: 1rem;
     }
 
     h1 {
       text-align: center;
-      color: var(--accent);
+      font-size: 2.2rem;
       margin-bottom: 2rem;
+      color: var(--accent);
     }
 
     .filters {
@@ -34,36 +36,58 @@
     }
 
     .filters select {
-      padding: 0.6rem 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-weight: 500;
+      padding: 0.6rem;
       font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
 
     .booking-card {
       background: var(--card);
       border-radius: 10px;
-      padding: 1.2rem 1.4rem;
-      box-shadow: 0 4px 10px var(--shadow);
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transition: background 0.3s ease, opacity 0.3s ease;
+    }
+
+    .booking-card.done {
+      background: #f8f9fa;
+      opacity: 0.65;
     }
 
     .booking-card h3 {
-      margin-bottom: 0.5rem;
+      margin: 0;
       color: var(--accent);
     }
 
     .booking-card p {
-      margin: 0.2rem 0;
+      margin: 0.3rem 0;
+    }
+
+    .booking-card .actions {
+      margin-top: 1rem;
+    }
+
+    .mark-done-btn {
+      background: #28a745;
+      border: none;
+      padding: 0.5rem 1rem;
+      color: white;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .mark-done-btn:hover {
+      background: #218838;
     }
 
     .no-bookings {
       text-align: center;
-      margin-top: 2rem;
       font-size: 1.1rem;
-      color: #888;
+      margin-top: 2rem;
     }
   </style>
 </head>
@@ -71,57 +95,53 @@
   <!-- HEADER -->
   <header>
     <nav class="navbar">
-      <div class="logo">BookMeNow</div>
-      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      <div class="logo">BookMeNow Admin</div>
       <ul class="nav-links" id="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="myappointments.html">My Appointments</a></li>
         <li><a href="booking.html">Book Again</a></li>
         <li><button id="theme-toggle">🌙</button></li>
-        <li><button id="logout-btn" class="logout-btn" style="display: none;">Logout</button></li>
+        <li><div id="auth-button-slot"></div></li>
       </ul>
     </nav>
   </header>
 
   <!-- MAIN -->
-  <main class="admin-main">
-    <h1>📋 Admin Panel – All Bookings</h1>
+  <main>
+    <h1>Admin Panel</h1>
 
     <div class="filters">
-      <select id="time-filter">
-        <option value="all">All Dates</option>
+      <select id="filter-time">
         <option value="today">Today</option>
         <option value="past">Past</option>
-        <option value="upcoming">Upcoming</option>
+        <option value="future">Future</option>
+        <option value="all">All</option>
       </select>
 
-      <select id="service-filter">
+      <select id="filter-service">
         <option value="all">All Services</option>
         <option value="Beard Cutting">Beard Cutting</option>
         <option value="Haircut">Haircut</option>
         <option value="Facial">Facial</option>
-        <option value="Hair Coloring">Hair Coloring</option>
+        <option value="Hair coloring">Hair coloring</option>
         <option value="Shaving">Shaving</option>
         <option value="Head Massage">Head Massage</option>
       </select>
     </div>
 
-    <div id="booking-cards-container">
-      <p class="no-bookings">Loading bookings...</p>
-    </div>
+    <div id="bookings-container"></div>
   </main>
 
   <footer>
-    <p>© 2025 BookMeNow | Admin Access by Captain</p>
+    <p style="text-align: center;">© 2025 BookMeNow | Managed by Captain</p>
   </footer>
 
-  <!-- FIREBASE LOGIC -->
+  <!-- FIREBASE + ADMIN LOGIC -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-    // Config
     const firebaseConfig = {
       apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
       authDomain: "sampleportfolio-9450c.firebaseapp.com",
@@ -131,72 +151,110 @@
       appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
     };
 
-    // Initialize
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const logoutBtn = document.getElementById("logout-btn");
-    const container = document.getElementById("booking-cards-container");
-    const timeFilter = document.getElementById("time-filter");
-    const serviceFilter = document.getElementById("service-filter");
+    const container = document.getElementById("bookings-container");
+    const timeFilter = document.getElementById("filter-time");
+    const serviceFilter = document.getElementById("filter-service");
 
     let allBookings = [];
 
-    // Load Bookings
     onAuthStateChanged(auth, async (user) => {
       if (!user) return location.href = "login.html";
-      logoutBtn.style.display = "inline-block";
-      logoutBtn.addEventListener("click", () => signOut(auth).then(() => location.href = "login.html"));
 
+      // Inject logout button
+      const slot = document.getElementById("auth-button-slot");
+      slot.innerHTML = `<button id="logout-btn" class="logout-btn">Logout</button>`;
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        signOut(auth).then(() => location.href = "login.html");
+      });
+
+      // Fetch bookings
       const snapshot = await getDocs(collection(db, "bookings"));
-      allBookings = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        datetime: new Date(`${doc.data().date}T${doc.data().time}`)
-      }));
+      allBookings = snapshot.docs.map(docSnap => {
+        const data = docSnap.data();
+        return {
+          id: docSnap.id,
+          ...data,
+          datetime: new Date(`${data.date}T${data.time}`),
+          done: data.done || false
+        };
+      });
 
-      renderBookings();
+      render();
     });
 
-    // Render
-    function renderBookings() {
+    function render() {
       const now = new Date();
-      const time = timeFilter.value;
-      const service = serviceFilter.value;
+      const selectedTime = timeFilter.value;
+      const selectedService = serviceFilter.value;
 
-      const filtered = allBookings.filter(b => {
-        if (time === "past" && b.datetime >= now) return false;
-        if (time === "today" && b.date !== now.toISOString().split("T")[0]) return false;
-        if (time === "upcoming" && b.datetime <= now) return false;
-        if (service !== "all" && b.service !== service) return false;
+      let filtered = [...allBookings];
+
+      // Time filter
+      filtered = filtered.filter(b => {
+        if (selectedTime === "today") return isToday(b.datetime);
+        if (selectedTime === "past") return b.datetime < now;
+        if (selectedTime === "future") return b.datetime > now;
         return true;
+      });
+
+      // Service filter
+      if (selectedService !== "all") {
+        filtered = filtered.filter(b => b.service === selectedService);
+      }
+
+      // Sort: done goes last
+      filtered.sort((a, b) => {
+        if (a.done !== b.done) return a.done ? 1 : -1;
+        return b.datetime - a.datetime;
       });
 
       container.innerHTML = "";
 
       if (filtered.length === 0) {
-        container.innerHTML = `<p class="no-bookings">No bookings found for selected filters.</p>`;
+        container.innerHTML = `<p class="no-bookings">No bookings found.</p>`;
         return;
       }
 
-      for (const b of filtered.sort((a, b) => b.datetime - a.datetime)) {
+      for (const booking of filtered) {
         const card = document.createElement("div");
-        card.className = "booking-card";
+        card.className = "booking-card" + (booking.done ? " done" : "");
         card.innerHTML = `
-          <h3>${b.service}</h3>
-          <p><strong>Date:</strong> ${b.date}</p>
-          <p><strong>Time:</strong> ${b.time}</p>
-          <p><strong>Name:</strong> ${b.name}</p>
-          <p><strong>Phone:</strong> ${b.phone}</p>
-          <p><strong>Booking ID:</strong> ${b.bookingId}</p>
+          <h3>${booking.service}</h3>
+          <p><strong>Date:</strong> ${booking.date}</p>
+          <p><strong>Time:</strong> ${booking.time}</p>
+          <p><strong>Name:</strong> ${booking.name}</p>
+          <p><strong>Phone:</strong> ${booking.phone}</p>
+          <p><strong>ID:</strong> ${booking.bookingId}</p>
+          <div class="actions">
+            ${!booking.done ? `<button class="mark-done-btn" data-id="${booking.id}">✔ Mark as Done</button>` : ""}
+          </div>
         `;
         container.appendChild(card);
       }
+
+      // Event Listeners
+      document.querySelectorAll(".mark-done-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const id = btn.getAttribute("data-id");
+          await updateDoc(doc(db, "bookings", id), { done: true });
+          const booking = allBookings.find(b => b.id === id);
+          if (booking) booking.done = true;
+          render();
+        });
+      });
     }
 
-    timeFilter.addEventListener("change", renderBookings);
-    serviceFilter.addEventListener("change", renderBookings);
+    function isToday(date) {
+      const now = new Date();
+      return date.toDateString() === now.toDateString();
+    }
+
+    timeFilter.addEventListener("change", render);
+    serviceFilter.addEventListener("change", render);
   </script>
 </body>
 </html>
