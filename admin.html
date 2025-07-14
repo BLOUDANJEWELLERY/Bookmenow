@@ -3,62 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel – BookMeNow</title>
+  <title>Admin Dashboard – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/script.js"></script>
   <style>
     body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      background: var(--bg, #f8f9fa);
-      color: var(--text, #333);
-    }
-
-    header.navbar {
-      background: var(--card, white);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--accent, #007bff);
-    }
-
-    .logout-btn {
-      background: #e63946;
-      color: white;
-      padding: 0.5rem 1.2rem;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .logout-btn:hover {
-      background: #c82333;
+      font-family: "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
 
     .admin-main {
-      max-width: 900px;
-      margin: 3rem auto;
+      max-width: 960px;
+      margin: 4rem auto;
       padding: 1rem;
     }
 
     h1 {
       text-align: center;
-      color: var(--accent, #007bff);
+      color: var(--accent);
       margin-bottom: 2rem;
     }
 
-    .summary {
+    .filters {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
@@ -66,89 +33,95 @@
       margin-bottom: 2rem;
     }
 
-    .summary div {
-      background: var(--card, white);
-      padding: 1rem 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-      min-width: 140px;
-    }
-
-    .summary h2 {
-      font-size: 1.8rem;
-      margin: 0;
-    }
-
-    .summary p {
-      font-size: 0.95rem;
-      color: #666;
+    .filters select {
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-weight: 500;
+      font-size: 1rem;
     }
 
     .booking-card {
-      background: var(--card, white);
+      background: var(--card);
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      padding: 1.2rem 1.5rem;
+      padding: 1.2rem 1.4rem;
+      box-shadow: 0 4px 10px var(--shadow);
       margin-bottom: 1.5rem;
       line-height: 1.6;
     }
 
     .booking-card h3 {
-      margin: 0 0 0.5rem;
-      color: var(--accent, #007bff);
+      margin-bottom: 0.5rem;
+      color: var(--accent);
     }
 
     .booking-card p {
-      margin: 0.3rem 0;
+      margin: 0.2rem 0;
     }
 
-    .loading {
+    .no-bookings {
       text-align: center;
       margin-top: 2rem;
       font-size: 1.1rem;
-      color: #555;
-    }
-
-    @media (min-width: 768px) {
-      .booking-card {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-      }
+      color: #888;
     }
   </style>
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">BookMeNow – Admin</div>
-    <button id="logout-btn" class="logout-btn">Logout</button>
+  <!-- HEADER -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">BookMeNow</div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="myappointments.html">My Appointments</a></li>
+        <li><a href="booking.html">Book Again</a></li>
+        <li><button id="theme-toggle">🌙</button></li>
+        <li><button id="logout-btn" class="logout-btn" style="display: none;">Logout</button></li>
+      </ul>
+    </nav>
   </header>
 
+  <!-- MAIN -->
   <main class="admin-main">
-    <h1>📋 Admin Dashboard</h1>
+    <h1>📋 Admin Panel – All Bookings</h1>
 
-    <div class="summary">
-      <div>
-        <h2 id="total-count">0</h2>
-        <p>Total Bookings</p>
-      </div>
-      <div>
-        <h2 id="today-count">0</h2>
-        <p>Today’s Bookings</p>
-      </div>
+    <div class="filters">
+      <select id="time-filter">
+        <option value="all">All Dates</option>
+        <option value="today">Today</option>
+        <option value="past">Past</option>
+        <option value="upcoming">Upcoming</option>
+      </select>
+
+      <select id="service-filter">
+        <option value="all">All Services</option>
+        <option value="Beard Cutting">Beard Cutting</option>
+        <option value="Haircut">Haircut</option>
+        <option value="Facial">Facial</option>
+        <option value="Hair Coloring">Hair Coloring</option>
+        <option value="Shaving">Shaving</option>
+        <option value="Head Massage">Head Massage</option>
+      </select>
     </div>
 
-    <div id="bookings-container">
-      <p class="loading">Loading bookings...</p>
+    <div id="booking-cards-container">
+      <p class="no-bookings">Loading bookings...</p>
     </div>
   </main>
 
+  <footer>
+    <p>© 2025 BookMeNow | Admin Access by Captain</p>
+  </footer>
+
+  <!-- FIREBASE LOGIC -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
+    // Config
     const firebaseConfig = {
       apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
       authDomain: "sampleportfolio-9450c.firebaseapp.com",
@@ -158,52 +131,72 @@
       appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
     };
 
+    // Initialize
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
     const logoutBtn = document.getElementById("logout-btn");
-    const bookingsContainer = document.getElementById("bookings-container");
-    const totalCount = document.getElementById("total-count");
-    const todayCount = document.getElementById("today-count");
+    const container = document.getElementById("booking-cards-container");
+    const timeFilter = document.getElementById("time-filter");
+    const serviceFilter = document.getElementById("service-filter");
 
-    logoutBtn.onclick = () => signOut(auth).then(() => location.href = "login.html");
+    let allBookings = [];
 
+    // Load Bookings
     onAuthStateChanged(auth, async (user) => {
       if (!user) return location.href = "login.html";
+      logoutBtn.style.display = "inline-block";
+      logoutBtn.addEventListener("click", () => signOut(auth).then(() => location.href = "login.html"));
 
       const snapshot = await getDocs(collection(db, "bookings"));
-      const bookings = snapshot.docs.map(doc => doc.data());
+      allBookings = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        datetime: new Date(`${doc.data().date}T${doc.data().time}`)
+      }));
 
-      totalCount.textContent = bookings.length;
+      renderBookings();
+    });
 
-      const today = new Date().toISOString().split("T")[0];
-      const todaysBookings = bookings.filter(b => b.date === today);
-      todayCount.textContent = todaysBookings.length;
+    // Render
+    function renderBookings() {
+      const now = new Date();
+      const time = timeFilter.value;
+      const service = serviceFilter.value;
 
-      bookingsContainer.innerHTML = "";
+      const filtered = allBookings.filter(b => {
+        if (time === "past" && b.datetime >= now) return false;
+        if (time === "today" && b.date !== now.toISOString().split("T")[0]) return false;
+        if (time === "upcoming" && b.datetime <= now) return false;
+        if (service !== "all" && b.service !== service) return false;
+        return true;
+      });
 
-      if (bookings.length === 0) {
-        bookingsContainer.innerHTML = "<p class='loading'>No bookings found.</p>";
+      container.innerHTML = "";
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="no-bookings">No bookings found for selected filters.</p>`;
         return;
       }
 
-      bookings.sort((a, b) => `${a.date}T${a.time}`.localeCompare(`${b.date}T${b.time}`));
-
-      for (const b of bookings) {
+      for (const b of filtered.sort((a, b) => b.datetime - a.datetime)) {
         const card = document.createElement("div");
         card.className = "booking-card";
         card.innerHTML = `
           <h3>${b.service}</h3>
-          <p><strong>ID:</strong> ${b.bookingId}</p>
-          <p><strong>Name:</strong> ${b.name}</p>
-          <p><strong>Phone:</strong> ${b.phone}</p>
           <p><strong>Date:</strong> ${b.date}</p>
           <p><strong>Time:</strong> ${b.time}</p>
+          <p><strong>Name:</strong> ${b.name}</p>
+          <p><strong>Phone:</strong> ${b.phone}</p>
+          <p><strong>Booking ID:</strong> ${b.bookingId}</p>
         `;
-        bookingsContainer.appendChild(card);
+        container.appendChild(card);
       }
-    });
+    }
+
+    timeFilter.addEventListener("change", renderBookings);
+    serviceFilter.addEventListener("change", renderBookings);
   </script>
 </body>
 </html>
