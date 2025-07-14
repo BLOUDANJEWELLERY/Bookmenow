@@ -6,71 +6,37 @@
   <title>Admin Panel – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    .admin-main {
-      max-width: 1000px;
-      margin: 4rem auto;
-      padding: 2rem;
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg, #f8f9fa);
+      color: var(--text, #333);
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-      color: var(--accent);
-    }
-
-    .summary {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 2rem;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .summary div {
-      background: var(--card);
+    header.navbar {
+      background: var(--card, white);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       padding: 1rem 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px var(--shadow);
-      text-align: center;
-      min-width: 200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    .summary h2 {
+    .logo {
       font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-      color: var(--text);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--card);
-      box-shadow: 0 2px 8px var(--shadow);
-    }
-
-    th, td {
-      padding: 12px 16px;
-      border-bottom: 1px solid #ddd;
-      text-align: left;
-    }
-
-    th {
-      background: var(--accent);
-      color: white;
-    }
-
-    tr:hover {
-      background-color: #f9f9f9;
+      font-weight: bold;
+      color: var(--accent, #007bff);
     }
 
     .logout-btn {
-      position: absolute;
-      right: 1.5rem;
-      top: 1rem;
       background: #e63946;
       color: white;
-      border: none;
       padding: 0.5rem 1.2rem;
+      border: none;
       border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
@@ -78,6 +44,78 @@
 
     .logout-btn:hover {
       background: #c82333;
+    }
+
+    .admin-main {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--accent, #007bff);
+      margin-bottom: 2rem;
+    }
+
+    .summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .summary div {
+      background: var(--card, white);
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+      min-width: 140px;
+    }
+
+    .summary h2 {
+      font-size: 1.8rem;
+      margin: 0;
+    }
+
+    .summary p {
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    .booking-card {
+      background: var(--card, white);
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .booking-card h3 {
+      margin: 0 0 0.5rem;
+      color: var(--accent, #007bff);
+    }
+
+    .booking-card p {
+      margin: 0.3rem 0;
+    }
+
+    .loading {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    @media (min-width: 768px) {
+      .booking-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
     }
   </style>
 </head>
@@ -88,34 +126,22 @@
   </header>
 
   <main class="admin-main">
-    <h1>📊 Admin Dashboard</h1>
+    <h1>📋 Admin Dashboard</h1>
 
     <div class="summary">
       <div>
         <h2 id="total-count">0</h2>
-        <p>Total Appointments</p>
+        <p>Total Bookings</p>
       </div>
       <div>
         <h2 id="today-count">0</h2>
-        <p>Today’s Appointments</p>
+        <p>Today’s Bookings</p>
       </div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Booking ID</th>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Service</th>
-          <th>Date</th>
-          <th>Time</th>
-        </tr>
-      </thead>
-      <tbody id="bookings-table-body">
-        <tr><td colspan="6" style="text-align:center;">Loading...</td></tr>
-      </tbody>
-    </table>
+    <div id="bookings-container">
+      <p class="loading">Loading bookings...</p>
+    </div>
   </main>
 
   <script type="module">
@@ -137,7 +163,7 @@
     const db = getFirestore(app);
 
     const logoutBtn = document.getElementById("logout-btn");
-    const tableBody = document.getElementById("bookings-table-body");
+    const bookingsContainer = document.getElementById("bookings-container");
     const totalCount = document.getElementById("total-count");
     const todayCount = document.getElementById("today-count");
 
@@ -155,24 +181,28 @@
       const todaysBookings = bookings.filter(b => b.date === today);
       todayCount.textContent = todaysBookings.length;
 
+      bookingsContainer.innerHTML = "";
+
       if (bookings.length === 0) {
-        tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>No bookings found.</td></tr>";
+        bookingsContainer.innerHTML = "<p class='loading'>No bookings found.</p>";
         return;
       }
 
-      tableBody.innerHTML = "";
-      bookings.sort((a, b) => `${a.date}T${a.time}`.localeCompare(`${b.date}T${b.time}`)).forEach(b => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${b.bookingId}</td>
-          <td>${b.name}</td>
-          <td>${b.phone}</td>
-          <td>${b.service}</td>
-          <td>${b.date}</td>
-          <td>${b.time}</td>
+      bookings.sort((a, b) => `${a.date}T${a.time}`.localeCompare(`${b.date}T${b.time}`));
+
+      for (const b of bookings) {
+        const card = document.createElement("div");
+        card.className = "booking-card";
+        card.innerHTML = `
+          <h3>${b.service}</h3>
+          <p><strong>ID:</strong> ${b.bookingId}</p>
+          <p><strong>Name:</strong> ${b.name}</p>
+          <p><strong>Phone:</strong> ${b.phone}</p>
+          <p><strong>Date:</strong> ${b.date}</p>
+          <p><strong>Time:</strong> ${b.time}</p>
         `;
-        tableBody.appendChild(row);
-      });
+        bookingsContainer.appendChild(card);
+      }
     });
   </script>
 </body>
