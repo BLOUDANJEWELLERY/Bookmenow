@@ -8,23 +8,27 @@
   <script defer src="js/script.js"></script>
 </head>
 <body>
+  <!-- HEADER -->
   <header>
     <nav class="navbar">
       <div class="logo">BookMeNow</div>
       <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </div>
       <ul class="nav-links" id="nav-links">
         <li><a href="index.html" class="active">Home</a></li>
         <li><a href="myappointments.html">My Appointments</a></li>
         <li><a href="booking.html">Booking</a></li>
         <li><button id="theme-toggle">🌙</button></li>
-        <li><button id="logout-btn" class="logout-btn" style="display: none;">Logout</button></li>
+
+        <!-- Auth-dependent button -->
+        <li id="auth-button-slot">
+          <!-- JS will insert either Login or Logout here -->
+        </li>
       </ul>
     </nav>
 
+    <!-- HERO -->
     <section class="hero">
       <img src="images/hero.jpg" alt="Hero Image" />
       <div class="hero-content">
@@ -35,6 +39,7 @@
     </section>
   </header>
 
+  <!-- MAIN -->
   <main>
     <section class="features">
       <h2>Why Choose Us?</h2>
@@ -55,8 +60,41 @@
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer>
     <p>© 2025 BookMeNow | Built by Captain</p>
   </footer>
+
+  <!-- Firebase Auth Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
+      authDomain: "sampleportfolio-9450c.firebaseapp.com",
+      projectId: "sampleportfolio-9450c",
+      storageBucket: "sampleportfolio-9450c.appspot.com",
+      messagingSenderId: "725347523572",
+      appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const authSlot = document.getElementById("auth-button-slot");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Show Logout button
+        authSlot.innerHTML = `<button id="logout-btn" class="logout-btn">Logout</button>`;
+        document.getElementById("logout-btn").addEventListener("click", () => {
+          signOut(auth).then(() => location.href = "login.html");
+        });
+      } else {
+        // Show Login button
+        authSlot.innerHTML = `<a href="login.html" class="btn">Login</a>`;
+      }
+    });
+  </script>
 </body>
 </html>
