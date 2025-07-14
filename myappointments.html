@@ -262,9 +262,9 @@
       doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, y);
 
       const qr = new QRious({
-        value: `https://bookmenow.com/verify?bookingId=${data.bookingId}`,
-        size: 100,
-      });
+  value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
+  size: 100,
+});
       doc.addImage(qr.toDataURL(), 'PNG', 150, 40, 40, 40);
       doc.setFontSize(8);
       doc.text("Scan to verify", 160, 85);
