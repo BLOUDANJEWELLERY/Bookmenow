@@ -52,37 +52,19 @@
       margin: 0.6rem 0;
     }
 
-    .print-btn {
+    .btn-download {
       margin-top: 2rem;
-      padding: 0.7rem 1.5rem;
-      font-weight: bold;
-      background-color: #007bff;
+      background: #28a745;
       color: white;
+      font-weight: bold;
+      padding: 0.8rem 1.4rem;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
 
-    .print-btn:hover {
-      background-color: #0056b3;
-    }
-
-    @media print {
-      body * {
-        visibility: hidden;
-      }
-      #verify-container, #verify-container * {
-        visibility: visible;
-      }
-      #verify-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-      }
-      .print-btn {
-        display: none;
-      }
+    .btn-download:hover {
+      background: #218838;
     }
 
     footer {
@@ -114,7 +96,10 @@
     <p>© 2025 BookMeNow | Verification powered by Captain</p>
   </footer>
 
-  <!-- Firebase + Logic -->
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
@@ -134,6 +119,8 @@
     const queryParams = new URLSearchParams(window.location.search);
     const bookingId = queryParams.get("bookingId");
 
+    let appointmentData = null;
+
     async function verifyAppointment() {
       if (!bookingId) return showInvalid("No booking ID provided in the URL.");
 
@@ -143,6 +130,8 @@
       if (!match) {
         return showInvalid(`No appointment found with ID "${bookingId}".`);
       }
+
+      appointmentData = match;
 
       container.innerHTML = `
         <h1>✅ Appointment Verified</h1>
@@ -155,7 +144,7 @@
           <p><strong>Date:</strong> ${match.date}</p>
           <p><strong>Time:</strong> ${match.time}</p>
         </div>
-        <button class="print-btn" onclick="window.print()">🖨️ Print Receipt</button>
+        <button class="btn-download" onclick="downloadPDF()">📄 Download PDF Receipt</button>
       `;
     }
 
@@ -167,6 +156,73 @@
         <p>If you believe this is an error, please contact support.</p>
       `;
     }
+
+    window.downloadPDF = async function () {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const data = appointmentData;
+      if (!data) return;
+
+      // Header
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor("#007bff");
+      doc.setFontSize(20);
+      doc.text("BookMeNow", 20, 20);
+
+      doc.setFontSize(12);
+      doc.setTextColor("#000");
+      doc.setFont("helvetica", "normal");
+      doc.text("Appointment Confirmation Receipt", 20, 30);
+
+      // Box
+      doc.setDrawColor("#cccccc");
+      doc.setLineWidth(0.5);
+      doc.rect(15, 35, 180, 90);
+
+      let y = 45;
+      const gap = 10;
+      doc.setFont("helvetica", "bold");
+      doc.text("Booking Details:", 20, y);
+      doc.setFont("helvetica", "normal");
+
+      y += gap;
+      doc.text(`Appointment ID: ${data.bookingId}`, 20, y);
+      y += gap;
+      doc.text(`Name: ${data.name}`, 20, y);
+      y += gap;
+      doc.text(`Phone: ${data.phone}`, 20, y);
+      y += gap;
+      doc.text(`Service: ${data.service}`, 20, y);
+      y += gap;
+      doc.text(`Date: ${data.date}`, 20, y);
+      y += gap;
+      doc.text(`Time: ${data.time}`, 20, y);
+
+      // Timestamp
+      y += gap + 5;
+      doc.setFont("helvetica", "italic");
+      doc.setFontSize(10);
+      doc.setTextColor("#555");
+      doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, y);
+
+      // QR Code
+      const qr = new QRious({
+        value: `https://bookmenow.com/verify?bookingId=${data.bookingId}`,
+        size: 100,
+      });
+      doc.addImage(qr.toDataURL(), 'PNG', 150, 40, 40, 40);
+      doc.setFontSize(8);
+      doc.text("Scan to verify", 160, 85);
+
+      // Footer
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor("#007bff");
+      doc.text("Powered by Captain | BookMeNow", 20, 140);
+
+      doc.save(`BookMeNow_Receipt_${data.bookingId}.pdf`);
+    };
 
     verifyAppointment();
   </script>
