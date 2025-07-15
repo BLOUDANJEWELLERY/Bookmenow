@@ -87,7 +87,6 @@
     /* Custom calendar styles */
     .calendar-wrapper {
       position: relative;
-      user-select: none;
       width: 100%;
     }
 
@@ -103,23 +102,20 @@
     }
 
     .calendar-popup {
-      position: absolute;
-      top: 100%;
-       left: 0;
-      right: 0;
-      margin-top: 6px;
-      width: 100%;
-      min-width: 260px; /* optional: ensure minimum size */
-      max-width: 100%;
-      box-sizing: border-box;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-      z-index: 1000;
-      padding: 10px;
-      user-select: none;
-    }
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 6px;
+  width: auto;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 10px;
+  box-sizing: border-box;
+}
 
     .calendar-header {
       display: flex;
