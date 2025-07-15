@@ -692,12 +692,18 @@ if (calendar.children.length > 0 && direction) {
 
   calendar.appendChild(newCalendar);
 
-  // Remove old calendar after animation ends
-  oldCalendar.addEventListener("animationend", () => {
-    if (oldCalendar && oldCalendar.parentNode) {
+  // Prevent multiple simultaneous transitions
+const cleanupOldCalendar = (e) => {
+  if (e.target === oldCalendar) {
+    oldCalendar.removeEventListener("animationend", cleanupOldCalendar);
+    if (oldCalendar.parentNode) {
       calendar.removeChild(oldCalendar);
     }
-  });
+  }
+};
+
+oldCalendar.addEventListener("animationend", cleanupOldCalendar);
+calendar.appendChild(newCalendar);
 } else {
   calendar.innerHTML = "";
   calendar.appendChild(newCalendar);
