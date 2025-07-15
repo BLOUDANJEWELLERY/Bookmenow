@@ -258,7 +258,7 @@
     opacity: 1;
   }
   to {
-    transform: translateX(100%);
+    transform: translateX(-100%);
     opacity: 0;
   }
 }
@@ -677,23 +677,31 @@ function renderCalendar(year, month, direction = null) {
   newCalendar.appendChild(grid);
 
   // Animate slide
-  if (calendar.children.length > 0 && direction) {
-    newCalendar.classList.add(direction === "left" ? "slide-left-in" : "slide-right-in");
+if (calendar.children.length > 0 && direction) {
+  const oldCalendar = calendar.querySelector(".calendar-content");
 
-    const oldCalendar = calendar.querySelectorAll(".calendar-content")[0];
-    oldCalendar.classList.add(direction === "left" ? "slide-left-out" : "slide-right-out");
+  // Set up exit animation on old calendar
+  oldCalendar.classList.add(
+    direction === "left" ? "slide-right-out" : "slide-left-out"
+  );
 
-    calendar.appendChild(newCalendar);
+  // Set up entrance animation on new calendar
+  newCalendar.classList.add(
+    direction === "left" ? "slide-right-in" : "slide-left-in"
+  );
 
-    oldCalendar.addEventListener("animationend", () => {
-      if (oldCalendar && oldCalendar.parentNode) {
-        calendar.removeChild(oldCalendar);
-      }
-    });
-  } else {
-    calendar.innerHTML = "";
-    calendar.appendChild(newCalendar);
-  }
+  calendar.appendChild(newCalendar);
+
+  // Remove old calendar after animation ends
+  oldCalendar.addEventListener("animationend", () => {
+    if (oldCalendar && oldCalendar.parentNode) {
+      calendar.removeChild(oldCalendar);
+    }
+  });
+} else {
+  calendar.innerHTML = "";
+  calendar.appendChild(newCalendar);
+}
 }
 function showCalendar() {
   calendar.style.display = "block";
