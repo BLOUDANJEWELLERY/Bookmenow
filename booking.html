@@ -6,110 +6,108 @@
   <title>Book an Appointment – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/script.js"></script>
-  <style>
-    body {
-      background: #f0f4fa;
-    }
+  /* === Global Styles === */
+body {
+  background: #f0f4fa;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    .booking-main {
-      max-width: 900px;
-      margin: 4rem auto;
-      padding: 1.5rem;
-    }
+/* === Main Container === */
+.booking-main {
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 1.5rem;
+}
 
-    h1 {
-      text-align: center;
-      font-size: 2rem;
-      color: #003366;
-      margin-bottom: 0.5rem;
-    }
+/* === Headings === */
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #003366;
+  margin-bottom: 0.5rem;
+}
 
-    p.subtitle {
-      text-align: center;
-      font-size: 1.05rem;
-      color: #555;
-      margin-bottom: 2rem;
-    }
+p.subtitle {
+  text-align: center;
+  font-size: 1.05rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
 
-    .booking-form {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 51, 102, 0.08);
-      border: 2px solid transparent;
-      background-clip: padding-box;
-      position: relative;
-      overflow: visible; /* To allow calendar dropdown overflow */
-    }
+/* === Booking Form === */
+.booking-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 51, 102, 0.08);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;  /* critical for calendar positioning */
+  overflow: visible;   /* allow calendar dropdown to overflow */
+}
 
-    .booking-form::before {
-      content: '';
-      position: absolute;
-      top: -2px; left: -2px; right: -2px; bottom: -2px;
-      background: linear-gradient(135deg, #007bff, #00c6ff);
-      z-index: -1;
-      border-radius: 14px;
-    }
+.booking-form::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  z-index: -1;
+  border-radius: 14px;
+}
 
-    .form-group {
-      margin-bottom: 1.5rem;
-      position: relative;
-    }
+/* === Form Groups === */
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
 
-    .form-group label {
-      display: block;
-      margin-bottom: 0.4rem;
-      font-weight: bold;
-      color: #003366;
-    }
+.form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+  color: #003366;
+}
 
-    input[type="text"],
-    input[type="tel"],
-    select {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-      background-color: #fdfdfd;
-      color: #333;
-      transition: border 0.3s, box-shadow 0.3s;
-    }
+/* === Inputs === */
+input[type="text"],
+input[type="tel"],
+select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fdfdfd;
+  color: #333;
+  transition: border 0.3s, box-shadow 0.3s;
+}
 
-    input[type="text"]:focus,
-    input[type="tel"]:focus,
-    select:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-    }
+input[type="text"]:focus,
+input[type="tel"]:focus,
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+  background-color: #fff;
+  color: #222;
+}
 
-    /* Custom calendar styles */
-   .calendar-wrapper {
+/* === Calendar Wrapper === */
+.calendar-wrapper {
   position: relative;
   user-select: none;
 }
 
-.calendar-input {
-  cursor: pointer;
-  background-color: #fdfdfd;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 0.75rem;
-  font-size: 1rem;
-  color: #333;
-  width: 100%;
-}
-
-/* ✅ New Styles Start Here */
-
+/* === Calendar Popup ===
+     Positioned absolutely inside .booking-form
+     Stretch width to match .booking-form (container) width */
 .calendar-popup {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 6px);
   left: 0;
-  margin-top: 6px;
-  width: 100%;
-  max-width: 320px;
+  right: 0;  /* stretch to right edge */
+  width: auto; /* allow full width */
   background: white;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -118,8 +116,10 @@
   padding: 8px;
   box-sizing: border-box;
   overflow-x: auto;
+  max-width: none; /* remove max-width to allow full container width */
 }
 
+/* === Calendar Header === */
 .calendar-header {
   display: flex;
   justify-content: space-between;
@@ -139,10 +139,12 @@
   user-select: none;
   transition: color 0.2s ease;
 }
+
 .calendar-nav-btn:hover {
   color: #0056b3;
 }
 
+/* === Calendar Grid === */
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -157,6 +159,7 @@
   user-select: none;
 }
 
+/* === Individual Days === */
 .calendar-day {
   width: 32px;
   height: 32px;
@@ -185,81 +188,70 @@
   color: #bbb;
   pointer-events: none;
   background-color: transparent;
+  cursor: default;
 }
 
+/* === Buttons === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(to right, #007bff, #00bfff);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+  width: 100%;
+}
+
+.btn:hover {
+  background: linear-gradient(to right, #0056b3, #0099cc);
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* === Loader Spinner === */
+.loader {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 0.6s linear infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === Responsive Adjustments === */
 @media (max-width: 480px) {
   .calendar-popup {
+    width: 100% !important;
     left: 0;
-    right: auto;
+    right: 0;
     transform: none;
-    max-width: 100%;
+  }
+
+  .booking-main {
+    margin: 2rem 1rem;
+  }
+
+  .btn {
+    font-size: 0.95rem;
   }
 }
-
-    /* Disabled past days */
-    .calendar-day.disabled {
-      color: #bbb;
-      cursor: default;
-      pointer-events: none;
-      background-color: transparent !important;
-    }
-
-    /* Highlight today's date */
-    .calendar-day.today {
-      border: 2px solid #007bff;
-      font-weight: 700;
-      color: #0056b3;
-    }
-
-    /* Highlight selected date */
-    .calendar-day.selected {
-      background: #007bff;
-      color: white;
-      font-weight: 700;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.85rem 2rem;
-      font-size: 1rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 30px;
-      background: linear-gradient(to right, #007bff, #00bfff);
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
-      width: 100%;
-    }
-
-    .btn:hover {
-      background: linear-gradient(to right, #0056b3, #0099cc);
-      transform: translateY(-1px);
-    }
-
-    .btn:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-
-    .loader {
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid white;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      animation: spin 0.6s linear infinite;
-      margin-left: 10px;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
 </head>
 <body>
   <!-- Header -->
