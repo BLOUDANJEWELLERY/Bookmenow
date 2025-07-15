@@ -676,24 +676,25 @@ function renderCalendar(year, month, direction = null) {
 
   newCalendar.appendChild(grid);
 
-if (calendar.children.length > 0 && direction) {
-  const oldCalendar = calendar.querySelector(".calendar-content"); // capture it BEFORE appending newCalendar
+  // Animate slide
+  if (calendar.children.length > 0 && direction) {
+    newCalendar.classList.add(direction === "left" ? "slide-left-in" : "slide-right-in");
 
-  newCalendar.classList.add(direction === "left" ? "slide-left-in" : "slide-right-in");
-  oldCalendar.classList.add(direction === "left" ? "slide-left-out" : "slide-right-out");
+    const oldCalendar = calendar.querySelector(".calendar-content");
+    oldCalendar.classList.add(direction === "left" ? "slide-left-out" : "slide-right-out");
 
-  calendar.appendChild(newCalendar);
+    calendar.appendChild(newCalendar);
 
-  oldCalendar.addEventListener("animationend", () => {
-    if (oldCalendar && oldCalendar.parentNode) {
-      calendar.removeChild(oldCalendar);
-    }
-  });
-} else {
-  calendar.innerHTML = "";
-  calendar.appendChild(newCalendar);
+    oldCalendar.addEventListener("animationend", () => {
+      if (oldCalendar && oldCalendar.parentNode) {
+        calendar.removeChild(oldCalendar);
+      }
+    });
+  } else {
+    calendar.innerHTML = "";
+    calendar.appendChild(newCalendar);
+  }
 }
-
 function showCalendar() {
   calendar.style.display = "block";
   calendar.classList.remove("slide-out");
