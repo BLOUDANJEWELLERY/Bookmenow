@@ -676,32 +676,34 @@ function renderCalendar(year, month, direction = null) {
 
   newCalendar.appendChild(grid);
 
-  // Animate slide
-if (calendar.children.length > 0 && direction) {
-  const oldCalendar = calendar.querySelector(".calendar-content");
+// Prevent animation stacking
+if (calendar.querySelectorAll(".calendar-content").length > 1) return;
 
-  // Set up exit animation on old calendar
-  oldCalendar.classList.add(
-    direction === "left" ? "slide-right-out" : "slide-left-out"
-  );
+const oldCalendar = calendar.querySelector(".calendar-content");
 
-  // Set up entrance animation on new calendar
-  newCalendar.classList.add(
-    direction === "left" ? "slide-right-in" : "slide-left-in"
-  );
+// Apply exit animation to old calendar
+oldCalendar.classList.add(
+  direction === "left" ? "slide-right-out" : "slide-left-out"
+);
 
-  calendar.appendChild(newCalendar);
+// Apply entry animation to new calendar
+newCalendar.classList.add(
+  direction === "left" ? "slide-right-in" : "slide-left-in"
+);
 
-  // Remove old calendar after animation ends
-  oldCalendar.addEventListener("animationend", () => {
-    if (oldCalendar && oldCalendar.parentNode) {
-      calendar.removeChild(oldCalendar);
-    }
-  });
-} else {
-  calendar.innerHTML = "";
-  calendar.appendChild(newCalendar);
-}
+// Append new calendar immediately
+calendar.appendChild(newCalendar);
+
+// Define named handler to prevent multiple listeners
+const handleAnimationEnd = (e) => {
+  if (e.target === oldCalendar && oldCalendar.parentNode) {
+    oldCalendar.remove();
+    oldCalendar.removeEventListener("animationend", handleAnimationEnd);
+  }
+};
+
+// Attach one-time listener to old calendar
+oldCalendar.addEventListener("animationend", handleAnimationEnd);
 }
 function showCalendar() {
   calendar.style.display = "block";
