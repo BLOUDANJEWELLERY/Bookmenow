@@ -418,183 +418,166 @@
 
     // --- Custom Calendar Logic ---
 
-    const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-    // Current calendar state:
-    let currentDate = new Date(); // today initially
-    let selectedDate = null;
+let currentDate = new Date(); // today initially
+let selectedDate = null;
 
-    // Format date as YYYY-MM-DD
-    function formatDate(date) {
-      return date.toISOString().split("T")[0];
+// Format date as YYYY-MM-DD (LOCAL, not UTC)
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+// Render calendar for a given year/month
+function renderCalendar(year, month) {
+  calendar.innerHTML = "";
+
+  // --- Header ---
+  const header = document.createElement("div");
+  header.className = "calendar-header";
+
+  const prevBtn = document.createElement("button");
+  prevBtn.className = "calendar-nav-btn";
+  prevBtn.innerHTML = "&#8249;";
+  prevBtn.title = "Previous Month";
+  prevBtn.disabled = year === new Date().getFullYear() && month === new Date().getMonth();
+  prevBtn.onclick = () => {
+    if (month === 0) {
+      month = 11;
+      year--;
+    } else {
+      month--;
     }
-
-    // Render calendar for the given year/month
-    function renderCalendar(year, month) {
-      calendar.innerHTML = "";
-
-      // Header with month and year + navigation
-      const header = document.createElement("div");
-      header.className = "calendar-header";
-
-      const prevBtn = document.createElement("button");
-      prevBtn.className = "calendar-nav-btn";
-      prevBtn.innerHTML = "&#8249;";
-      prevBtn.title = "Previous Month";
-      prevBtn.disabled = year === new Date().getFullYear() && month === new Date().getMonth();
-      prevBtn.onclick = () => {
-        if (month === 0) {
-          month = 11;
-          year--;
-        } else {
-          month--;
-        }
-        if (
-          year < new Date().getFullYear() ||
-          (year === new Date().getFullYear() && month < new Date().getMonth())
-        ) {
-          // prevent going to past months
-          year = new Date().getFullYear();
-          month = new Date().getMonth();
-        }
-        renderCalendar(year, month);
-      };
-
-      const nextBtn = document.createElement("button");
-      nextBtn.className = "calendar-nav-btn";
-      nextBtn.innerHTML = "&#8250;";
-      nextBtn.title = "Next Month";
-      nextBtn.onclick = () => {
-        if (month === 11) {
-          month = 0;
-          year++;
-        } else {
-          month++;
-        }
-        renderCalendar(year, month);
-      };
-
-      const monthYear = document.createElement("div");
-      monthYear.textContent = `${new Date(year, month).toLocaleString("default", {
-        month: "long",
-      })} ${year}`;
-
-      header.appendChild(prevBtn);
-      header.appendChild(monthYear);
-      header.appendChild(nextBtn);
-      calendar.appendChild(header);
-
-      // Weekday names row
-      const grid = document.createElement("div");
-      grid.className = "calendar-grid";
-      weekdays.forEach((d) => {
-        const wd = document.createElement("div");
-        wd.className = "calendar-day-name";
-        wd.textContent = d;
-        grid.appendChild(wd);
-      });
-
-      // Days in month
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      // First day of month weekday (0=Sun ... 6=Sat)
-      const firstDayIndex = new Date(year, month, 1).getDay();
-
-      // Fill blanks for days before month start
-      for (let i = 0; i < firstDayIndex; i++) {
-        const blank = document.createElement("div");
-        blank.className = "calendar-day disabled";
-        grid.appendChild(blank);
-      }
-
-      // Today info for disabling past days
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      for (let day = 1; day <= daysInMonth; day++) {
-        const dateObj = new Date(year, month, day);
-        dateObj.setHours(0, 0, 0, 0);
-        const dayEl = document.createElement("div");
-        dayEl.className = "calendar-day";
-        dayEl.textContent = day;
-
-        // Disable past days
-        if (dateObj < today) {
-          dayEl.classList.add("disabled");
-        }
-
-        // Highlight today
-        if (
-          dateObj.getTime() === today.getTime() &&
-          !dayEl.classList.contains("disabled")
-        ) {
-          dayEl.classList.add("today");
-          if (!selectedDate) {
-            // Initially highlight today if nothing selected
-            dayEl.classList.add("selected");
-            selectedDate = formatDate(dateObj);
-            dateInput.value = selectedDate;
-            updateTimeSlotsForDate(selectedDate);
-          }
-        }
-
-        // Highlight selected date
-        if (selectedDate === formatDate(dateObj)) {
-          dayEl.classList.add("selected");
-        }
-
-        // Click handler for selectable days
-        if (!dayEl.classList.contains("disabled")) {
-          dayEl.onclick = () => {
-            // Remove previous selection
-            calendar.querySelectorAll(".calendar-day.selected").forEach((el) =>
-              el.classList.remove("selected")
-            );
-            dayEl.classList.add("selected");
-            selectedDate = formatDate(dateObj);
-            dateInput.value = selectedDate;
-            updateTimeSlotsForDate(selectedDate);
-            hideCalendar();
-          };
-        }
-
-        grid.appendChild(dayEl);
-      }
-
-      calendar.appendChild(grid);
+    if (
+      year < new Date().getFullYear() ||
+      (year === new Date().getFullYear() && month < new Date().getMonth())
+    ) {
+      year = new Date().getFullYear();
+      month = new Date().getMonth();
     }
+    renderCalendar(year, month);
+  };
 
-    function showCalendar() {
-      calendar.style.display = "block";
+  const nextBtn = document.createElement("button");
+  nextBtn.className = "calendar-nav-btn";
+  nextBtn.innerHTML = "&#8250;";
+  nextBtn.title = "Next Month";
+  nextBtn.onclick = () => {
+    if (month === 11) {
+      month = 0;
+      year++;
+    } else {
+      month++;
     }
+    renderCalendar(year, month);
+  };
 
-    function hideCalendar() {
-      calendar.style.display = "none";
-    }
+  const monthYear = document.createElement("div");
+  monthYear.textContent = `${new Date(year, month).toLocaleString("default", {
+    month: "long",
+  })} ${year}`;
 
-    // Toggle calendar popup on input click
-    dateInput.addEventListener("click", () => {
-      if (calendar.style.display === "block") hideCalendar();
-      else showCalendar();
-    });
+  header.appendChild(prevBtn);
+  header.appendChild(monthYear);
+  header.appendChild(nextBtn);
+  calendar.appendChild(header);
 
-    // Hide calendar if clicked outside
-    document.addEventListener("click", (e) => {
-      if (
-        !calendar.contains(e.target) &&
-        e.target !== dateInput
-      ) {
+  // --- Weekday Header ---
+  const grid = document.createElement("div");
+  grid.className = "calendar-grid";
+  weekdays.forEach((d) => {
+    const wd = document.createElement("div");
+    wd.className = "calendar-day-name";
+    wd.textContent = d;
+    grid.appendChild(wd);
+  });
+
+  // --- Days ---
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDayIndex = new Date(year, month, 1).getDay();
+
+  for (let i = 0; i < firstDayIndex; i++) {
+    const blank = document.createElement("div");
+    blank.className = "calendar-day disabled";
+    grid.appendChild(blank);
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateObj = new Date(year, month, day);
+    dateObj.setHours(0, 0, 0, 0);
+
+    const dayEl = document.createElement("div");
+    dayEl.className = "calendar-day";
+    dayEl.textContent = day;
+
+    const isToday = dateObj.getTime() === today.getTime();
+    const isInPast = dateObj < today;
+    const isSelected = selectedDate === formatDate(dateObj);
+
+    if (isInPast) {
+      dayEl.classList.add("disabled");
+    } else {
+      if (isToday) dayEl.classList.add("today");
+      if (isSelected) dayEl.classList.add("selected");
+
+      // Click to select date
+      dayEl.onclick = () => {
+        calendar.querySelectorAll(".calendar-day.selected").forEach((el) =>
+          el.classList.remove("selected")
+        );
+        dayEl.classList.add("selected");
+
+        selectedDate = formatDate(dateObj);
+        dateInput.value = selectedDate;
+        updateTimeSlotsForDate(selectedDate);
         hideCalendar();
-      }
-    });
+      };
+    }
 
-    // Initialize calendar to current month/year
-    const now = new Date();
-    renderCalendar(now.getFullYear(), now.getMonth());
+    grid.appendChild(dayEl);
+  }
 
-    // Listen for manual input clearing (optional)
-    dateInput.addEventListener("keydown", (e) => {
-      e.preventDefault(); // prevent typing
-    });
+  calendar.appendChild(grid);
+}
+
+function showCalendar() {
+  calendar.style.display = "block";
+}
+
+function hideCalendar() {
+  calendar.style.display = "none";
+}
+
+// Toggle popup
+dateInput.addEventListener("click", () => {
+  if (calendar.style.display === "block") hideCalendar();
+  else showCalendar();
+});
+
+// ✅ Use mousedown instead of click (prevents calendar from closing on button click)
+document.addEventListener("mousedown", (e) => {
+  if (
+    !calendar.contains(e.target) &&
+    e.target !== dateInput
+  ) {
+    hideCalendar();
+  }
+});
+
+// Block manual typing
+dateInput.addEventListener("keydown", (e) => {
+  e.preventDefault();
+});
+
+// Init calendar
+const now = new Date();
+renderCalendar(now.getFullYear(), now.getMonth());
 
     // Booking time slots update on selectedDate change
     // Initially handled during calendar render for today
