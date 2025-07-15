@@ -223,6 +223,90 @@
 .slide-out {
   animation: slideOutToTop 0.25s ease forwards;
 }
+
+/* Slide Left/Right Animations */
+@keyframes slideLeftIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideLeftOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+@keyframes slideRightIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideRightOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.slide-left-in {
+  animation: slideLeftIn 0.3s ease forwards;
+}
+.slide-left-out {
+  animation: slideLeftOut 0.3s ease forwards;
+}
+.slide-right-in {
+  animation: slideRightIn 0.3s ease forwards;
+}
+.slide-right-out {
+  animation: slideRightOut 0.3s ease forwards;
+}
+
+/* Reuse existing slide in/out for open/close */
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+@keyframes slideOutToTop {
+  from {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+}
+.slide-in {
+  animation: slideInFromTop 0.3s ease forwards;
+}
+.slide-out {
+  animation: slideOutToTop 0.25s ease forwards;
+}
+
     /* Disabled past days */
     .calendar-day.disabled {
       color: #bbb;
@@ -460,8 +544,9 @@ function formatDate(date) {
 }
 
 // Render calendar for a given year/month
-function renderCalendar(year, month) {
-  calendar.innerHTML = "";
+function renderCalendar(year, month, direction = null) {
+  const newCalendar = document.createElement("div");
+  newCalendar.className = "calendar-popup calendar-content";
 
   // --- Header ---
   const header = document.createElement("div");
@@ -479,14 +564,7 @@ function renderCalendar(year, month) {
     } else {
       month--;
     }
-    if (
-      year < new Date().getFullYear() ||
-      (year === new Date().getFullYear() && month < new Date().getMonth())
-    ) {
-      year = new Date().getFullYear();
-      month = new Date().getMonth();
-    }
-    renderCalendar(year, month);
+    renderCalendar(year, month, "left");
   };
 
   const nextBtn = document.createElement("button");
@@ -500,7 +578,7 @@ function renderCalendar(year, month) {
     } else {
       month++;
     }
-    renderCalendar(year, month);
+    renderCalendar(year, month, "right");
   };
 
   const monthYear = document.createElement("div");
@@ -508,14 +586,25 @@ function renderCalendar(year, month) {
     month: "long",
   })} ${year}`;
 
+  const todayBtn = document.createElement("button");
+  todayBtn.className = "calendar-today-btn";
+  todayBtn.textContent = "Today";
+  todayBtn.onclick = () => {
+    const now = new Date();
+    currentDate = new Date(now);
+    renderCalendar(now.getFullYear(), now.getMonth(), "down");
+  };
+
   header.appendChild(prevBtn);
   header.appendChild(monthYear);
   header.appendChild(nextBtn);
-  calendar.appendChild(header);
+  header.appendChild(todayBtn);
+  newCalendar.appendChild(header);
 
-  // --- Weekday Header ---
+  // --- Grid ---
   const grid = document.createElement("div");
   grid.className = "calendar-grid";
+
   weekdays.forEach((d) => {
     const wd = document.createElement("div");
     wd.className = "calendar-day-name";
@@ -523,10 +612,8 @@ function renderCalendar(year, month) {
     grid.appendChild(wd);
   });
 
-  // --- Days ---
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDayIndex = new Date(year, month, 1).getDay();
-
   for (let i = 0; i < firstDayIndex; i++) {
     const blank = document.createElement("div");
     blank.className = "calendar-day disabled";
@@ -553,34 +640,40 @@ function renderCalendar(year, month) {
     } else {
       if (isToday) dayEl.classList.add("today");
       if (isSelected) dayEl.classList.add("selected");
-
-      // Click to select date
       dayEl.onclick = () => {
         calendar.querySelectorAll(".calendar-day.selected").forEach((el) =>
           el.classList.remove("selected")
         );
         dayEl.classList.add("selected");
-
         selectedDate = formatDate(dateObj);
         dateInput.value = selectedDate;
         updateTimeSlotsForDate(selectedDate);
         hideCalendar();
       };
     }
-
     grid.appendChild(dayEl);
   }
 
-  calendar.appendChild(grid);
-  const todayBtn = document.createElement("button");
-todayBtn.className = "calendar-today-btn";
-todayBtn.textContent = "Today";
-todayBtn.onclick = () => {
-  const now = new Date();
-  currentDate = new Date(now); // update the current date
-  renderCalendar(now.getFullYear(), now.getMonth());
-};
-header.appendChild(todayBtn);
+  newCalendar.appendChild(grid);
+
+  // Animate slide
+  if (calendar.children.length > 0 && direction) {
+    newCalendar.classList.add(direction === "left" ? "slide-left-in" : "slide-right-in");
+
+    const oldCalendar = calendar.querySelector(".calendar-content");
+    oldCalendar.classList.add(direction === "left" ? "slide-left-out" : "slide-right-out");
+
+    calendar.appendChild(newCalendar);
+
+    oldCalendar.addEventListener("animationend", () => {
+      if (oldCalendar && oldCalendar.parentNode) {
+        calendar.removeChild(oldCalendar);
+      }
+    });
+  } else {
+    calendar.innerHTML = "";
+    calendar.appendChild(newCalendar);
+  }
 }
 
 function showCalendar() {
