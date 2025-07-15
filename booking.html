@@ -44,11 +44,13 @@
 
     .booking-form::before {
       content: '';
-      position: absolute;
-      top: -2px; left: -2px; right: -2px; bottom: -2px;
-      background: linear-gradient(135deg, #007bff, #00c6ff);
-      z-index: -1;
-      border-radius: 14px;
+  display: block; /* explicitly make it a full block */
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  z-index: -1;
+  border-radius: 14px;
+  pointer-events: none; /* prevent weird hover bugs */
     }
 
     .form-group {
@@ -553,6 +555,7 @@ function renderCalendar(year, month, direction = null) {
   header.className = "calendar-header";
 
   const prevBtn = document.createElement("button");
+  prevBtn.type = "button";
   prevBtn.className = "calendar-nav-btn";
   prevBtn.innerHTML = "&#8249;";
   prevBtn.title = "Previous Month";
@@ -568,6 +571,7 @@ function renderCalendar(year, month, direction = null) {
   };
 
   const nextBtn = document.createElement("button");
+  nextBtn.type = "button";
   nextBtn.className = "calendar-nav-btn";
   nextBtn.innerHTML = "&#8250;";
   nextBtn.title = "Next Month";
@@ -587,6 +591,7 @@ function renderCalendar(year, month, direction = null) {
   })} ${year}`;
 
   const todayBtn = document.createElement("button");
+  todayBtn.type = "button";
   todayBtn.className = "calendar-today-btn";
   todayBtn.textContent = "Today";
   todayBtn.onclick = () => {
