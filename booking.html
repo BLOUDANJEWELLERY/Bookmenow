@@ -680,7 +680,7 @@ function renderCalendar(year, month, direction = null) {
   if (calendar.children.length > 0 && direction) {
     newCalendar.classList.add(direction === "left" ? "slide-left-in" : "slide-right-in");
 
-    const oldCalendar = calendar.querySelector(".calendar-content");
+    const oldCalendar = calendar.querySelectorAll(".calendar-content")[0];
     oldCalendar.classList.add(direction === "left" ? "slide-left-out" : "slide-right-out");
 
     calendar.appendChild(newCalendar);
