@@ -173,6 +173,56 @@
       font-size: 0.9rem;
     }
 
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.calendar-today-btn {
+  background-color: #e6f2ff;
+  color: #007bff;
+  border: 1px solid #007bff;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.calendar-today-btn:hover {
+  background-color: #cce5ff;
+}
+
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToTop {
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+}
+
+.slide-in {
+  animation: slideInFromTop 0.3s ease forwards;
+}
+
+.slide-out {
+  animation: slideOutToTop 0.25s ease forwards;
+}
     /* Disabled past days */
     .calendar-day.disabled {
       color: #bbb;
@@ -522,14 +572,31 @@ function renderCalendar(year, month) {
   }
 
   calendar.appendChild(grid);
+  const todayBtn = document.createElement("button");
+todayBtn.className = "calendar-today-btn";
+todayBtn.textContent = "Today";
+todayBtn.onclick = () => {
+  const now = new Date();
+  currentDate = new Date(now); // update the current date
+  renderCalendar(now.getFullYear(), now.getMonth());
+};
+header.appendChild(todayBtn);
 }
 
 function showCalendar() {
   calendar.style.display = "block";
+  calendar.classList.remove("slide-out");
+  calendar.classList.add("slide-in");
 }
 
 function hideCalendar() {
-  calendar.style.display = "none";
+  calendar.classList.remove("slide-in");
+  calendar.classList.add("slide-out");
+  calendar.addEventListener("animationend", () => {
+    if (calendar.classList.contains("slide-out")) {
+      calendar.style.display = "none";
+    }
+  }, { once: true });
 }
 
 // Toggle popup
