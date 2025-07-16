@@ -567,7 +567,11 @@ function formatDate(date) {
 }
 
 // Render calendar for a given year/month
+let isAnimating = false; // Global flag to prevent stacking
+
 function renderCalendar(year, month, direction = null) {
+  if (isAnimating) return; // Block if animation is in progress
+
   const newCalendar = document.createElement("div");
   newCalendar.className = "calendar-popup calendar-content";
 
@@ -677,6 +681,8 @@ function renderCalendar(year, month, direction = null) {
   const oldCalendar = calendar.querySelector(".calendar-content");
 
   if (oldCalendar && direction) {
+    isAnimating = true;
+
     oldCalendar.classList.add(
       direction === "left" ? "slide-right-out" : "slide-left-out"
     );
@@ -684,14 +690,14 @@ function renderCalendar(year, month, direction = null) {
       direction === "left" ? "slide-right-in" : "slide-left-in"
     );
 
-    // Append new calendar before animation ends
     calendar.appendChild(newCalendar);
 
     oldCalendar.addEventListener("animationend", () => {
       if (oldCalendar.parentNode) {
         calendar.removeChild(oldCalendar);
       }
-    });
+      isAnimating = false;
+    }, { once: true }); // Ensures listener runs only once
   } else {
     calendar.innerHTML = "";
     calendar.appendChild(newCalendar);
