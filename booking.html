@@ -3,115 +3,101 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fixed Calendar - BookMeNow</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <title>Book an Appointment – BookMeNow</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/script.js"></script>
   <style>
     body {
       background: #f0f4fa;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
-    
-    .container {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 2rem;
     }
 
-    header {
-      background: linear-gradient(135deg, #007bff, #00c6ff);
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    .booking-main {
+      max-width: 900px;
+      margin: 4rem auto;
+      padding: 1.5rem;
     }
-    
-    .logo {
-      font-size: 1.8rem;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      color: #003366;
+      margin-bottom: 0.5rem;
     }
-    
-    .problem-section, .solution-section {
+
+    p.subtitle {
+      text-align: center;
+      font-size: 1.05rem;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+
+    .booking-form {
       background: white;
-      border-radius: 12px;
       padding: 2rem;
-      margin: 2rem 0;
+      border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 51, 102, 0.08);
       border: 2px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+      /*overflow: visible; /* To allow calendar dropdown overflow */
+    }
+
+    .booking-form::before {
+      content: '';
+  display: block; /* explicitly make it a full block */
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  z-index: -1;
+  border-radius: 14px;
+  pointer-events: none; /* prevent weird hover bugs */
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
       position: relative;
     }
-    
-    .problem-section::before, .solution-section::before {
-      content: '';
-      position: absolute;
-      top: -2px; left: -2px; right: -2px; bottom: -2px;
-      background: linear-gradient(135deg, #007bff, #00c6ff);
-      z-index: -1;
-      border-radius: 14px;
-      pointer-events: none;
-    }
-    
-    h1, h2 {
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: bold;
       color: #003366;
-      margin-top: 0;
     }
-    
-    .problem-description {
-      background: #ffecec;
-      padding: 1.5rem;
-      border-radius: 8px;
-      border-left: 4px solid #ff6b6b;
-      margin: 1.5rem 0;
+
+    input[type="text"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      background-color: #fdfdfd;
+      color: #333;
+      transition: border 0.3s, box-shadow 0.3s;
     }
-    
-    .problem-description h3 {
-      color: #ff6b6b;
-      margin-top: 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+
+    input[type="text"]:focus,
+    input[type="tel"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
     }
-    
-    .solution-explanation {
-      background: #edf7ff;
-      padding: 1.5rem;
-      border-radius: 8px;
-      border-left: 4px solid #4dabf7;
-      margin: 1.5rem 0;
-    }
-    
-    .solution-explanation h3 {
-      color: #228be6;
-      margin-top: 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .calendar-demo {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      margin: 2rem 0;
-    }
-    
-    .calendar-container {
-      flex: 1;
-      min-width: 300px;
-    }
-    
+
+    /* Custom calendar styles */
     .calendar-wrapper {
       position: relative;
       width: 100%;
     }
-    
+
+.calendar-input:focus {
+  box-shadow: none;
+  outline: none;
+  border-color: #007bff; /* Optional: Keep the blue border */
+}
+
     .calendar-input {
       cursor: pointer;
       background-color: #fdfdfd;
@@ -121,32 +107,54 @@
       font-size: 1rem;
       color: #333;
       width: 100%;
-      margin-bottom: 1rem;
     }
-    
+
     .calendar-popup {
-      position: relative;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-      padding: 15px;
-      box-sizing: border-box;
-      width: 100%;
-      max-width: 300px;
-      margin: 0 auto;
-    }
-    
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 10px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  padding: 10px;
+  z-index: 1000;
+
+  /* ↓ new: fix width to match one month + hide overflow */
+  width: 270px;            /* adjust to your grid’s total width */
+  overflow: hidden;
+
+}
+@media (max-width: 600px) {
+  .calendar-popup {
+    padding: 8px;
+    font-size: 0.95rem;
+  }
+}
+
     .calendar-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       color: #007bff;
       font-weight: bold;
       font-size: 1.1rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    
+
     .calendar-nav-btn {
       background: none;
       border: none;
@@ -155,565 +163,643 @@
       cursor: pointer;
       user-select: none;
       transition: color 0.2s ease;
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
     }
-    
     .calendar-nav-btn:hover {
-      background: #e6f2ff;
       color: #0056b3;
     }
-    
+
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 5px;
+      gap: 6px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    
+
     .calendar-day-name {
       font-weight: 600;
       color: #007bff;
       text-align: center;
       font-size: 0.85rem;
       user-select: none;
-      padding: 5px 0;
     }
-    
+
     .calendar-day {
+      width: 26px;
       height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      line-height: 36px;
+      text-align: center;
       border-radius: 6px;
       cursor: pointer;
       user-select: none;
       transition: background-color 0.2s, color 0.2s;
       font-size: 0.9rem;
     }
-    
-    .calendar-day:hover:not(.disabled) {
-      background: #e6f2ff;
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.calendar-today-btn {
+  background-color: #e6f2ff;
+  color: #007bff;
+  border: 1px solid #007bff;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.calendar-today-btn:hover {
+  background-color: #cce5ff;
+}
+
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToTop {
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+}
+
+.slide-in {
+  animation: slideInFromTop 0.3s ease forwards;
+}
+
+.slide-out {
+  animation: slideOutToTop 0.25s ease forwards;
+}
+
+/* Slide Left/Right Animations */
+@keyframes slideLeftIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideLeftOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+@keyframes slideRightIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideRightOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.slide-left-in {
+  animation: slideLeftIn 0.3s ease forwards;
+}
+.slide-left-out {
+  animation: slideLeftOut 0.3s ease forwards;
+}
+.slide-right-in {
+  animation: slideRightIn 0.3s ease forwards;
+}
+.slide-right-out {
+  animation: slideRightOut 0.3s ease forwards;
+}
+
+/* Reuse existing slide in/out for open/close */
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+@keyframes slideOutToTop {
+  from {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+}
+.slide-in {
+  animation: slideInFromTop 0.3s ease forwards;
+}
+.slide-out {
+  animation: slideOutToTop 0.25s ease forwards;
+}
+
+    /* Disabled past days */
+    .calendar-day.disabled {
+      color: #bbb;
+      cursor: default;
+      pointer-events: none;
+      background-color: transparent !important;
     }
-    
+
+    /* Highlight today's date */
     .calendar-day.today {
       border: 2px solid #007bff;
       font-weight: 700;
       color: #0056b3;
     }
-    
+
+    /* Highlight selected date */
     .calendar-day.selected {
       background: #007bff;
       color: white;
       font-weight: 700;
     }
-    
-    .calendar-day.disabled {
-      color: #bbb;
-      cursor: default;
-      pointer-events: none;
-    }
-    
-    .calendar-today-btn {
-      background-color: #e6f2ff;
-      color: #007bff;
-      border: 1px solid #007bff;
-      border-radius: 6px;
-      padding: 6px 12px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    
-    .calendar-today-btn:hover {
-      background-color: #cce5ff;
-    }
-    
-    .nav-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 1rem;
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
-    }
-    
-    .nav-btn {
-      padding: 8px 16px;
-      background: #007bff;
-      color: white;
+      padding: 0.85rem 2rem;
+      font-size: 1rem;
+      font-weight: bold;
       border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: background 0.3s;
-    }
-    
-    .nav-btn:hover {
-      background: #0056b3;
-    }
-    
-    .code-block {
-      background: #2d2d2d;
-      color: #f8f8f2;
-      padding: 1.5rem;
-      border-radius: 8px;
-      overflow-x: auto;
-      font-family: 'Courier New', monospace;
-      font-size: 0.9rem;
-      margin: 1.5rem 0;
-      position: relative;
-    }
-    
-    .code-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-      color: #66d9ef;
-    }
-    
-    .copy-btn {
-      background: #444;
+      border-radius: 30px;
+      background: linear-gradient(to right, #007bff, #00bfff);
       color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
       cursor: pointer;
-      font-size: 0.8rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+      width: 100%;
     }
-    
-    .fix-highlight {
-      background: rgba(255, 215, 0, 0.2);
-      padding: 2px 4px;
-      border-radius: 3px;
-      color: #ffd700;
+
+    .btn:hover {
+      background: linear-gradient(to right, #0056b3, #0099cc);
+      transform: translateY(-1px);
     }
-    
-    .result-section {
-      background: #e8f5e9;
-      border-left: 4px solid #4caf50;
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin: 1.5rem 0;
+
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
     }
-    
-    .result-section h3 {
-      color: #2e7d32;
-      margin-top: 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+
+    .loader {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 0.6s linear infinite;
+      margin-left: 10px;
     }
-    
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: #666;
-      font-size: 0.9rem;
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-    
-    @media (max-width: 768px) {
-      .calendar-demo {
-        flex-direction: column;
-      }
-      
-      .container {
-        padding: 1rem;
-      }
-    }
+}
   </style>
 </head>
 <body>
+  <!-- Header -->
   <header>
-    <div class="logo">
-      <i class="fas fa-calendar-check"></i>
-      <span>Calendar Stacking Fix</span>
-    </div>
+    <nav class="navbar">
+      <div class="logo">BookMeNow</div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="myappointments.html">My Appointments</a></li>
+        <li><a href="booking.html" class="active">Booking</a></li>
+        <li><button id="theme-toggle">🌙</button></li>
+        <li><button id="logout-btn" class="logout-btn" style="display: none;">Logout</button></li>
+      </ul>
+    </nav>
   </header>
-  
-  <div class="container">
-    <h1>Calendar Stacking Issue Solution</h1>
-    
-    <div class="problem-section">
-      <h2><i class="fas fa-exclamation-triangle"></i> The Problem</h2>
-      <div class="problem-description">
-        <h3><i class="fas fa-bug"></i> Issue Description</h3>
-        <p>When navigating between months in the calendar component, especially when pressing next, then previous, then next again, the calendar starts to pile up instead of replacing the previous view.</p>
-        
-        <p>This happens because the animation cleanup doesn't complete properly when quickly navigating between months, causing multiple calendar elements to remain in the DOM.</p>
-        
-        <div class="code-block">
-          <div class="code-header">
-            <span>Problematic Behavior:</span>
-          </div>
-          <pre>// When quickly navigating:
-prevBtn.click();
-nextBtn.click();
-prevBtn.click();
 
-// Result: Multiple calendar elements stack up in the DOM
-// because previous transitions haven't completed</pre>
-        </div>
-      </div>
-      
-      <div class="calendar-demo">
-        <div class="calendar-container">
-          <h3>Problem Demo</h3>
-          <div class="calendar-wrapper">
-            <input type="text" class="calendar-input" id="problem-input" value="Select Date" readonly>
-            <div class="calendar-popup" id="problem-calendar"></div>
-          </div>
-          <div class="nav-buttons">
-            <button class="nav-btn" id="problem-prev"><i class="fas fa-arrow-left"></i> Prev</button>
-            <button class="nav-btn" id="problem-next">Next <i class="fas fa-arrow-right"></i></button>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="solution-section">
-      <h2><i class="fas fa-wrench"></i> The Solution</h2>
-      
-      <div class="solution-explanation">
-        <h3><i class="fas fa-lightbulb"></i> Fix Approach</h3>
-        <p>We'll implement two key improvements:</p>
-        <ol>
-          <li><strong>Animation Lock</strong>: Prevent new transitions while one is in progress</li>
-          <li><strong>Cleanup Mechanism</strong>: Properly remove old calendars after animation completes</li>
-        </ol>
-        
-        <div class="code-block">
-          <div class="code-header">
-            <span>Solution Code:</span>
-            <button class="copy-btn" id="copy-btn">Copy Solution</button>
-          </div>
-          <pre>// 1. Add animation lock
-<span class="fix-highlight">let isAnimating = false;</span>
+  <!-- Main -->
+  <main class="booking-main">
+    <h1>Book an Appointment</h1>
+    <p class="subtitle">Fill out the form below to reserve your slot.</p>
 
-// 2. Update navigation handlers
-prevBtn.onclick = () => {
-  <span class="fix-highlight">if (isAnimating) return;</span>
-  // ... update month ...
-  renderCalendar(year, month, "left");
-};
+    <form id="booking-form" class="booking-form" autocomplete="off">
+      <div class="form-group">
+        <label for="full-name">Full Name</label>
+        <input type="text" id="full-name" name="full-name" required autocomplete="name" />
+      </div>
 
-// 3. Add cleanup in animationend
-oldCalendar.addEventListener('animationend', (e) => {
-  <span class="fix-highlight">if (e.target === oldCalendar) {
-    oldCalendar.remove();
-    isAnimating = false; // Release lock
-  }</span>
-}, { once: true });
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required autocomplete="tel" />
+      </div>
 
-// 4. Set animation lock when starting transition
-<span class="fix-highlight">isAnimating = true;</span>
-</pre>
-        </div>
+      <div class="form-group">
+        <label for="service">Select Service</label>
+        <select id="service" name="service" required>
+          <option value="">-- Choose --</option>
+          <option value="Beard Cutting">Beard Cutting</option>
+          <option value="Haircut">Haircut</option>
+          <option value="Facial">Facial</option>
+          <option value="Hair Coloring">Hair Coloring</option>
+          <option value="Shaving">Shaving</option>
+          <option value="Head Massage">Head Massage</option>
+        </select>
       </div>
-      
-      <div class="calendar-demo">
-        <div class="calendar-container">
-          <h3>Fixed Solution</h3>
-          <div class="calendar-wrapper">
-            <input type="text" class="calendar-input" id="solution-input" value="Select Date" readonly>
-            <div class="calendar-popup" id="solution-calendar"></div>
-          </div>
-          <div class="nav-buttons">
-            <button class="nav-btn" id="solution-prev"><i class="fas fa-arrow-left"></i> Prev</button>
-            <button class="nav-btn" id="solution-next">Next <i class="fas fa-arrow-right"></i></button>
-          </div>
-        </div>
+
+      <div class="form-group calendar-wrapper">
+        <label for="date-input">Date</label>
+        <input type="text" id="date-input" name="date" readonly placeholder="Select a date" required />
+        <div id="calendar" class="calendar-popup" style="display:none;"></div>
       </div>
-      
-      <div class="result-section">
-        <h3><i class="fas fa-check-circle"></i> Results with Fix</h3>
-        <p>The calendar now properly handles quick navigation between months:</p>
-        <ul>
-          <li>Only one calendar element exists in the DOM at any time</li>
-          <li>Smooth animations between month transitions</li>
-          <li>No more stacking of calendar elements</li>
-          <li>Navigation buttons are disabled during transitions</li>
-        </ul>
+
+      <div class="form-group">
+        <label for="time">Time</label>
+        <select id="time" name="time" required>
+          <option value="">-- Choose --</option>
+        </select>
       </div>
-    </div>
-  </div>
-  
+
+      <button type="submit" class="btn" id="submit-btn">Confirm Booking</button>
+    </form>
+  </main>
+
   <footer>
-    <p>Calendar Stacking Issue Solution &copy; 2023</p>
+    <p>© 2025 BookMeNow | Built by Captain</p>
   </footer>
 
-  <script>
-    // Problem calendar - demonstrates the issue
-    document.addEventListener('DOMContentLoaded', () => {
-      // Problem calendar implementation (with issue)
-      function createProblemCalendar() {
-        const calendarEl = document.getElementById('problem-calendar');
-        const prevBtn = document.getElementById('problem-prev');
-        const nextBtn = document.getElementById('problem-next');
-        
-        let currentDate = new Date();
-        let activeCalendars = [];
-        
-        function renderCalendar() {
-          const calendar = document.createElement('div');
-          calendar.className = 'calendar-content';
-          calendar.innerHTML = `
-            <div class="calendar-header">
-              <button class="calendar-nav-btn" id="prev-btn"><</button>
-              <div>${currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</div>
-              <button class="calendar-nav-btn" id="next-btn">></button>
-            </div>
-            <div class="calendar-grid">
-              ${createDayNames()}
-              ${createDays(currentDate)}
-            </div>
-          `;
-          
-          calendarEl.appendChild(calendar);
-          activeCalendars.push(calendar);
-          
-          // Add navigation
-          calendar.querySelector('#prev-btn').addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar();
-          });
-          
-          calendar.querySelector('#next-btn').addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar();
-          });
-        }
-        
-        function createDayNames() {
-          return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-            .map(day => `<div class="calendar-day-name">${day}</div>`)
-            .join('');
-        }
-        
-        function createDays(date) {
-          const year = date.getFullYear();
-          const month = date.getMonth();
-          const firstDay = new Date(year, month, 1).getDay();
-          const daysInMonth = new Date(year, month + 1, 0).getDate();
-          
-          let daysHtml = '';
-          
-          // Empty days
-          for (let i = 0; i < firstDay; i++) {
-            daysHtml += `<div class="calendar-day disabled"></div>`;
-          }
-          
-          // Actual days
-          for (let day = 1; day <= daysInMonth; day++) {
-            daysHtml += `<div class="calendar-day">${day}</div>`;
-          }
-          
-          return daysHtml;
-        }
-        
-        // Initial render
-        renderCalendar();
-        
-        // Navigation buttons
-        prevBtn.addEventListener('click', () => {
-          currentDate.setMonth(currentDate.getMonth() - 1);
-          renderCalendar();
-        });
-        
-        nextBtn.addEventListener('click', () => {
-          currentDate.setMonth(currentDate.getMonth() + 1);
-          renderCalendar();
-        });
-      }
-      
-      // Solution calendar - fixed implementation
-      function createSolutionCalendar() {
-        const calendarEl = document.getElementById('solution-calendar');
-        const prevBtn = document.getElementById('solution-prev');
-        const nextBtn = document.getElementById('solution-next');
-        
-        let currentDate = new Date();
-        let isAnimating = false;
-        
-        function renderCalendar(direction = null) {
-          // Clear calendar if not animating
-          if (!isAnimating) {
-            calendarEl.innerHTML = '';
-          }
-          
-          const calendar = document.createElement('div');
-          calendar.className = 'calendar-content';
-          calendar.innerHTML = `
-            <div class="calendar-header">
-              <button class="calendar-nav-btn prev-btn"><</button>
-              <div>${currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</div>
-              <button class="calendar-nav-btn next-btn">></button>
-            </div>
-            <div class="calendar-grid">
-              ${createDayNames()}
-              ${createDays(currentDate)}
-            </div>
-          `;
-          
-          if (direction) {
-            calendar.classList.add(direction === 'left' ? 'slide-right-in' : 'slide-left-in');
-          }
-          
-          calendarEl.appendChild(calendar);
-          
-          // Add navigation
-          calendar.querySelector('.prev-btn').addEventListener('click', () => {
-            if (isAnimating) return;
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar('right');
-          });
-          
-          calendar.querySelector('.next-btn').addEventListener('click', () => {
-            if (isAnimating) return;
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar('left');
-          });
-          
-          // If we're replacing an existing calendar, animate the transition
-          if (calendarEl.children.length > 1 && direction) {
-            isAnimating = true;
-            const oldCalendar = calendarEl.children[0];
-            oldCalendar.classList.add(direction === 'left' ? 'slide-right-out' : 'slide-left-out');
-            
-            oldCalendar.addEventListener('animationend', () => {
-              if (oldCalendar.parentNode) {
-                oldCalendar.remove();
-              }
-              isAnimating = false;
-            }, { once: true });
-          }
-        }
-        
-        function createDayNames() {
-          return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-            .map(day => `<div class="calendar-day-name">${day}</div>`)
-            .join('');
-        }
-        
-        function createDays(date) {
-          const year = date.getFullYear();
-          const month = date.getMonth();
-          const firstDay = new Date(year, month, 1).getDay();
-          const daysInMonth = new Date(year, month + 1, 0).getDate();
-          
-          let daysHtml = '';
-          
-          // Empty days
-          for (let i = 0; i < firstDay; i++) {
-            daysHtml += `<div class="calendar-day disabled"></div>`;
-          }
-          
-          // Actual days
-          for (let day = 1; day <= daysInMonth; day++) {
-            daysHtml += `<div class="calendar-day">${day}</div>`;
-          }
-          
-          return daysHtml;
-        }
-        
-        // Initial render
-        renderCalendar();
-        
-        // Navigation buttons
-        prevBtn.addEventListener('click', () => {
-          if (isAnimating) return;
-          currentDate.setMonth(currentDate.getMonth() - 1);
-          renderCalendar('right');
-        });
-        
-        nextBtn.addEventListener('click', () => {
-          if (isAnimating) return;
-          currentDate.setMonth(currentDate.getMonth() + 1);
-          renderCalendar('left');
-        });
-      }
-      
-      // Initialize both calendars
-      createProblemCalendar();
-      createSolutionCalendar();
-      
-      // Copy button functionality
-      document.getElementById('copy-btn').addEventListener('click', () => {
-        const code = `// Add animation lock
-let isAnimating = false;
+  <!-- Firebase + Booking Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-// Update navigation handlers
-prevBtn.onclick = () => {
-  if (isAnimating) return;
-  // ... update month ...
-  renderCalendar(year, month, "left");
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
+      authDomain: "sampleportfolio-9450c.firebaseapp.com",
+      projectId: "sampleportfolio-9450c",
+      storageBucket: "sampleportfolio-9450c.appspot.com",
+      messagingSenderId: "725347523572",
+      appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const logoutBtn = document.getElementById("logout-btn");
+    const dateInput = document.getElementById("date-input");
+    const calendar = document.getElementById("calendar");
+    const timeSelect = document.getElementById("time");
+    const submitBtn = document.getElementById("submit-btn");
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) window.location.href = "login.html";
+      else logoutBtn.style.display = "inline-block";
+    });
+
+    logoutBtn?.addEventListener("click", () => {
+      signOut(auth).then(() => window.location.href = "login.html").catch(console.error);
+    });
+
+    // Time slots generation (same as before)
+    const generateTimeSlots = () => {
+      const slots = [];
+      for (let h = 8; h <= 23; h++) {
+        for (let m = 0; m < 60; m += 30) {
+          if (h === 23 && m > 30) continue;
+          const hour = h % 12 === 0 ? 12 : h % 12;
+          const ampm = h < 12 ? "AM" : "PM";
+          const mm = m.toString().padStart(2, "0");
+          slots.push({
+            value: `${h.toString().padStart(2, "0")}:${mm}`,
+            label: `${hour}:${mm} ${ampm}`
+          });
+        }
+      }
+      return slots;
+    };
+
+    const allSlots = generateTimeSlots();
+
+    async function updateTimeSlotsForDate(selectedDate) {
+      timeSelect.innerHTML = `<option value="">-- Choose --</option>`;
+      if (!selectedDate) return;
+
+      const now = new Date();
+      const isToday = selectedDate === now.toISOString().split("T")[0];
+
+      const q = query(collection(db, "bookings"), where("date", "==", selectedDate));
+      const snapshot = await getDocs(q);
+      const bookedTimes = snapshot.docs.map(doc => doc.data().time);
+
+      const filteredSlots = allSlots.filter(slot => {
+        if (bookedTimes.includes(slot.value)) return false;
+        if (isToday) {
+          const [hh, mm] = slot.value.split(":").map(Number);
+          const slotTime = new Date();
+          slotTime.setHours(hh, mm, 0, 0);
+          if (slotTime <= now) return false;
+        }
+        return true;
+      });
+
+      if (filteredSlots.length === 0) {
+        timeSelect.innerHTML = `<option value="">No available slots</option>`;
+        return;
+      }
+
+      filteredSlots.forEach(slot => {
+        const opt = document.createElement("option");
+        opt.value = slot.value;
+        opt.textContent = slot.label;
+        timeSelect.appendChild(opt);
+      });
+    }
+
+// --- Custom Calendar Logic ---
+
+const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+let currentDate = new Date(); // today initially
+let selectedDate = null;
+
+// Format date as YYYY-MM-DD (LOCAL, not UTC)
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+// Render calendar for a given year/month
+function renderCalendar(year, month, direction = null) {
+  const newCalendar = document.createElement("div");
+  newCalendar.className = "calendar-popup calendar-content";
+
+  // --- Header ---
+  const header = document.createElement("div");
+  header.className = "calendar-header";
+
+  const prevBtn = document.createElement("button");
+  prevBtn.type = "button";
+  prevBtn.className = "calendar-nav-btn";
+  prevBtn.innerHTML = "&#8249;";
+  prevBtn.title = "Previous Month";
+  prevBtn.disabled = year === new Date().getFullYear() && month === new Date().getMonth();
+  prevBtn.onclick = () => {
+    if (month === 0) {
+      month = 11;
+      year--;
+    } else {
+      month--;
+    }
+    renderCalendar(year, month, "left");
+  };
+
+  const nextBtn = document.createElement("button");
+  nextBtn.type = "button";
+  nextBtn.className = "calendar-nav-btn";
+  nextBtn.innerHTML = "&#8250;";
+  nextBtn.title = "Next Month";
+  nextBtn.onclick = () => {
+    if (month === 11) {
+      month = 0;
+      year++;
+    } else {
+      month++;
+    }
+    renderCalendar(year, month, "right");
+  };
+
+  const monthYear = document.createElement("div");
+  monthYear.textContent = `${new Date(year, month).toLocaleString("default", {
+    month: "long",
+  })} ${year}`;
+
+  const todayBtn = document.createElement("button");
+  todayBtn.type = "button";
+  todayBtn.className = "calendar-today-btn";
+  todayBtn.textContent = "Today";
+  todayBtn.onclick = () => {
+    const now = new Date();
+    currentDate = new Date(now);
+    renderCalendar(now.getFullYear(), now.getMonth(), "down");
+  };
+
+  header.appendChild(prevBtn);
+  header.appendChild(monthYear);
+  header.appendChild(nextBtn);
+  header.appendChild(todayBtn);
+  newCalendar.appendChild(header);
+
+  // --- Grid ---
+  const grid = document.createElement("div");
+  grid.className = "calendar-grid";
+
+  weekdays.forEach((d) => {
+    const wd = document.createElement("div");
+    wd.className = "calendar-day-name";
+    wd.textContent = d;
+    grid.appendChild(wd);
+  });
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDayIndex = new Date(year, month, 1).getDay();
+  for (let i = 0; i < firstDayIndex; i++) {
+    const blank = document.createElement("div");
+    blank.className = "calendar-day disabled";
+    grid.appendChild(blank);
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateObj = new Date(year, month, day);
+    dateObj.setHours(0, 0, 0, 0);
+
+    const dayEl = document.createElement("div");
+    dayEl.className = "calendar-day";
+    dayEl.textContent = day;
+
+    const isToday = dateObj.getTime() === today.getTime();
+    const isInPast = dateObj < today;
+    const isSelected = selectedDate === formatDate(dateObj);
+
+    if (isInPast) {
+      dayEl.classList.add("disabled");
+    } else {
+      if (isToday) dayEl.classList.add("today");
+      if (isSelected) dayEl.classList.add("selected");
+      dayEl.onclick = () => {
+        calendar.querySelectorAll(".calendar-day.selected").forEach((el) =>
+          el.classList.remove("selected")
+        );
+        dayEl.classList.add("selected");
+        selectedDate = formatDate(dateObj);
+        dateInput.value = selectedDate;
+        updateTimeSlotsForDate(selectedDate);
+        hideCalendar();
+      };
+    }
+    grid.appendChild(dayEl);
+  }
+
+  newCalendar.appendChild(grid);
+
+// Animate slide
+if (calendar.children.length > 0 && direction) {
+  const oldCalendar = calendar.querySelector(".calendar-content");
+
+  // Set up exit animation on old calendar
+  oldCalendar.classList.add(
+    direction === "left" ? "slide-right-out" : "slide-left-out"
+  );
+
+  // Set up entrance animation on new calendar
+  newCalendar.classList.add(
+    direction === "left" ? "slide-right-in" : "slide-left-in"
+  );
+
+  calendar.appendChild(newCalendar);
+
+  // Prevent multiple simultaneous transitions
+const cleanupOldCalendar = (e) => {
+  if (e.target === oldCalendar) {
+    oldCalendar.removeEventListener("animationend", cleanupOldCalendar);
+    if (oldCalendar.parentNode) {
+      calendar.removeChild(oldCalendar);
+    }
+  }
 };
 
-// Add cleanup in animationend
-oldCalendar.addEventListener('animationend', (e) => {
-  if (e.target === oldCalendar) {
-    oldCalendar.remove();
-    isAnimating = false; // Release lock
-  }
-}, { once: true });
+oldCalendar.addEventListener("animationend", cleanupOldCalendar);
+calendar.appendChild(newCalendar);
+} else {
+  calendar.innerHTML = "";
+  calendar.appendChild(newCalendar);
+}
+}
+function showCalendar() {
+  calendar.style.display = "block";
+  calendar.classList.remove("slide-out");
+  calendar.classList.add("slide-in");
+}
 
-// Set animation lock when starting transition
-isAnimating = true;`;
-        
-        navigator.clipboard.writeText(code).then(() => {
-          const btn = document.getElementById('copy-btn');
-          const originalText = btn.textContent;
-          btn.textContent = 'Copied!';
-          setTimeout(() => {
-            btn.textContent = originalText;
-          }, 2000);
+function hideCalendar() {
+  calendar.classList.remove("slide-in");
+  calendar.classList.add("slide-out");
+  calendar.addEventListener("animationend", () => {
+    if (calendar.classList.contains("slide-out")) {
+      calendar.style.display = "none";
+    }
+  }, { once: true });
+}
+
+// Toggle popup
+dateInput.addEventListener("click", () => {
+  if (calendar.style.display === "block") hideCalendar();
+  else showCalendar();
+});
+
+// ✅ Use mousedown instead of click (prevents calendar from closing on button click)
+document.addEventListener("mousedown", (e) => {
+  if (
+    !calendar.contains(e.target) &&
+    e.target !== dateInput
+  ) {
+    hideCalendar();
+  }
+});
+
+// Block manual typing
+dateInput.addEventListener("keydown", (e) => {
+  e.preventDefault();
+});
+
+// Init calendar
+const now = new Date();
+renderCalendar(now.getFullYear(), now.getMonth());
+
+    // Booking time slots update on selectedDate change
+    // Initially handled during calendar render for today
+
+    // --- Booking form submit logic (same as before) ---
+
+    document.getElementById("booking-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const name = document.getElementById("full-name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const service = document.getElementById("service").value;
+      const date = dateInput.value;
+      const time = document.getElementById("time").value;
+      if (!date) {
+        alert("Please select a valid date.");
+        return;
+      }
+      const bookingId = "BMN" + Math.floor(100000 + Math.random() * 900000);
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Booking <span class="loader"></span>';
+
+      try {
+        const user = auth.currentUser;
+        await addDoc(collection(db, "bookings"), {
+          userId: user.uid,
+          name,
+          phone,
+          service,
+          date,
+          time,
+          bookingId,
+          done: false,
+          createdAt: serverTimestamp()
         });
-      });
+
+        localStorage.setItem("bookingData", JSON.stringify({ name, phone, service, date, time, bookingId }));
+        window.location.href = "thankyou.html";
+      } catch (err) {
+        console.error("Firestore Error:", err);
+        alert("Failed to save booking. Please try again.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = "Confirm Booking";
+      }
     });
-    
-    // Animation keyframes
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slideInFromTop {
-        0% { transform: translateY(-15px); opacity: 0; }
-        100% { transform: translateY(0); opacity: 1; }
-      }
-      
-      @keyframes slideOutToTop {
-        0% { transform: translateY(0); opacity: 1; }
-        100% { transform: translateY(-15px); opacity: 0; }
-      }
-      
-      @keyframes slideLeftIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-      }
-      
-      @keyframes slideLeftOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(-100%); opacity: 0; }
-      }
-      
-      @keyframes slideRightIn {
-        from { transform: translateX(-100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-      }
-      
-      @keyframes slideRightOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-      }
-      
-      .slide-in { animation: slideInFromTop 0.3s ease forwards; }
-      .slide-out { animation: slideOutToTop 0.25s ease forwards; }
-      .slide-left-in { animation: slideLeftIn 0.3s ease forwards; }
-      .slide-left-out { animation: slideLeftOut 0.3s ease forwards; }
-      .slide-right-in { animation: slideRightIn 0.3s ease forwards; }
-      .slide-right-out { animation: slideRightOut 0.3s ease forwards; }
-    `;
-    document.head.appendChild(style);
   </script>
 </body>
 </html>
