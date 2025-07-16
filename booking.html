@@ -109,7 +109,7 @@
       width: 100%;
     }
 
-    .calendar-popup {
+.calendar-popup {
   position: absolute;
   top: 100%;
   left: 0;
@@ -121,7 +121,10 @@
   z-index: 1000;
   padding: 10px;
   box-sizing: border-box;
+  width: 270px;         /* 👈 you can add this directly here */
+  overflow: hidden;
 }
+
 @media (max-width: 600px) {
   .calendar-popup {
     padding: 8px;
