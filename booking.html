@@ -109,7 +109,8 @@
       width: 100%;
     }
 
-.calendar-popup {
+    .calendar-popup {
+  box-sizing: border-box;
   position: absolute;
   top: 100%;
   left: 0;
@@ -117,14 +118,14 @@
   background: white;
   border: 1px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   padding: 10px;
-  box-sizing: border-box;
-  width: 270px;         /* 👈 you can add this directly here */
+  z-index: 1000;
+
+  /* ↓ new: fix width to match one month + hide overflow */
+  width: 270px;            /* adjust to your grid’s total width */
   overflow: hidden;
 }
-
 @media (max-width: 600px) {
   .calendar-popup {
     padding: 8px;
