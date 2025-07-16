@@ -109,28 +109,35 @@
       width: 100%;
     }
 
-.calendar-popup {
+    .calendar-popup {
   position: absolute;
   top: 100%;
   left: 0;
   margin-top: 6px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   z-index: 1000;
-  width: 270px;
-  overflow: hidden;
-}
-
-/* New class for individual month content (inside popup) */
-.calendar-content {
+  padding: 10px;
   box-sizing: border-box;
+  .calendar-popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
   background: white;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   padding: 10px;
-  width: 100%;
+  z-index: 1000;
+
+  /* ↓ new: fix width to match one month + hide overflow */
+  width: 270px;            /* adjust to your grid’s total width */
   overflow: hidden;
 }
-
+}
 @media (max-width: 600px) {
   .calendar-popup {
     padding: 8px;
@@ -562,7 +569,7 @@ function formatDate(date) {
 // Render calendar for a given year/month
 function renderCalendar(year, month, direction = null) {
   const newCalendar = document.createElement("div");
-  newCalendar.className = "calendar-content";
+  newCalendar.className = "calendar-popup calendar-content";
 
   // --- Header ---
   const header = document.createElement("div");
@@ -675,30 +682,39 @@ function renderCalendar(year, month, direction = null) {
 
   newCalendar.appendChild(grid);
 
-  // Handle transitions
+// Animate slide
+if (calendar.children.length > 0 && direction) {
   const oldCalendar = calendar.querySelector(".calendar-content");
 
-  if (oldCalendar && direction) {
-    oldCalendar.classList.add(
-      direction === "left" ? "slide-right-out" : "slide-left-out"
-    );
-    newCalendar.classList.add(
-      direction === "left" ? "slide-right-in" : "slide-left-in"
-    );
+  // Set up exit animation on old calendar
+  oldCalendar.classList.add(
+    direction === "left" ? "slide-right-out" : "slide-left-out"
+  );
 
-    calendar.appendChild(newCalendar);
+  // Set up entrance animation on new calendar
+  newCalendar.classList.add(
+    direction === "left" ? "slide-right-in" : "slide-left-in"
+  );
 
-    oldCalendar.addEventListener("animationend", (e) => {
-      if (e.target === oldCalendar) {
-        oldCalendar.remove();
-      }
-    }, { once: true });
-  } else {
-    calendar.innerHTML = "";
-    calendar.appendChild(newCalendar);
+  calendar.appendChild(newCalendar);
+
+  // Prevent multiple simultaneous transitions
+const cleanupOldCalendar = (e) => {
+  if (e.target === oldCalendar) {
+    oldCalendar.removeEventListener("animationend", cleanupOldCalendar);
+    if (oldCalendar.parentNode) {
+      calendar.removeChild(oldCalendar);
+    }
   }
-}
+};
 
+oldCalendar.addEventListener("animationend", cleanupOldCalendar);
+calendar.appendChild(newCalendar);
+} else {
+  calendar.innerHTML = "";
+  calendar.appendChild(newCalendar);
+}
+}
 function showCalendar() {
   calendar.style.display = "block";
   calendar.classList.remove("slide-out");
