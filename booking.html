@@ -567,10 +567,10 @@ function formatDate(date) {
 }
 
 // Render calendar for a given year/month
-let isAnimating = false; // Global flag to prevent stacking
+let isAnimating = false;
 
 function renderCalendar(year, month, direction = null) {
-  if (isAnimating) return; // Block if animation is in progress
+  if (isAnimating) return;
 
   const newCalendar = document.createElement("div");
   newCalendar.className = "calendar-popup calendar-content";
@@ -586,6 +586,7 @@ function renderCalendar(year, month, direction = null) {
   prevBtn.title = "Previous Month";
   prevBtn.disabled = year === new Date().getFullYear() && month === new Date().getMonth();
   prevBtn.onclick = () => {
+    if (isAnimating) return;
     const newMonth = month === 0 ? 11 : month - 1;
     const newYear = month === 0 ? year - 1 : year;
     renderCalendar(newYear, newMonth, "left");
@@ -597,6 +598,7 @@ function renderCalendar(year, month, direction = null) {
   nextBtn.innerHTML = "&#8250;";
   nextBtn.title = "Next Month";
   nextBtn.onclick = () => {
+    if (isAnimating) return;
     const newMonth = month === 11 ? 0 : month + 1;
     const newYear = month === 11 ? year + 1 : year;
     renderCalendar(newYear, newMonth, "right");
@@ -612,6 +614,7 @@ function renderCalendar(year, month, direction = null) {
   todayBtn.className = "calendar-today-btn";
   todayBtn.textContent = "Today";
   todayBtn.onclick = () => {
+    if (isAnimating) return;
     const now = new Date();
     currentDate = new Date(now);
     renderCalendar(now.getFullYear(), now.getMonth(), "down");
@@ -683,6 +686,11 @@ function renderCalendar(year, month, direction = null) {
   if (oldCalendar && direction) {
     isAnimating = true;
 
+    // Remove any lingering animation classes
+    oldCalendar.classList.remove("slide-left-out", "slide-right-out");
+    newCalendar.classList.remove("slide-left-in", "slide-right-in");
+
+    // Apply new animation classes
     oldCalendar.classList.add(
       direction === "left" ? "slide-right-out" : "slide-left-out"
     );
@@ -690,14 +698,28 @@ function renderCalendar(year, month, direction = null) {
       direction === "left" ? "slide-right-in" : "slide-left-in"
     );
 
+    // Append new calendar
     calendar.appendChild(newCalendar);
 
-    oldCalendar.addEventListener("animationend", () => {
+    // Clean up after animation
+    const handleAnimationEnd = () => {
       if (oldCalendar.parentNode) {
         calendar.removeChild(oldCalendar);
       }
       isAnimating = false;
-    }, { once: true }); // Ensures listener runs only once
+    };
+
+    oldCalendar.addEventListener("animationend", handleAnimationEnd, { once: true });
+
+    // Fallback: reset animation flag after 500ms if animationend doesn't fire
+    setTimeout(() => {
+      if (isAnimating) {
+        if (oldCalendar.parentNode) {
+          calendar.removeChild(oldCalendar);
+        }
+        isAnimating = false;
+      }
+    }, 500);
   } else {
     calendar.innerHTML = "";
     calendar.appendChild(newCalendar);
