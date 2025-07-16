@@ -582,13 +582,9 @@ function renderCalendar(year, month, direction = null) {
   prevBtn.title = "Previous Month";
   prevBtn.disabled = year === new Date().getFullYear() && month === new Date().getMonth();
   prevBtn.onclick = () => {
-    if (month === 0) {
-      month = 11;
-      year--;
-    } else {
-      month--;
-    }
-    renderCalendar(year, month, "left");
+    const newMonth = month === 0 ? 11 : month - 1;
+    const newYear = month === 0 ? year - 1 : year;
+    renderCalendar(newYear, newMonth, "left");
   };
 
   const nextBtn = document.createElement("button");
@@ -597,13 +593,9 @@ function renderCalendar(year, month, direction = null) {
   nextBtn.innerHTML = "&#8250;";
   nextBtn.title = "Next Month";
   nextBtn.onclick = () => {
-    if (month === 11) {
-      month = 0;
-      year++;
-    } else {
-      month++;
-    }
-    renderCalendar(year, month, "right");
+    const newMonth = month === 11 ? 0 : month + 1;
+    const newYear = month === 11 ? year + 1 : year;
+    renderCalendar(newYear, newMonth, "right");
   };
 
   const monthYear = document.createElement("div");
@@ -621,10 +613,7 @@ function renderCalendar(year, month, direction = null) {
     renderCalendar(now.getFullYear(), now.getMonth(), "down");
   };
 
-  header.appendChild(prevBtn);
-  header.appendChild(monthYear);
-  header.appendChild(nextBtn);
-  header.appendChild(todayBtn);
+  header.append(prevBtn, monthYear, nextBtn, todayBtn);
   newCalendar.appendChild(header);
 
   // --- Grid ---
@@ -640,6 +629,7 @@ function renderCalendar(year, month, direction = null) {
 
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDayIndex = new Date(year, month, 1).getDay();
+
   for (let i = 0; i < firstDayIndex; i++) {
     const blank = document.createElement("div");
     blank.className = "calendar-day disabled";
@@ -677,44 +667,37 @@ function renderCalendar(year, month, direction = null) {
         hideCalendar();
       };
     }
+
     grid.appendChild(dayEl);
   }
 
   newCalendar.appendChild(grid);
 
-// Animate slide
-if (calendar.children.length > 0 && direction) {
+  // --- Animation Handling ---
   const oldCalendar = calendar.querySelector(".calendar-content");
 
-  // Set up exit animation on old calendar
-  oldCalendar.classList.add(
-    direction === "left" ? "slide-right-out" : "slide-left-out"
-  );
+  if (oldCalendar && direction) {
+    oldCalendar.classList.add(
+      direction === "left" ? "slide-right-out" : "slide-left-out"
+    );
+    newCalendar.classList.add(
+      direction === "left" ? "slide-right-in" : "slide-left-in"
+    );
 
-  // Set up entrance animation on new calendar
-  newCalendar.classList.add(
-    direction === "left" ? "slide-right-in" : "slide-left-in"
-  );
+    // Append new calendar before animation ends
+    calendar.appendChild(newCalendar);
 
-  calendar.appendChild(newCalendar);
-
-  // Prevent multiple simultaneous transitions
-const cleanupOldCalendar = (e) => {
-  if (e.target === oldCalendar) {
-    oldCalendar.removeEventListener("animationend", cleanupOldCalendar);
-    if (oldCalendar.parentNode) {
-      calendar.removeChild(oldCalendar);
-    }
+    oldCalendar.addEventListener("animationend", () => {
+      if (oldCalendar.parentNode) {
+        calendar.removeChild(oldCalendar);
+      }
+    });
+  } else {
+    calendar.innerHTML = "";
+    calendar.appendChild(newCalendar);
   }
-};
+}
 
-oldCalendar.addEventListener("animationend", cleanupOldCalendar);
-calendar.appendChild(newCalendar);
-} else {
-  calendar.innerHTML = "";
-  calendar.appendChild(newCalendar);
-}
-}
 function showCalendar() {
   calendar.style.display = "block";
   calendar.classList.remove("slide-out");
