@@ -4,164 +4,78 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Book an Appointment – BookMeNow</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/script.js"></script>
   <style>
     body {
       background: #f0f4fa;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #333;
-      line-height: 1.6;
     }
 
-    /* Header Styles */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: linear-gradient(135deg, #003366, #007bff);
-      color: white;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-
-    .logo span {
-      color: #00c6ff;
-    }
-
-    .nav-links {
-      display: flex;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .nav-links li {
-      margin-left: 1.5rem;
-    }
-
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      padding: 0.5rem 0.8rem;
-      border-radius: 4px;
-      transition: background 0.3s;
-    }
-
-    .nav-links a:hover, .nav-links a.active {
-      background: rgba(255, 255, 255, 0.15);
-    }
-
-    .logout-btn {
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.3s;
-      font-weight: 500;
-    }
-
-    .logout-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Main Content */
     .booking-main {
       max-width: 900px;
-      margin: 2rem auto;
+      margin: 4rem auto;
       padding: 1.5rem;
     }
 
     h1 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: 2rem;
       color: #003366;
       margin-bottom: 0.5rem;
     }
 
     p.subtitle {
       text-align: center;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       color: #555;
       margin-bottom: 2rem;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
     }
 
     .booking-form {
       background: white;
-      padding: 2.5rem;
-      border-radius: 16px;
-      box-shadow: 0 6px 25px rgba(0, 51, 102, 0.1);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 51, 102, 0.08);
       border: 2px solid transparent;
       background-clip: padding-box;
       position: relative;
+      /*overflow: visible; /* To allow calendar dropdown overflow */
     }
 
     .booking-form::before {
       content: '';
-      position: absolute;
-      top: -2px; left: -2px; right: -2px; bottom: -2px;
-      background: linear-gradient(135deg, #007bff, #00c6ff);
-      z-index: -1;
-      border-radius: 18px;
-      pointer-events: none;
+  display: block; /* explicitly make it a full block */
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  z-index: -1;
+  border-radius: 14px;
+  pointer-events: none; /* prevent weird hover bugs */
     }
 
-    /* Form Styles */
     .form-group {
-      margin-bottom: 1.8rem;
+      margin-bottom: 1.5rem;
       position: relative;
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 0.6rem;
-      font-weight: 600;
+      margin-bottom: 0.4rem;
+      font-weight: bold;
       color: #003366;
-      font-size: 1.05rem;
-      display: flex;
-      align-items: center;
-    }
-
-    .form-group label i {
-      margin-right: 10px;
-      color: #007bff;
-      font-size: 1.1rem;
     }
 
     input[type="text"],
     input[type="tel"],
     select {
       width: 100%;
-      padding: 0.85rem;
-      border: 1px solid #d1d1d6;
-      border-radius: 8px;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
       font-size: 1rem;
-      background-color: #f9f9fc;
+      background-color: #fdfdfd;
       color: #333;
-      transition: all 0.3s ease;
-      box-sizing: border-box;
-    }
-
-    input[type="text"]:hover,
-    input[type="tel"]:hover,
-    select:hover {
-      border-color: #a7a7b3;
+      transition: border 0.3s, box-shadow 0.3s;
     }
 
     input[type="text"]:focus,
@@ -170,51 +84,75 @@
       outline: none;
       border-color: #007bff;
       box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-      background-color: #fff;
     }
 
-    /* Calendar Styles (FIXED) */
+    /* Custom calendar styles */
     .calendar-wrapper {
       position: relative;
       width: 100%;
     }
 
+.calendar-input:focus {
+  box-shadow: none;
+  outline: none;
+  border-color: #007bff; /* Optional: Keep the blue border */
+}
+
     .calendar-input {
       cursor: pointer;
-      background-color: #f9f9fc;
-      border: 1px solid #d1d1d6;
-      border-radius: 8px;
-      padding: 0.85rem;
+      background-color: #fdfdfd;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 0.75rem;
       font-size: 1rem;
       color: #333;
       width: 100%;
-      box-sizing: border-box;
     }
 
     .calendar-popup {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      margin-top: 8px;
-      background: white;
-      border: 1px solid #d1d1d6;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      z-index: 1000;
-      padding: 15px;
-      box-sizing: border-box;
-      width: 300px;
-      overflow: hidden;
-    }
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 10px;
+  box-sizing: border-box;
+  .calendar-popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  padding: 10px;
+  z-index: 1000;
+
+  /* ↓ new: fix width to match one month + hide overflow */
+  width: 270px;            /* adjust to your grid’s total width */
+  overflow: hidden;
+}
+}
+@media (max-width: 600px) {
+  .calendar-popup {
+    padding: 8px;
+    font-size: 0.95rem;
+  }
+}
 
     .calendar-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       color: #007bff;
-      font-weight: 600;
-      font-size: 1.15rem;
+      font-weight: bold;
+      font-size: 1.1rem;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
@@ -222,27 +160,19 @@
       background: none;
       border: none;
       color: #007bff;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       cursor: pointer;
       user-select: none;
       transition: color 0.2s ease;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    
     .calendar-nav-btn:hover {
-      background-color: #f0f7ff;
       color: #0056b3;
     }
 
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 8px;
+      gap: 6px;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
@@ -250,77 +180,157 @@
       font-weight: 600;
       color: #007bff;
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       user-select: none;
-      padding: 6px 0;
     }
 
     .calendar-day {
-      width: 32px;
-      height: 32px;
-      line-height: 32px;
+      width: 26px;
+      height: 36px;
+      line-height: 36px;
       text-align: center;
-      border-radius: 50%;
+      border-radius: 6px;
       cursor: pointer;
       user-select: none;
-      transition: all 0.2s ease;
-      font-size: 0.95rem;
-      margin: 0 auto;
+      transition: background-color 0.2s, color 0.2s;
+      font-size: 0.9rem;
     }
 
-    .calendar-day:hover:not(.disabled) {
-      background-color: #e6f2ff;
-    }
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
 
-    .calendar-today-btn {
-      background-color: #e6f2ff;
-      color: #007bff;
-      border: 1px solid #b8daff;
-      border-radius: 6px;
-      padding: 6px 12px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-    
-    .calendar-today-btn:hover {
-      background-color: #cce5ff;
-      border-color: #007bff;
-    }
+.calendar-today-btn {
+  background-color: #e6f2ff;
+  color: #007bff;
+  border: 1px solid #007bff;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.calendar-today-btn:hover {
+  background-color: #cce5ff;
+}
 
-    /* Animations */
-    @keyframes slideInFromTop {
-      0% {
-        transform: translateY(-15px);
-        opacity: 0;
-      }
-      100% {
-        transform: translateY(0px);
-        opacity: 1;
-      }
-    }
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
 
-    @keyframes slideOutToTop {
-      0% {
-        transform: translateY(0px);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-15px);
-        opacity: 0;
-      }
-    }
+@keyframes slideOutToTop {
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+}
 
-    .slide-in {
-      animation: slideInFromTop 0.3s ease forwards;
-    }
+.slide-in {
+  animation: slideInFromTop 0.3s ease forwards;
+}
 
-    .slide-out {
-      animation: slideOutToTop 0.25s ease forwards;
-    }
+.slide-out {
+  animation: slideOutToTop 0.25s ease forwards;
+}
 
-    /* Calendar Day States */
+/* Slide Left/Right Animations */
+@keyframes slideLeftIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideLeftOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+@keyframes slideRightIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideRightOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.slide-left-in {
+  animation: slideLeftIn 0.3s ease forwards;
+}
+.slide-left-out {
+  animation: slideLeftOut 0.3s ease forwards;
+}
+.slide-right-in {
+  animation: slideRightIn 0.3s ease forwards;
+}
+.slide-right-out {
+  animation: slideRightOut 0.3s ease forwards;
+}
+
+/* Reuse existing slide in/out for open/close */
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+@keyframes slideOutToTop {
+  from {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+}
+.slide-in {
+  animation: slideInFromTop 0.3s ease forwards;
+}
+.slide-out {
+  animation: slideOutToTop 0.25s ease forwards;
+}
+
+    /* Disabled past days */
     .calendar-day.disabled {
       color: #bbb;
       cursor: default;
@@ -328,160 +338,76 @@
       background-color: transparent !important;
     }
 
+    /* Highlight today's date */
     .calendar-day.today {
-      background: #d1ecff;
-      color: #0062cc;
+      border: 2px solid #007bff;
       font-weight: 700;
+      color: #0056b3;
     }
 
+    /* Highlight selected date */
     .calendar-day.selected {
       background: #007bff;
       color: white;
       font-weight: 700;
     }
 
-    /* Button Styles */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 1rem 2.5rem;
-      font-size: 1.1rem;
-      font-weight: 600;
+      padding: 0.85rem 2rem;
+      font-size: 1rem;
+      font-weight: bold;
       border: none;
-      border-radius: 50px;
+      border-radius: 30px;
       background: linear-gradient(to right, #007bff, #00bfff);
       color: white;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 6px 15px rgba(0, 123, 255, 0.25);
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
       width: 100%;
-      margin-top: 1rem;
-      letter-spacing: 0.5px;
     }
 
     .btn:hover {
-      background: linear-gradient(to right, #0069d9, #0099cc);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
-    }
-
-    .btn:active {
-      transform: translateY(0);
+      background: linear-gradient(to right, #0056b3, #0099cc);
+      transform: translateY(-1px);
     }
 
     .btn:disabled {
       opacity: 0.7;
       cursor: not-allowed;
-      transform: none;
     }
 
     .loader {
-      border: 3px solid rgba(255, 255, 255, 0.3);
+      border: 3px solid #f3f3f3;
       border-top: 3px solid white;
       border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      animation: spin 0.8s linear infinite;
-      margin-left: 12px;
+      width: 18px;
+      height: 18px;
+      animation: spin 0.6s linear infinite;
+      margin-left: 10px;
     }
 
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      color: #666;
-      background: #fff;
-      margin-top: 3rem;
-      border-top: 1px solid #eee;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .booking-main {
-        margin: 1.5rem auto;
-        padding: 1rem;
-      }
-      
-      .booking-form {
-        padding: 1.8rem;
-      }
-      
-      .navbar {
-        padding: 0.8rem 1.5rem;
-      }
-      
-      .logo {
-        font-size: 1.5rem;
-      }
-      
-      h1 {
-        font-size: 2rem;
-      }
-      
-      .btn {
-        padding: 0.9rem;
-        font-size: 1rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .booking-form {
-        padding: 1.5rem;
-      }
-      
-      .calendar-popup {
-        width: 100%;
-        left: 0;
-        right: 0;
-      }
-    }
-
-    /* Success Message */
-    .success-message {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #28a745;
-      color: white;
-      padding: 15px 30px;
-      border-radius: 50px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      z-index: 2000;
-      display: flex;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-    }
-    
-    .success-message.show {
-      opacity: 1;
-    }
-    
-    .success-message i {
-      margin-right: 10px;
-      font-size: 1.2rem;
-    }
+}
   </style>
 </head>
 <body>
   <!-- Header -->
   <header>
     <nav class="navbar">
-      <div class="logo">BookMe<span>Now</span></div>
-      <ul class="nav-links">
-        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="myappointments.html"><i class="fas fa-calendar-check"></i> My Appointments</a></li>
-        <li><a href="booking.html" class="active"><i class="fas fa-calendar-plus"></i> Booking</a></li>
-        <li><button id="theme-toggle" class="logout-btn"><i class="fas fa-moon"></i></button></li>
-        <li><button id="logout-btn" class="logout-btn" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</button></li>
+      <div class="logo">BookMeNow</div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="myappointments.html">My Appointments</a></li>
+        <li><a href="booking.html" class="active">Booking</a></li>
+        <li><button id="theme-toggle">🌙</button></li>
+        <li><button id="logout-btn" class="logout-btn" style="display: none;">Logout</button></li>
       </ul>
     </nav>
   </header>
@@ -489,294 +415,402 @@
   <!-- Main -->
   <main class="booking-main">
     <h1>Book an Appointment</h1>
-    <p class="subtitle">Fill out the form below to reserve your slot. Our team will get back to you shortly to confirm your appointment.</p>
+    <p class="subtitle">Fill out the form below to reserve your slot.</p>
 
     <form id="booking-form" class="booking-form" autocomplete="off">
       <div class="form-group">
-        <label for="full-name"><i class="fas fa-user"></i> Full Name</label>
-        <input type="text" id="full-name" name="full-name" required autocomplete="name" placeholder="Enter your full name" />
+        <label for="full-name">Full Name</label>
+        <input type="text" id="full-name" name="full-name" required autocomplete="name" />
       </div>
 
       <div class="form-group">
-        <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
-        <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="Enter your phone number" />
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required autocomplete="tel" />
       </div>
 
       <div class="form-group">
-        <label for="service"><i class="fas fa-cut"></i> Select Service</label>
+        <label for="service">Select Service</label>
         <select id="service" name="service" required>
-          <option value="">-- Choose a service --</option>
-          <option value="Beard Cutting">Beard Cutting & Styling</option>
-          <option value="Haircut">Premium Haircut</option>
-          <option value="Facial">Luxury Facial Treatment</option>
+          <option value="">-- Choose --</option>
+          <option value="Beard Cutting">Beard Cutting</option>
+          <option value="Haircut">Haircut</option>
+          <option value="Facial">Facial</option>
           <option value="Hair Coloring">Hair Coloring</option>
-          <option value="Shaving">Traditional Shaving</option>
-          <option value="Head Massage">Relaxing Head Massage</option>
-          <option value="Full Package">Full Grooming Package</option>
+          <option value="Shaving">Shaving</option>
+          <option value="Head Massage">Head Massage</option>
         </select>
       </div>
 
       <div class="form-group calendar-wrapper">
-        <label for="date-input"><i class="fas fa-calendar-alt"></i> Date</label>
-        <input type="text" id="date-input" class="calendar-input" name="date" readonly placeholder="Select a date" required />
+        <label for="date-input">Date</label>
+        <input type="text" id="date-input" name="date" readonly placeholder="Select a date" required />
         <div id="calendar" class="calendar-popup" style="display:none;"></div>
       </div>
 
       <div class="form-group">
-        <label for="time"><i class="fas fa-clock"></i> Time</label>
+        <label for="time">Time</label>
         <select id="time" name="time" required>
-          <option value="">-- Choose a time --</option>
-          <!-- Time slots will be generated dynamically -->
+          <option value="">-- Choose --</option>
         </select>
       </div>
 
-      <button type="submit" class="btn" id="submit-btn">
-        <i class="fas fa-calendar-check"></i> Confirm Booking
-      </button>
+      <button type="submit" class="btn" id="submit-btn">Confirm Booking</button>
     </form>
   </main>
 
   <footer>
-    <p>© 2025 BookMeNow | Premium Booking Experience</p>
+    <p>© 2025 BookMeNow | Built by Captain</p>
   </footer>
 
-  <!-- Success Message -->
-  <div class="success-message" id="success-message">
-    <i class="fas fa-check-circle"></i> Appointment booked successfully!
-  </div>
+  <!-- Firebase + Booking Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-  <script>
-    // Simplified version of the calendar functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const dateInput = document.getElementById('date-input');
-      const calendar = document.getElementById('calendar');
-      const timeSelect = document.getElementById('time');
-      const submitBtn = document.getElementById('submit-btn');
-      const form = document.getElementById('booking-form');
-      const successMessage = document.getElementById('success-message');
-      
-      // Mock authentication state
-      const logoutBtn = document.getElementById('logout-btn');
-      logoutBtn.style.display = 'inline-block';
-      
-      logoutBtn.addEventListener('click', () => {
-        alert('You have been logged out. Redirecting to login page...');
-        window.location.href = 'login.html';
-      });
-      
-      // Theme toggle
-      const themeToggle = document.getElementById('theme-toggle');
-      themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-theme');
-        themeToggle.innerHTML = document.body.classList.contains('dark-theme') ? 
-          '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-      });
-      
-      // Generate time slots
-      function generateTimeSlots() {
-        const slots = [];
-        for (let h = 8; h <= 23; h++) {
-          for (let m = 0; m < 60; m += 30) {
-            if (h === 23 && m > 30) continue;
-            const hour = h % 12 === 0 ? 12 : h % 12;
-            const ampm = h < 12 ? "AM" : "PM";
-            const mm = m.toString().padStart(2, "0");
-            slots.push({
-              value: `${h.toString().padStart(2, "0")}:${mm}`,
-              label: `${hour}:${mm} ${ampm}`
-            });
-          }
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
+      authDomain: "sampleportfolio-9450c.firebaseapp.com",
+      projectId: "sampleportfolio-9450c",
+      storageBucket: "sampleportfolio-9450c.appspot.com",
+      messagingSenderId: "725347523572",
+      appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const logoutBtn = document.getElementById("logout-btn");
+    const dateInput = document.getElementById("date-input");
+    const calendar = document.getElementById("calendar");
+    const timeSelect = document.getElementById("time");
+    const submitBtn = document.getElementById("submit-btn");
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) window.location.href = "login.html";
+      else logoutBtn.style.display = "inline-block";
+    });
+
+    logoutBtn?.addEventListener("click", () => {
+      signOut(auth).then(() => window.location.href = "login.html").catch(console.error);
+    });
+
+    // Time slots generation (same as before)
+    const generateTimeSlots = () => {
+      const slots = [];
+      for (let h = 8; h <= 23; h++) {
+        for (let m = 0; m < 60; m += 30) {
+          if (h === 23 && m > 30) continue;
+          const hour = h % 12 === 0 ? 12 : h % 12;
+          const ampm = h < 12 ? "AM" : "PM";
+          const mm = m.toString().padStart(2, "0");
+          slots.push({
+            value: `${h.toString().padStart(2, "0")}:${mm}`,
+            label: `${hour}:${mm} ${ampm}`
+          });
         }
-        return slots;
+      }
+      return slots;
+    };
+
+    const allSlots = generateTimeSlots();
+
+    async function updateTimeSlotsForDate(selectedDate) {
+      timeSelect.innerHTML = `<option value="">-- Choose --</option>`;
+      if (!selectedDate) return;
+
+      const now = new Date();
+      const isToday = selectedDate === now.toISOString().split("T")[0];
+
+      const q = query(collection(db, "bookings"), where("date", "==", selectedDate));
+      const snapshot = await getDocs(q);
+      const bookedTimes = snapshot.docs.map(doc => doc.data().time);
+
+      const filteredSlots = allSlots.filter(slot => {
+        if (bookedTimes.includes(slot.value)) return false;
+        if (isToday) {
+          const [hh, mm] = slot.value.split(":").map(Number);
+          const slotTime = new Date();
+          slotTime.setHours(hh, mm, 0, 0);
+          if (slotTime <= now) return false;
+        }
+        return true;
+      });
+
+      if (filteredSlots.length === 0) {
+        timeSelect.innerHTML = `<option value="">No available slots</option>`;
+        return;
       }
 
-      const allSlots = generateTimeSlots();
-      
-      // Populate time slots
-      function populateTimeSlots() {
-        timeSelect.innerHTML = '<option value="">-- Choose --</option>';
-        allSlots.forEach(slot => {
-          const opt = document.createElement('option');
-          opt.value = slot.value;
-          opt.textContent = slot.label;
-          timeSelect.appendChild(opt);
+      filteredSlots.forEach(slot => {
+        const opt = document.createElement("option");
+        opt.value = slot.value;
+        opt.textContent = slot.label;
+        timeSelect.appendChild(opt);
+      });
+    }
+
+// --- Custom Calendar Logic ---
+
+const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+let currentDate = new Date(); // today initially
+let selectedDate = null;
+
+// Format date as YYYY-MM-DD (LOCAL, not UTC)
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+// Render calendar for a given year/month
+let isAnimating = false;
+
+function renderCalendar(year, month, direction = null) {
+  if (isAnimating) return;
+
+  const newCalendar = document.createElement("div");
+  newCalendar.className = "calendar-popup calendar-content";
+
+  // --- Header ---
+  const header = document.createElement("div");
+  header.className = "calendar-header";
+
+  const prevBtn = document.createElement("button");
+  prevBtn.type = "button";
+  prevBtn.className = "calendar-nav-btn";
+  prevBtn.innerHTML = "&#8249;";
+  prevBtn.title = "Previous Month";
+  prevBtn.disabled = year === new Date().getFullYear() && month === new Date().getMonth();
+  prevBtn.onclick = () => {
+    if (isAnimating) return;
+    const newMonth = month === 0 ? 11 : month - 1;
+    const newYear = month === 0 ? year - 1 : year;
+    renderCalendar(newYear, newMonth, "left");
+  };
+
+  const nextBtn = document.createElement("button");
+  nextBtn.type = "button";
+  nextBtn.className = "calendar-nav-btn";
+  nextBtn.innerHTML = "&#8250;";
+  nextBtn.title = "Next Month";
+  nextBtn.onclick = () => {
+    if (isAnimating) return;
+    const newMonth = month === 11 ? 0 : month + 1;
+    const newYear = month === 11 ? year + 1 : year;
+    renderCalendar(newYear, newMonth, "right");
+  };
+
+  const monthYear = document.createElement("div");
+  monthYear.textContent = `${new Date(year, month).toLocaleString("default", {
+    month: "long",
+  })} ${year}`;
+
+  const todayBtn = document.createElement("button");
+  todayBtn.type = "button";
+  todayBtn.className = "calendar-today-btn";
+  todayBtn.textContent = "Today";
+  todayBtn.onclick = () => {
+    if (isAnimating) return;
+    const now = new Date();
+    currentDate = new Date(now);
+    renderCalendar(now.getFullYear(), now.getMonth(), "down");
+  };
+
+  header.append(prevBtn, monthYear, nextBtn, todayBtn);
+  newCalendar.appendChild(header);
+
+  // --- Grid ---
+  const grid = document.createElement("div");
+  grid.className = "calendar-grid";
+
+  weekdays.forEach((d) => {
+    const wd = document.createElement("div");
+    wd.className = "calendar-day-name";
+    wd.textContent = d;
+    grid.appendChild(wd);
+  });
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDayIndex = new Date(year, month, 1).getDay();
+
+  for (let i = 0; i < firstDayIndex; i++) {
+    const blank = document.createElement("div");
+    blank.className = "calendar-day disabled";
+    grid.appendChild(blank);
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateObj = new Date(year, month, day);
+    dateObj.setHours(0, 0, 0, 0);
+
+    const dayEl = document.createElement("div");
+    dayEl.className = "calendar-day";
+    dayEl.textContent = day;
+
+    const isToday = dateObj.getTime() === today.getTime();
+    const isInPast = dateObj < today;
+    const isSelected = selectedDate === formatDate(dateObj);
+
+    if (isInPast) {
+      dayEl.classList.add("disabled");
+    } else {
+      if (isToday) dayEl.classList.add("today");
+      if (isSelected) dayEl.classList.add("selected");
+      dayEl.onclick = () => {
+        calendar.querySelectorAll(".calendar-day.selected").forEach((el) =>
+          el.classList.remove("selected")
+        );
+        dayEl.classList.add("selected");
+        selectedDate = formatDate(dateObj);
+        dateInput.value = selectedDate;
+        updateTimeSlotsForDate(selectedDate);
+        hideCalendar();
+      };
+    }
+
+    grid.appendChild(dayEl);
+  }
+
+  newCalendar.appendChild(grid);
+
+  // --- Animation Handling ---
+  const oldCalendar = calendar.querySelector(".calendar-content");
+
+  if (oldCalendar && direction) {
+    isAnimating = true;
+
+    // Remove any lingering animation classes
+    oldCalendar.classList.remove("slide-left-out", "slide-right-out");
+    newCalendar.classList.remove("slide-left-in", "slide-right-in");
+
+    // Apply new animation classes
+    oldCalendar.classList.add(
+      direction === "left" ? "slide-right-out" : "slide-left-out"
+    );
+    newCalendar.classList.add(
+      direction === "left" ? "slide-right-in" : "slide-left-in"
+    );
+
+    // Append new calendar
+    calendar.appendChild(newCalendar);
+
+    // Clean up after animation
+    const handleAnimationEnd = () => {
+      if (oldCalendar.parentNode) {
+        calendar.removeChild(oldCalendar);
+      }
+      isAnimating = false;
+    };
+
+    oldCalendar.addEventListener("animationend", handleAnimationEnd, { once: true });
+
+    // Fallback: reset animation flag after 500ms if animationend doesn't fire
+    setTimeout(() => {
+      if (isAnimating) {
+        if (oldCalendar.parentNode) {
+          calendar.removeChild(oldCalendar);
+        }
+        isAnimating = false;
+      }
+    }, 500);
+  } else {
+    calendar.innerHTML = "";
+    calendar.appendChild(newCalendar);
+  }
+}
+
+function showCalendar() {
+  calendar.style.display = "block";
+  calendar.classList.remove("slide-out");
+  calendar.classList.add("slide-in");
+}
+
+function hideCalendar() {
+  calendar.classList.remove("slide-in");
+  calendar.classList.add("slide-out");
+  calendar.addEventListener("animationend", () => {
+    if (calendar.classList.contains("slide-out")) {
+      calendar.style.display = "none";
+    }
+  }, { once: true });
+}
+
+// Toggle popup
+dateInput.addEventListener("click", () => {
+  if (calendar.style.display === "block") hideCalendar();
+  else showCalendar();
+});
+
+// ✅ Use mousedown instead of click (prevents calendar from closing on button click)
+document.addEventListener("mousedown", (e) => {
+  if (
+    !calendar.contains(e.target) &&
+    e.target !== dateInput
+  ) {
+    hideCalendar();
+  }
+});
+
+// Block manual typing
+dateInput.addEventListener("keydown", (e) => {
+  e.preventDefault();
+});
+
+// Init calendar
+const now = new Date();
+renderCalendar(now.getFullYear(), now.getMonth());
+
+    // Booking time slots update on selectedDate change
+    // Initially handled during calendar render for today
+
+    // --- Booking form submit logic (same as before) ---
+
+    document.getElementById("booking-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const name = document.getElementById("full-name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const service = document.getElementById("service").value;
+      const date = dateInput.value;
+      const time = document.getElementById("time").value;
+      if (!date) {
+        alert("Please select a valid date.");
+        return;
+      }
+      const bookingId = "BMN" + Math.floor(100000 + Math.random() * 900000);
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Booking <span class="loader"></span>';
+
+      try {
+        const user = auth.currentUser;
+        await addDoc(collection(db, "bookings"), {
+          userId: user.uid,
+          name,
+          phone,
+          service,
+          date,
+          time,
+          bookingId,
+          done: false,
+          createdAt: serverTimestamp()
         });
+
+        localStorage.setItem("bookingData", JSON.stringify({ name, phone, service, date, time, bookingId }));
+        window.location.href = "thankyou.html";
+      } catch (err) {
+        console.error("Firestore Error:", err);
+        alert("Failed to save booking. Please try again.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = "Confirm Booking";
       }
-      
-      populateTimeSlots();
-      
-      // Calendar functionality
-      const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-      let currentDate = new Date();
-      let selectedDate = null;
-      
-      function formatDate(date) {
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        return `${year}-${month}-${day}`;
-      }
-      
-      function renderCalendar(year, month) {
-        calendar.innerHTML = '';
-        
-        const header = document.createElement('div');
-        header.className = 'calendar-header';
-        
-        const prevBtn = document.createElement('button');
-        prevBtn.className = 'calendar-nav-btn';
-        prevBtn.innerHTML = '&#8249;';
-        prevBtn.onclick = () => {
-          const newMonth = month === 0 ? 11 : month - 1;
-          const newYear = month === 0 ? year - 1 : year;
-          renderCalendar(newYear, newMonth);
-        };
-        
-        const nextBtn = document.createElement('button');
-        nextBtn.className = 'calendar-nav-btn';
-        nextBtn.innerHTML = '&#8250;';
-        nextBtn.onclick = () => {
-          const newMonth = month === 11 ? 0 : month + 1;
-          const newYear = month === 11 ? year + 1 : year;
-          renderCalendar(newYear, newMonth);
-        };
-        
-        const monthYear = document.createElement('div');
-        monthYear.textContent = `${new Date(year, month).toLocaleString("default", { month: "long" })} ${year}`;
-        
-        const todayBtn = document.createElement('button');
-        todayBtn.className = 'calendar-today-btn';
-        todayBtn.textContent = 'Today';
-        todayBtn.onclick = () => {
-          const now = new Date();
-          currentDate = new Date(now);
-          renderCalendar(now.getFullYear(), now.getMonth());
-        };
-        
-        header.append(prevBtn, monthYear, nextBtn, todayBtn);
-        calendar.appendChild(header);
-        
-        const grid = document.createElement('div');
-        grid.className = 'calendar-grid';
-        
-        weekdays.forEach(d => {
-          const wd = document.createElement('div');
-          wd.className = 'calendar-day-name';
-          wd.textContent = d;
-          grid.appendChild(wd);
-        });
-        
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const firstDayIndex = new Date(year, month, 1).getDay();
-        
-        for (let i = 0; i < firstDayIndex; i++) {
-          const blank = document.createElement('div');
-          blank.className = 'calendar-day disabled';
-          blank.textContent = '';
-          grid.appendChild(blank);
-        }
-        
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        for (let day = 1; day <= daysInMonth; day++) {
-          const dateObj = new Date(year, month, day);
-          dateObj.setHours(0, 0, 0, 0);
-          
-          const dayEl = document.createElement('div');
-          dayEl.className = 'calendar-day';
-          dayEl.textContent = day;
-          
-          const isToday = dateObj.getTime() === today.getTime();
-          const isInPast = dateObj < today;
-          const isSelected = selectedDate === formatDate(dateObj);
-          
-          if (isInPast) {
-            dayEl.classList.add('disabled');
-          } else {
-            if (isToday) dayEl.classList.add('today');
-            if (isSelected) dayEl.classList.add('selected');
-            dayEl.onclick = () => {
-              calendar.querySelectorAll('.calendar-day.selected').forEach(el => {
-                el.classList.remove('selected');
-              });
-              dayEl.classList.add('selected');
-              selectedDate = formatDate(dateObj);
-              dateInput.value = selectedDate;
-              hideCalendar();
-            };
-          }
-          
-          grid.appendChild(dayEl);
-        }
-        
-        calendar.appendChild(grid);
-      }
-      
-      function showCalendar() {
-        calendar.style.display = 'block';
-        calendar.classList.remove('slide-out');
-        calendar.classList.add('slide-in');
-        const now = new Date();
-        renderCalendar(now.getFullYear(), now.getMonth());
-      }
-      
-      function hideCalendar() {
-        calendar.classList.remove('slide-in');
-        calendar.classList.add('slide-out');
-        setTimeout(() => {
-          calendar.style.display = 'none';
-        }, 250);
-      }
-      
-      dateInput.addEventListener('click', () => {
-        if (calendar.style.display === 'block') {
-          hideCalendar();
-        } else {
-          showCalendar();
-        }
-      });
-      
-      document.addEventListener('mousedown', (e) => {
-        if (!calendar.contains(e.target) && e.target !== dateInput) {
-          hideCalendar();
-        }
-      });
-      
-      // Form submission
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const name = document.getElementById('full-name').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const service = document.getElementById('service').value;
-        const date = dateInput.value;
-        const time = timeSelect.value;
-        
-        if (!name || !phone || !service || !date || !time) {
-          alert('Please fill in all fields');
-          return;
-        }
-        
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = 'Processing <span class="loader"></span>';
-        
-        // Simulate API call
-        setTimeout(() => {
-          successMessage.classList.add('show');
-          
-          setTimeout(() => {
-            successMessage.classList.remove('show');
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-calendar-check"></i> Confirm Booking';
-            
-            // Reset form
-            form.reset();
-            selectedDate = null;
-            dateInput.value = '';
-          }, 3000);
-        }, 1500);
-      });
     });
   </script>
 </body>
