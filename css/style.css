@@ -32,30 +32,26 @@ body {
 }
 
 /* NAVIGATION */
+/* NAVIGATION */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--nav);
+  /* Change this line for the gradient background */
+  background: linear-gradient(to right, #007bff, #00bfff); /* Use the same gradient as your confirm button */
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 4px var(--shadow);
+  box-shadow: 0 2px 4px var(--shadow); /* Keep existing shadow */
 }
 
+/* Also, adjust text color for better contrast on the gradient background */
 .logo {
   font-size: 1.7rem;
   font-weight: bold;
-  color: var(--accent);
+  color: white; /* Change from var(--accent) to white for visibility */
   user-select: none;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  list-style: none;
 }
 
 .nav-links li a,
@@ -67,7 +63,7 @@ body {
   cursor: pointer;
   padding: 0.5rem 0.75rem;
   transition: all 0.3s ease;
-  color: var(--text);
+  color: white; /* Change from var(--text) to white */
   font-size: 1rem;
   border-radius: 6px;
   user-select: none;
@@ -76,8 +72,19 @@ body {
 .nav-links li a.active,
 .nav-links li a:hover,
 .nav-links li button:hover {
-  color: var(--accent);
-  background-color: rgba(0, 123, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8); /* Slightly less opaque white on hover */
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle white background on hover */
+}
+
+/* For hamburger icon in dark mode, ensure it's visible */
+body.dark .hamburger span {
+  background: var(--text); /* This will be #f1f1f1 in dark mode, ensuring visibility */
+}
+
+/* When hamburger is open, make sure lines are white for contrast */
+.hamburger.open span:nth-child(1),
+.hamburger.open span:nth-child(3) {
+    background: white; /* Make the X white */
 }
 
 .logout-btn {
