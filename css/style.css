@@ -16,7 +16,7 @@
 
 body.dark {
   --bg: #121212;
-  --text: #000000;
+  --text: #f1f1f1;
   --accent: #1e90ff;
   --card: #1f1f1f;
   --nav: #1a1a1a;
@@ -36,7 +36,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(to right, #007bff, #00bfff);
+  background: var(--nav);
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
@@ -47,7 +47,7 @@ body {
 .logo {
   font-size: 1.7rem;
   font-weight: bold;
-  color: #f1f1f1;
+  color: var(--accent);
   user-select: none;
 }
 
