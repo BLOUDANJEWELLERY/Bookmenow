@@ -116,19 +116,29 @@
 /* This rule styles the main popup container and acts as the "stage" for the animation. */
 .calendar-popup {
   position: absolute;
-  top: calc(100% + 8px); /* Adds 8px gap */
+  top: calc(100% + 8px);
   left: 0;
   background: white;
-  border: 1px solid #007bff;
   border-radius: 8px;
   z-index: 1000;
   box-sizing: border-box;
   width: 270px;
-  /* Crucial: Add overflow:hidden to contain the sliding months */
   overflow: hidden;
-  /* Crucial: Set a fixed height to prevent the container from collapsing during animation. */
-  /* You can adjust this value if your calendar content is taller or shorter. */
   height: 330px;
+  box-shadow: 0 4px 16px rgba(0, 123, 255, 0.15);
+}
+
+.calendar-popup::before {
+  content: "";
+  display: block;
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(to right, #007bff, #00bfff);
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 /* This rule styles the inner month-view divs so they can animate properly. */
