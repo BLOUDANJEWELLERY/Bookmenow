@@ -139,9 +139,11 @@
 }
 }
 
-.calendar-popup::before {
-  display: none;
+#calendar::before,
+#calendar::after {
+  display: none !important;
 }
+
 @media (max-width: 600px) {
   .calendar-popup {
     padding: 8px;
