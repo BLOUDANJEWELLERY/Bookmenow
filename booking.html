@@ -585,17 +585,14 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
-// Render calendar for a given year/month
-let isAnimating = false;
 
 let isAnimating = false;
 
 function renderCalendar(year, month, direction = null) {
   if (isAnimating) return;
 
-  // Create the inner content only
-  const newCalendarContent = document.createElement("div");
-  newCalendarContent.className = "calendar-content";
+  const newCalendar = document.createElement("div");
+  newCalendar.className = "calendar-popup calendar-content";
 
   // --- Header ---
   const header = document.createElement("div");
@@ -643,7 +640,7 @@ function renderCalendar(year, month, direction = null) {
   };
 
   header.append(prevBtn, monthYear, nextBtn, todayBtn);
-  newCalendarContent.appendChild(header);
+  newCalendar.appendChild(header);
 
   // --- Grid ---
   const grid = document.createElement("div");
@@ -700,48 +697,51 @@ function renderCalendar(year, month, direction = null) {
     grid.appendChild(dayEl);
   }
 
-  newCalendarContent.appendChild(grid);
+  newCalendar.appendChild(grid);
 
   // --- Animation Handling ---
-  const oldCalendarContent = calendar.querySelector(".calendar-content");
+  const oldCalendar = calendar.querySelector(".calendar-content");
 
-  if (oldCalendarContent && direction) {
+  if (oldCalendar && direction) {
     isAnimating = true;
 
-    oldCalendarContent.classList.remove("slide-left-out", "slide-right-out");
-    newCalendarContent.classList.remove("slide-left-in", "slide-right-in");
+    // Remove any lingering animation classes
+    oldCalendar.classList.remove("slide-left-out", "slide-right-out");
+    newCalendar.classList.remove("slide-left-in", "slide-right-in");
 
-    oldCalendarContent.classList.add(
+    // Apply new animation classes
+    oldCalendar.classList.add(
       direction === "left" ? "slide-right-out" : "slide-left-out"
     );
-    newCalendarContent.classList.add(
+    newCalendar.classList.add(
       direction === "left" ? "slide-right-in" : "slide-left-in"
     );
 
-    calendar.appendChild(newCalendarContent);
+    // Append new calendar
+    calendar.appendChild(newCalendar);
 
+    // Clean up after animation
     const handleAnimationEnd = () => {
-      if (oldCalendarContent.parentNode) {
-        calendar.removeChild(oldCalendarContent);
+      if (oldCalendar.parentNode) {
+        calendar.removeChild(oldCalendar);
       }
       isAnimating = false;
     };
 
-    oldCalendarContent.addEventListener("animationend", handleAnimationEnd, {
-      once: true,
-    });
+    oldCalendar.addEventListener("animationend", handleAnimationEnd, { once: true });
 
+    // Fallback: reset animation flag after 500ms if animationend doesn't fire
     setTimeout(() => {
       if (isAnimating) {
-        if (oldCalendarContent.parentNode) {
-          calendar.removeChild(oldCalendarContent);
+        if (oldCalendar.parentNode) {
+          calendar.removeChild(oldCalendar);
         }
         isAnimating = false;
       }
     }, 500);
   } else {
     calendar.innerHTML = "";
-    calendar.appendChild(newCalendarContent);
+    calendar.appendChild(newCalendar);
   }
 }
 
