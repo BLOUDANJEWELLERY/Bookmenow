@@ -111,7 +111,9 @@
 
    /* --- REPLACE THE OLD .calendar-popup BLOCK WITH THIS --- */
 
-/* This rule styles the main popup container */
+/* --- REPLACE THE PREVIOUSLY ADDED CSS WITH THIS UPDATED BLOCK --- */
+
+/* This rule styles the main popup container and acts as the "stage" for the animation. */
 .calendar-popup {
   position: absolute;
   top: 100%;
@@ -122,22 +124,27 @@
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   z-index: 1000;
-  padding: 10px;
   box-sizing: border-box;
   width: 270px;
+  /* Crucial: Add overflow:hidden to contain the sliding months */
+  overflow: hidden;
+  /* Crucial: Set a fixed height to prevent the container from collapsing during animation. */
+  /* You can adjust this value if your calendar content is taller or shorter. */
+  height: 330px;
 }
 
-/* This new rule resets conflicting styles for the inner content div created by your script */
+/* This rule styles the inner month-view divs so they can animate properly. */
 .calendar-popup .calendar-content {
-  position: static;
-  margin: 0;
-  background: none;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  width: auto;
-  overflow: visible; /* Allows month-change animations to work correctly */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white; /* Ensures the incoming month is not transparent */
+  padding: 10px;
+  box-sizing: border-box;
 }
+
 
 
 #calendar::before,
