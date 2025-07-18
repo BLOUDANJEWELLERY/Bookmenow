@@ -161,7 +161,6 @@ body {
   width: 25px;
   height: 3px;
   background: var(--text);
-  border: 2px linear-gradient(to right, #007bff, #00bfff);
   border-radius: 2px;
   transition: all 0.3s ease;
 }
