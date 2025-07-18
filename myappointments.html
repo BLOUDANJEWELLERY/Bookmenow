@@ -57,7 +57,7 @@
     
 .appointment-card {
   position: relative;
-  background: #cce5ff;
+  background: #cce5ff; /* fallback */
   padding: 1.2rem 1.5rem;
   border-radius: 10px;
   margin-bottom: 1.5rem;
@@ -66,8 +66,8 @@
   box-shadow: 0 2px 8px var(--shadow);
 
   border: 3px solid transparent;
-  background-image: linear-gradient(white, white),
-                    linear-gradient(135deg, #007bff, #00c6ff);
+  background-image: linear-gradient(#cce5ff, #cce5ff), /* inner fill */
+                    linear-gradient(135deg, #007bff, #00c6ff); /* border */
   background-origin: border-box;
   background-clip: padding-box, border-box;
 }
