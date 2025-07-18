@@ -15,7 +15,7 @@
 
   h1 {
     text-align: center;
-    font-size: 2.4rem;
+    font-size: 2rem;
     color: #003366;
     margin-bottom: 2.2rem;
   }
@@ -97,6 +97,20 @@
     transform: scale(1.05);
   }
 
+  .loading-indicator {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+  color: var(--text, #003366);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
   @media (max-width: 600px) {
     .admin-main {
       padding: 1rem;
@@ -155,7 +169,9 @@
       </select>
     </div>
 
-    <div id="cards-container"></div>
+    <div id="loading-indicator" class="loading-indicator">Loading appointments...</div>
+<div id="cards-container" style="display: none;"></div>
+
   </main>
 
   <footer>
@@ -193,8 +209,9 @@
       logoutBtn.style.display = "inline-block";
       logoutBtn.onclick = () => signOut(auth).then(() => location.href = "login.html");
 
-      const snapshot = await getDocs(collection(db, "bookings"));
-      allBookings = snapshot.docs.map(docSnap => {
+      try {
+  const snapshot = await getDocs(collection(db, "bookings"));
+  allBookings = snapshot.docs.map(docSnap => {
         const data = docSnap.data();
         return {
           id: docSnap.id,
@@ -205,6 +222,12 @@
       });
 
       renderCards();
+        document.getElementById("loading-indicator").style.display = "none";
+  container.style.display = "block";
+} catch (err) {
+  document.getElementById("loading-indicator").innerText = "Failed to load appointments.";
+}
+
     });
 
     dateFilter.onchange = renderCards;
