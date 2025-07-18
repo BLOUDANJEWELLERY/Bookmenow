@@ -53,20 +53,23 @@
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
     }
 
-    .appointment-card {
+    
+.appointment-card {
+  position: relative;
   background: white;
   padding: 1.2rem 1.5rem;
-  border: 2px solid; /* Must define style (solid) */
-  border-image: linear-gradient(135deg, #007bff, #00c6ff);
-  border-image-slice: 1; /* Required to actually apply the gradient */
   border-radius: 8px;
-  box-shadow: 0 2px 8px var(--shadow);
   margin-bottom: 1.5rem;
   line-height: 1.6;
-  position: relative;
   transition: transform 0.3s ease, opacity 0.3s ease;
-}
+  box-shadow: 0 2px 8px var(--shadow);
 
+  border: 2px solid transparent;
+  background-image: linear-gradient(white, white),
+                    linear-gradient(135deg, #007bff, #00c6ff);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
     .fade-out {
       animation: fadeOut 0.4s ease forwards;
     }
