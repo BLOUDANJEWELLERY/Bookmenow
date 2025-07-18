@@ -238,7 +238,8 @@ body {
 }
 
 .btn:hover {
-  background: #005ecb;
+  background: linear-gradient(to right, #0056b3, #0099cc);
+      transform: translateY(-1px);
 }
 
 /* FEATURES SECTION */
