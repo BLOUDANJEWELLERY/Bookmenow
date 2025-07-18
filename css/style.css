@@ -369,7 +369,7 @@ footer {
 .nav-links.show {
   max-height: 500px; /* Enough to fit all links */
   opacity: 1;
-  background: linear-gradient(to bottom, #b3e0ff, #e6f7ff);
+  background: linear-gradient(to bottom, #5ab0ff, #99e0ff);
   padding: 1rem 0; /* Restore vertical padding */
   pointer-events: auto; /* Enable interaction */
 }
