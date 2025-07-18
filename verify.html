@@ -96,6 +96,7 @@
       margin-top: 2rem;
       background: linear-gradient(to right, #28a745, #5dd99c);
       color: white;
+      font-size: 1rem;
       font-weight: bold;
       padding: 0.8rem 1.4rem;
       border: none;
@@ -107,7 +108,7 @@
 
     .btn-download:hover {
       background: linear-gradient(to right, #24963c, #4dd68a);
-      transform: scale(1.03);
+      transform: scale(1.05);
     }
 
     footer {
@@ -188,11 +189,12 @@
 
       // Status badge
       let statusBadge = "";
-      if (appointmentDate >= new Date(today.setHours(0, 0, 0, 0))) {
-        statusBadge = `<div class="badge" style="background-color: var(--accent);">Upcoming Appointment</div>`;
-      } else {
-        statusBadge = `<div class="badge" style="background-color: #6c757d;">Expired Appointment</div>`;
-      }
+ if (appointmentDate >= new Date(today.setHours(0, 0, 0, 0))) {
+  statusBadge = `<div class="badge upcoming-badge">Upcoming Appointment</div>`;
+} else {
+  statusBadge = `<div class="badge expired-badge">Expired Appointment</div>`;
+}
+
 
       // Done status badge
       const isDone = match.done === true;
