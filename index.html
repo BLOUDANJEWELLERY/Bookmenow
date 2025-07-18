@@ -86,7 +86,7 @@
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // Show Logout button
-        authSlot.innerHTML = `<button id="logout-btn" class="logout-btn">Logout</button>`;
+        authSlot.innerHTML = `<button id="logout-btn" class="logout-btn" style="display:none">Logout</button>`;
         document.getElementById("logout-btn").addEventListener("click", () => {
           signOut(auth).then(() => location.href = "index.html");
         });
