@@ -6,81 +6,125 @@
   <title>Admin Panel – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/script.js"></script>
-  <style>
+ <style>
+  .admin-main {
+    max-width: 960px;
+    margin: 4rem auto;
+    padding: 1.8rem;
+    background: #f2fbff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    border: 3px solid transparent;
+    background-image: linear-gradient(#f2fbff, #f2fbff),
+                      linear-gradient(135deg, #007bff, #00c6ff);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2.4rem;
+    color: #003366;
+    margin-bottom: 2.2rem;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .filters select {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 2px solid #007bff;
+    background: #e9f5ff;
+    color: #003366;
+    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.1);
+    transition: border 0.3s ease, background 0.3s ease;
+  }
+
+  .filters select:focus {
+    border-color: #00bfff;
+    background: #d9efff;
+    outline: none;
+  }
+
+  .booking-card {
+    background: linear-gradient(#f2fbff, #f2fbff), 
+                linear-gradient(135deg, #007bff, #00c6ff);
+    background-clip: padding-box, border-box;
+    background-origin: border-box;
+    padding: 1.4rem 1.6rem;
+    border-radius: 12px;
+    margin-bottom: 1.6rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    line-height: 1.6;
+    border: 3px solid transparent;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .booking-card.done {
+    opacity: 0.6;
+    transform: scale(0.97);
+    filter: grayscale(0.2);
+  }
+
+  .booking-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+    color: var(--accent);
+  }
+
+  .card-actions {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+  }
+
+  .btn-mark-done {
+    background: linear-gradient(to right, #28a745, #5dd99c);
+    color: white;
+    padding: 0.6rem 1.4rem;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 8px rgba(40, 167, 69, 0.2);
+  }
+
+  .btn-mark-done:hover {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 600px) {
     .admin-main {
-      max-width: 960px;
-      margin: 4rem auto;
-      padding: 1.5rem;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 2rem;
-      color: var(--text);
-    }
-
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-      margin-bottom: 2rem;
-    }
-
-    .filters select {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      padding: 1rem;
     }
 
     .booking-card {
-      background: var(--card);
-      padding: 1rem 1.2rem;
-      border-radius: 10px;
-      margin-bottom: 1.2rem;
-      box-shadow: 0 2px 8px var(--shadow);
-      line-height: 1.5;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      padding: 1rem;
     }
 
-    .booking-card.done {
-      opacity: 0.5;
-      transform: scale(0.98);
-    }
-
-    .booking-card h3 {
-      margin-top: 0;
-      color: var(--accent);
+    .filters {
+      flex-direction: column;
+      align-items: center;
     }
 
     .card-actions {
-      margin-top: 1rem;
-      display: flex;
-      justify-content: flex-end;
+      justify-content: center;
     }
+  }
+</style>
 
-    .btn-mark-done {
-      background: #28a745;
-      color: white;
-      padding: 6px 14px;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .btn-mark-done:hover {
-      background: #218838;
-    }
-
-    @media (max-width: 600px) {
-      .booking-card {
-        padding: 1rem;
-      }
-    }
-  </style>
 </head>
 <body>
   <header>
