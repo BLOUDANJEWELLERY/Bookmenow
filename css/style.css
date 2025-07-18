@@ -64,6 +64,7 @@ body {
   text-decoration: none;
   border: none;
   cursor: pointer;
+  background: white;
   padding: 0.5rem 0.75rem;
   transition: all 0.3s ease;
   color: var(--text);
