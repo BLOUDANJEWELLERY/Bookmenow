@@ -62,7 +62,6 @@ body {
 .nav-links li button {
   font-weight: 500;
   text-decoration: none;
-  background: linear-gradient(to right, #007bff, #00bfff);
   border: none;
   cursor: pointer;
   padding: 0.5rem 0.75rem;
@@ -77,9 +76,8 @@ body {
 .nav-links li a:hover,
 .nav-links li button:hover {
   color: var(--accent);
-  background-color: rgba(0, 123, 255, 0.1);
+  background: linear-gradient(to right, #007bff, #00bfff);
 }
-
 .logout-btn {
   display: inline-flex;
   align-items: center;
