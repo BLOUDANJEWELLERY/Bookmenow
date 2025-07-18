@@ -76,7 +76,7 @@ body {
 .nav-links li a:hover,
 .nav-links li button:hover {
   color: var(--accent);
-  background: linear-gradient(to right, #007bff, #00bfff);
+  background-color: rgba(0, 123, 255, 0.1);
 }
 .logout-btn {
   display: inline-flex;
@@ -368,6 +368,7 @@ footer {
 .nav-links.show {
   max-height: 500px; /* Enough to fit all links */
   opacity: 1;
+  background: linear-gradient(to right, #007bff, #00bfff);
   padding: 1rem 0; /* Restore vertical padding */
   pointer-events: auto; /* Enable interaction */
 }
