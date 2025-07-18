@@ -47,7 +47,7 @@ body {
 .logo {
   font-size: 1.7rem;
   font-weight: bold;
-  color: var(--accent);
+  color: #ffffff;
   user-select: none;
 }
 
