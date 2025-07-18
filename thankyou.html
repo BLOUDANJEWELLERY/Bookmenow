@@ -5,35 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Booking Confirmed – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
-  <script defer src="js/script.js"></script>
+.thankyou-main {
+  max-width: 700px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: #f2fbff; /* lighter blue for consistency */
+  border-radius: 10px;
+  box-shadow: 0 4px 12px var(--shadow);
+  border: 3px solid transparent;
+  background-image: linear-gradient(#f2fbff, #f2fbff), 
+                    linear-gradient(135deg, #007bff, #00c6ff);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  text-align: center;
+}
 
-  <style>
-    .thankyou-main {
-      max-width: 600px;
-      margin: 5rem auto;
-      padding: 2rem;
-      background: var(--card);
-      border-radius: 10px;
-      box-shadow: 0 4px 12px var(--shadow);
-      text-align: center;
-    }
+.thankyou-main h1 {
+  color: var(--accent);
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
 
-    .thankyou-main h1 {
-      color: var(--accent);
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-    }
+.thankyou-main p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
 
-    .thankyou-main p {
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-      color: var(--text);
-    }
-
-    .booking-details {
-      text-align: left;
-      margin-top: 2rem;
-  background: #cce5ff; /* fallback */
+.booking-details {
+  text-align: left;
+  margin-top: 2rem;
   padding: 1.2rem 1.5rem;
   border-radius: 10px;
   margin-bottom: 1.5rem;
@@ -41,26 +42,34 @@
   transition: transform 0.3s ease, opacity 0.3s ease;
   box-shadow: 0 2px 8px var(--shadow);
   border: 3px solid transparent;
-  background-image: linear-gradient(#f2fbff, #f2fbff), /* inner fill */
-                    linear-gradient(135deg, #007bff, #00c6ff); /* border */
+  background-image: linear-gradient(#f2fbff, #f2fbff),
+                    linear-gradient(135deg, #007bff, #00c6ff);
   background-origin: border-box;
   background-clip: padding-box, border-box;
-    }
+}
 
-    .booking-details strong {
-      color: var(--accent);
-    }
+.booking-details strong {
+  color: var(--accent);
+}
 
-    .btn-download {
-      margin-top: 2rem;
-      background: linear-gradient(to right, #28a745, #5dd99c);
-      font-weight: bold;
-    }
+.btn-download {
+  margin-top: 2rem;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: linear-gradient(to right, #28a745, #5dd99c);
+  color: white;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
 
-    .btn-download:hover {
-      filter: brightness(1.1);
-    }
-  </style>
+.btn-download:hover {
+  background: linear-gradient(to right, #24963c, #4dd68a);
+  transform: scale(1.03);
+}
+
 </head>
 <body>
   <!-- HEADER -->
