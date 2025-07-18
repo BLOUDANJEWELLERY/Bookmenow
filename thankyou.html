@@ -33,10 +33,18 @@
     .booking-details {
       text-align: left;
       margin-top: 2rem;
-      background: var(--bg);
-      padding: 1.5rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+  background: #cce5ff; /* fallback */
+  padding: 1.2rem 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  box-shadow: 0 2px 8px var(--shadow);
+  border: 3px solid transparent;
+  background-image: linear-gradient(#f2fbff, #f2fbff), /* inner fill */
+                    linear-gradient(135deg, #007bff, #00c6ff); /* border */
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
     }
 
     .booking-details strong {
