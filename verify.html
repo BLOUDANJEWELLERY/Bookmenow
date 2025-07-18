@@ -7,71 +7,93 @@
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/script.js"></script>
   <style>
-    .verify-main {
-      max-width: 600px;
-      margin: 5rem auto;
-      padding: 2rem;
-      background: var(--card);
-      border-radius: 10px;
-      box-shadow: 0 4px 12px var(--shadow);
-      text-align: center;
-    }
+.verify-main {
+  max-width: 700px;
+  margin: 5rem auto;
+  padding: 2rem;
+  background: #f2fbff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px var(--shadow);
+  border: 3px solid transparent;
+  background-image: linear-gradient(#f2fbff, #f2fbff),
+                    linear-gradient(135deg, #007bff, #00c6ff);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  text-align: center;
+}
 
-    .verify-main h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
+.verify-main h1 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
 
-    .badge {
-      display: inline-block;
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
-      font-weight: bold;
-      color: white;
-      margin-bottom: 1.5rem;
-      margin-right: 0.5rem;
-    }
+.badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1.5rem;
+  margin-right: 0.5rem;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
 
-    .verified {
-      background-color: #28a745;
-    }
+.verified {
+  background: linear-gradient(to right, #28a745, #5dd99c);
+}
 
-    .invalid {
-      background-color: #dc3545;
-    }
+.invalid {
+  background: linear-gradient(to right, #dc3545, #ff6b6b);
+}
 
-    .appointment-info {
-      text-align: left;
-      margin-top: 2rem;
-      padding: 1.2rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background: var(--bg);
-    }
+.appointment-info {
+  text-align: left;
+  margin-top: 2rem;
+  padding: 1.2rem 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  box-shadow: 0 2px 8px var(--shadow);
+  border: 3px solid transparent;
+  background-image: linear-gradient(#f2fbff, #f2fbff),
+                    linear-gradient(135deg, #007bff, #00c6ff);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
 
-    .appointment-info p {
-      margin: 0.6rem 0;
-    }
+.appointment-info p {
+  margin: 0.6rem 0;
+  color: var(--text);
+  font-size: 1rem;
+}
 
-    .btn-download {
-      margin-top: 2rem;
-      background: #28a745;
-      color: white;
-      font-weight: bold;
-      padding: 0.8rem 1.4rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+.btn-download {
+  margin-top: 2rem;
+  background: linear-gradient(to right, #28a745, #5dd99c);
+  color: white;
+  font-weight: bold;
+  padding: 0.8rem 1.4rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
 
-    .btn-download:hover {
-      background: #218838;
-    }
+.btn-download:hover {
+  background: linear-gradient(to right, #24963c, #4dd68a);
+  transform: scale(1.03);
+}
 
-    footer {
-      margin-top: 4rem;
-      text-align: center;
-    }
+footer {
+  margin-top: 4rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+
   </style>
 </head>
 <body>
