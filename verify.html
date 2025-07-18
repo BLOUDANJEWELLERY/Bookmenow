@@ -7,93 +7,116 @@
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/script.js"></script>
   <style>
-.verify-main {
-  max-width: 700px;
-  margin: 5rem auto;
-  padding: 2rem;
-  background: #f2fbff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px var(--shadow);
-  border: 3px solid transparent;
-  background-image: linear-gradient(#f2fbff, #f2fbff),
-                    linear-gradient(135deg, #007bff, #00c6ff);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  text-align: center;
-}
+    :root {
+      --accent: #007bff;
+      --shadow: rgba(0, 0, 0, 0.1);
+      --text: #222;
+      --bg: #f2fbff;
+      --verified-green-start: #28a745;
+      --verified-green-end: #5dd99c;
+      --invalid-red-start: #dc3545;
+      --invalid-red-end: #ff6b6b;
+    }
 
-.verify-main h1 {
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
-  color: var(--accent);
-}
+    .verify-main {
+      max-width: 700px;
+      margin: 5rem auto;
+      padding: 2rem;
+      background: var(--bg);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px var(--shadow);
+      border: 3px solid transparent;
+      background-image:
+        linear-gradient(var(--bg), var(--bg)),
+        linear-gradient(135deg, var(--accent), #00c6ff);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+      text-align: center;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--text);
+    }
 
-.badge {
-  display: inline-block;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 1.5rem;
-  margin-right: 0.5rem;
-  font-size: 0.95rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
+    .verify-main h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
 
-.verified {
-  background: linear-gradient(to right, #28a745, #5dd99c);
-}
+    .badge {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-weight: bold;
+      color: white;
+      margin-bottom: 1.5rem;
+      margin-right: 0.5rem;
+      font-size: 0.95rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      user-select: none;
+    }
 
-.invalid {
-  background: linear-gradient(to right, #dc3545, #ff6b6b);
-}
+    .verified {
+      background: linear-gradient(to right, var(--verified-green-start), var(--verified-green-end));
+    }
 
-.appointment-info {
-  text-align: left;
-  margin-top: 2rem;
-  padding: 1.2rem 1.5rem;
-  border-radius: 10px;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  box-shadow: 0 2px 8px var(--shadow);
-  border: 3px solid transparent;
-  background-image: linear-gradient(#f2fbff, #f2fbff),
-                    linear-gradient(135deg, #007bff, #00c6ff);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-}
+    .invalid {
+      background: linear-gradient(to right, var(--invalid-red-start), var(--invalid-red-end));
+    }
 
-.appointment-info p {
-  margin: 0.6rem 0;
-  color: var(--text);
-  font-size: 1rem;
-}
+    .appointment-info {
+      text-align: left;
+      margin-top: 2rem;
+      padding: 1.2rem 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      transition: transform 0.3s ease, opacity 0.5s ease;
+      box-shadow: 0 2px 8px var(--shadow);
+      border: 3px solid transparent;
+      background-image:
+        linear-gradient(var(--bg), var(--bg)),
+        linear-gradient(135deg, var(--accent), #00c6ff);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+      opacity: 0;
+    }
 
-.btn-download {
-  margin-top: 2rem;
-  background: linear-gradient(to right, #28a745, #5dd99c);
-  color: white;
-  font-weight: bold;
-  padding: 0.8rem 1.4rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
+    .appointment-info p {
+      margin: 0.6rem 0;
+      font-size: 1rem;
+      color: var(--text);
+    }
 
-.btn-download:hover {
-  background: linear-gradient(to right, #24963c, #4dd68a);
-  transform: scale(1.03);
-}
+    .appointment-info p strong {
+      font-weight: 700;
+      color: var(--accent);
+    }
 
-footer {
-  margin-top: 4rem;
-  text-align: center;
-  font-size: 0.9rem;
-  color: #666;
-}
+    .btn-download {
+      margin-top: 2rem;
+      background: linear-gradient(to right, #28a745, #5dd99c);
+      color: white;
+      font-weight: bold;
+      padding: 0.8rem 1.4rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      user-select: none;
+    }
 
+    .btn-download:hover {
+      background: linear-gradient(to right, #24963c, #4dd68a);
+      transform: scale(1.03);
+    }
+
+    footer {
+      margin-top: 4rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
   </style>
 </head>
 <body>
@@ -157,38 +180,51 @@ footer {
       }
 
       appointmentData = match;
+      window.data = appointmentData; // Make globally accessible for PDF generation
 
-      // Determine status badge
+      // Date calculations
       const today = new Date();
       const appointmentDate = new Date(`${match.date}T00:00:00`);
 
+      // Status badge
       let statusBadge = "";
-      if (appointmentDate >= new Date(today.setHours(0,0,0,0))) {
-        statusBadge = `<div class="badge" style="background-color: #007bff;">Upcoming Appointment</div>`;
+      if (appointmentDate >= new Date(today.setHours(0, 0, 0, 0))) {
+        statusBadge = `<div class="badge" style="background-color: var(--accent);">Upcoming Appointment</div>`;
       } else {
         statusBadge = `<div class="badge" style="background-color: #6c757d;">Expired Appointment</div>`;
       }
 
+      // Done status badge
       const isDone = match.done === true;
-const doneBadge = isDone
-  ? `<div class="badge" style="background-color: #28a745;">✅ Service Completed</div>`
-  : `<div class="badge" style="background-color: #ffc107; color: #000;">⌛ Service Not Yet Done</div>`;
+      const doneBadge = isDone
+        ? `<div class="badge verified">✅ Service Completed</div>`
+        : `<div class="badge invalid" style="color:#000;">⌛ Service Not Yet Done</div>`;
 
-container.innerHTML = `
-  <h1>✅ Appointment Verified</h1>
-  <div class="badge verified">Verified Booking</div>
-  ${statusBadge}
-  ${doneBadge}
-  <div class="appointment-info">
-    <p><strong>Appointment ID:</strong> ${match.bookingId}</p>
-    <p><strong>Name:</strong> ${match.name}</p>
-    <p><strong>Phone:</strong> ${match.phone}</p>
-    <p><strong>Service:</strong> ${match.service}</p>
-    <p><strong>Date:</strong> ${match.date}</p>
-    <p><strong>Time:</strong> ${match.time}</p>
-  </div>
-  <button class="btn-download" onclick="downloadPDF()">📄 Download PDF Receipt</button>
-`;
+      container.innerHTML = `
+        <h1>✅ Appointment Verified</h1>
+        <div class="badge verified">Verified Booking</div>
+        ${statusBadge}
+        ${doneBadge}
+        <div class="appointment-info">
+          <p><strong>Appointment ID:</strong> ${match.bookingId}</p>
+          <p><strong>Name:</strong> ${match.name}</p>
+          <p><strong>Phone:</strong> ${match.phone}</p>
+          <p><strong>Service:</strong> ${match.service}</p>
+          <p><strong>Date:</strong> ${match.date}</p>
+          <p><strong>Time:</strong> ${match.time}</p>
+        </div>
+        <button class="btn-download" onclick="downloadPDF()">📄 Download PDF Receipt</button>
+      `;
+
+      enhanceAppointmentInfo();
+
+      // Fade in appointment info
+      const infoBox = container.querySelector(".appointment-info");
+      if(infoBox) {
+        setTimeout(() => {
+          infoBox.style.opacity = "1";
+        }, 100);
+      }
     }
 
     function showInvalid(message) {
@@ -200,68 +236,84 @@ container.innerHTML = `
       `;
     }
 
+    function enhanceAppointmentInfo() {
+      const info = document.querySelector(".appointment-info");
+      if (!info) return;
+
+      info.querySelectorAll("p").forEach(p => {
+        const parts = p.innerHTML.split(":");
+        if (parts.length === 2) {
+          p.innerHTML = `<strong>${parts[0]}:</strong> <span style="color:#0056b3;">${parts[1].trim()}</span>`;
+        }
+      });
+    }
+
     window.downloadPDF = async function () {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+      if (!window.data) {
+        alert("Appointment data not loaded yet.");
+        return;
+      }
 
-  // === HEADER ===
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(22);
-  doc.setTextColor("#007bff");
-  doc.text("BookMeNow", 20, 20);
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
 
-  doc.setFontSize(13);
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor("#333");
-  doc.text("Appointment Confirmation Receipt", 20, 30);
+      // Header
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(22);
+      doc.setTextColor("#007bff");
+      doc.text("BookMeNow", 20, 20);
 
-  // === CARD STYLING BOX ===
-  doc.setDrawColor("#00bfff");
-  doc.setFillColor(242, 251, 255); // #f2fbff
-  doc.setLineWidth(0.8);
-  doc.roundedRect(15, 38, 180, 92, 4, 4, 'FD'); // Fill + Draw
+      doc.setFontSize(13);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor("#333");
+      doc.text("Appointment Confirmation Receipt", 20, 30);
 
-  // === DETAILS ===
-  let y = 48, gap = 10;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(12);
-  doc.setTextColor("#007bff");
-  doc.text("Booking Details:", 20, y);
+      // Card background styling
+      doc.setDrawColor("#00c6ff");
+      doc.setFillColor(242, 251, 255); // #f2fbff
+      doc.setLineWidth(0.8);
+      doc.roundedRect(15, 38, 180, 92, 4, 4, 'FD'); // Fill + Draw
 
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(11);
-  doc.setTextColor("#000");
-  y += gap; doc.text(`Appointment ID: ${data.bookingId}`, 20, y);
-  y += gap; doc.text(`Name: ${data.name}`, 20, y);
-  y += gap; doc.text(`Phone: ${data.phone}`, 20, y);
-  y += gap; doc.text(`Service: ${data.service}`, 20, y);
-  y += gap; doc.text(`Date: ${data.date}`, 20, y);
-  y += gap; doc.text(`Time: ${data.time}`, 20, y);
+      // Details
+      let y = 48, gap = 10;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.setTextColor("#007bff");
+      doc.text("Booking Details:", 20, y);
 
-  // === QR CODE ===
-  const qr = new QRious({
-    value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
-    size: 100,
-  });
-  doc.addImage(qr.toDataURL(), 'PNG', 150, 45, 40, 40);
-  doc.setFontSize(9);
-  doc.setTextColor("#666");
-  doc.text("Scan to verify", 160, 88);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(11);
+      doc.setTextColor("#000");
+      y += gap; doc.text(`Appointment ID: ${data.bookingId}`, 20, y);
+      y += gap; doc.text(`Name: ${data.name}`, 20, y);
+      y += gap; doc.text(`Phone: ${data.phone}`, 20, y);
+      y += gap; doc.text(`Service: ${data.service}`, 20, y);
+      y += gap; doc.text(`Date: ${data.date}`, 20, y);
+      y += gap; doc.text(`Time: ${data.time}`, 20, y);
 
-  // === FOOTER ===
-  doc.setFont("helvetica", "italic");
-  doc.setFontSize(9);
-  doc.setTextColor("#555");
-  doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 135);
+      // QR Code
+      const qr = new QRious({
+        value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
+        size: 100,
+      });
+      doc.addImage(qr.toDataURL(), 'PNG', 150, 45, 40, 40);
+      doc.setFontSize(9);
+      doc.setTextColor("#666");
+      doc.text("Scan to verify", 160, 88);
 
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
-  doc.setTextColor("#007bff");
-  doc.text("Powered by Captain | BookMeNow", 20, 145);
+      // Footer
+      doc.setFont("helvetica", "italic");
+      doc.setFontSize(9);
+      doc.setTextColor("#555");
+      doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 135);
 
-  doc.save(`BookMeNow_Receipt_${data.bookingId}.pdf`);
-};
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor("#007bff");
+      doc.text("Powered by Captain | BookMeNow", 20, 145);
 
+      doc.save(`BookMeNow_Receipt_${data.bookingId}.pdf`);
+    };
 
     verifyAppointment();
   </script>
