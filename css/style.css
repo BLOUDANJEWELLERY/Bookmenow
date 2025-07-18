@@ -53,11 +53,10 @@ body {
 
 .nav-links {
   display: flex;
+  background: linear-gradient(to right, #007bff, #00bfff);
   align-items: center;
   gap: 1rem;
   list-style: none;
-  background: linear-gradient(to right, #007bff, #00bfff);
-  
 }
 
 .nav-links li a,
