@@ -158,6 +158,15 @@
   filter: brightness(1.05);
   transform: scale(1.05);
 }
+.confirm-yes {
+  background: linear-gradient(to right, #28a745, #5dd99c);
+  color: white;
+}
+
+.confirm-cancel {
+  background: linear-gradient(to right, #dc3545, #ff6b6b);
+  color: white;
+}
 
   .loading-indicator {
   text-align: center;
@@ -237,8 +246,9 @@
   </main>
 <div id="confirm-dialog" class="confirm-dialog" style="display: none;">
   <div class="confirm-box">
-    <h3>Mark this appointment as done?</h3>
-    <button class="confirm-yes">Yes</button>
+<h3 id="confirm-message">Are you sure?</h3>
+<button class="confirm-yes" id="confirm-yes">Yes</button>
+
     <button class="confirm-no">No</button>
   </div>
 </div>
@@ -252,6 +262,8 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
 
     const firebaseConfig = {
       apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
@@ -358,28 +370,53 @@ confirmNo.onclick = () => {
         const card = document.createElement("div");
         card.className = `booking-card ${b.done ? "done" : ""}`;
         card.innerHTML = `
-          <h3>${b.service}</h3>
-          <p><strong>Name:</strong> ${b.name}</p>
-          <p><strong>Phone:</strong> ${b.phone}</p>
-          <p><strong>Date:</strong> ${b.date}</p>
-          <p><strong>Time:</strong> ${b.time}</p>
-          <p><strong>Booking ID:</strong> ${b.bookingId}</p>
-          <div class="card-actions">
-            ${b.done ? "" : `<button class="btn-mark-done">✔️Done</button>`}
-          </div>
-        `;
+  <h3>${b.service}</h3>
+  <p><strong>Name:</strong> ${b.name}</p>
+  <p><strong>Phone:</strong> ${b.phone}</p>
+  <p><strong>Date:</strong> ${b.date}</p>
+  <p><strong>Time:</strong> ${b.time}</p>
+  <p><strong>Booking ID:</strong> ${b.bookingId}</p>
+  <div class="card-actions">
+    ${b.done ? "" : `
+      <button class="btn-mark-done">✔️Done</button>
+      <button class="btn-cancel">❌Cancel</button>
+    `}
+  </div>
+`;
 
-        if (!b.done) {
-card.querySelector(".btn-mark-done").onclick = () => {
-  confirmCallback = async () => {
-    await updateDoc(doc(db, "bookings", b.id), { done: true });
-    b.done = true;
-    renderCards();
+
+if (!b.done) {
+  const markBtn = card.querySelector(".btn-mark-done");
+  const cancelBtn = card.querySelector(".btn-cancel");
+
+  markBtn.onclick = () => {
+    document.getElementById("confirm-message").innerText = "Mark this appointment as done?";
+    const yesBtn = document.getElementById("confirm-yes");
+    yesBtn.classList.remove("confirm-cancel");
+    yesBtn.classList.add("confirm-yes");
+    confirmCallback = async () => {
+      await updateDoc(doc(db, "bookings", b.id), { done: true });
+      b.done = true;
+      renderCards();
+    };
+    confirmDialog.style.display = "flex";
   };
-  confirmDialog.style.display = "flex";
-};
 
-        }
+  cancelBtn.onclick = () => {
+    document.getElementById("confirm-message").innerText = "Do you really want to cancel the appointment?";
+    const yesBtn = document.getElementById("confirm-yes");
+    yesBtn.classList.remove("confirm-yes");
+    yesBtn.classList.add("confirm-cancel");
+    confirmCallback = async () => {
+      await deleteDoc(doc(db, "bookings", b.id));
+      allBookings = allBookings.filter(item => item.id !== b.id);
+      renderCards();
+    };
+    confirmDialog.style.display = "flex";
+  };
+}
+
+
 
         container.appendChild(card);
       }
