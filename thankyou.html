@@ -140,58 +140,68 @@
       document.querySelector(".thankyou-main").innerHTML = "<h1>⚠️ No Booking Found</h1><p>Please make a booking first.</p>";
     }
 
-    // ⬇ PDF generation
-    window.downloadPDF = async function () {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
+window.downloadPDF = async function () {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
 
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor("#007bff");
-      doc.setFontSize(20);
-      doc.text("BookMeNow", 20, 20);
+  // === HEADER ===
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(22);
+  doc.setTextColor("#007bff");
+  doc.text("BookMeNow", 20, 20);
 
-      doc.setFontSize(12);
-      doc.setTextColor("#000");
-      doc.setFont("helvetica", "normal");
-      doc.text("Appointment Confirmation Receipt", 20, 30);
+  doc.setFontSize(13);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor("#333");
+  doc.text("Appointment Confirmation Receipt", 20, 30);
 
-      doc.setDrawColor("#cccccc");
-      doc.setLineWidth(0.5);
-      doc.rect(15, 35, 180, 90);
+  // === CARD STYLING BOX ===
+  doc.setDrawColor("#00bfff");
+  doc.setFillColor(242, 251, 255); // #f2fbff
+  doc.setLineWidth(0.8);
+  doc.roundedRect(15, 38, 180, 92, 4, 4, 'FD'); // Fill + Draw
 
-      let y = 45, gap = 10;
-      doc.setFont("helvetica", "bold");
-      doc.text("Booking Details:", 20, y);
-      doc.setFont("helvetica", "normal");
+  // === DETAILS ===
+  let y = 48, gap = 10;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  doc.setTextColor("#007bff");
+  doc.text("Booking Details:", 20, y);
 
-      y += gap; doc.text(`Appointment ID: ${data.bookingId}`, 20, y);
-      y += gap; doc.text(`Name: ${data.name}`, 20, y);
-      y += gap; doc.text(`Phone: ${data.phone}`, 20, y);
-      y += gap; doc.text(`Service: ${data.service}`, 20, y);
-      y += gap; doc.text(`Date: ${data.date}`, 20, y);
-      y += gap; doc.text(`Time: ${data.time}`, 20, y);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(11);
+  doc.setTextColor("#000");
+  y += gap; doc.text(`Appointment ID: ${data.bookingId}`, 20, y);
+  y += gap; doc.text(`Name: ${data.name}`, 20, y);
+  y += gap; doc.text(`Phone: ${data.phone}`, 20, y);
+  y += gap; doc.text(`Service: ${data.service}`, 20, y);
+  y += gap; doc.text(`Date: ${data.date}`, 20, y);
+  y += gap; doc.text(`Time: ${data.time}`, 20, y);
 
-      y += gap + 5;
-      doc.setFont("helvetica", "italic");
-      doc.setFontSize(10);
-      doc.setTextColor("#555");
-      doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, y);
+  // === QR CODE ===
+  const qr = new QRious({
+    value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
+    size: 100,
+  });
+  doc.addImage(qr.toDataURL(), 'PNG', 150, 45, 40, 40);
+  doc.setFontSize(9);
+  doc.setTextColor("#666");
+  doc.text("Scan to verify", 160, 88);
 
-      const qr = new QRious({
-        value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
-        size: 100,
-      });
-      doc.addImage(qr.toDataURL(), 'PNG', 150, 40, 40, 40);
-      doc.setFontSize(8);
-      doc.text("Scan to verify", 160, 85);
+  // === FOOTER ===
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(9);
+  doc.setTextColor("#555");
+  doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 135);
 
-      doc.setFontSize(10);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor("#007bff");
-      doc.text("Powered by Captain | BookMeNow", 20, 140);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.setTextColor("#007bff");
+  doc.text("Powered by Captain | BookMeNow", 20, 145);
 
-      doc.save(`BookMeNow_Receipt_${data.bookingId}.pdf`);
-    };
+  doc.save(`BookMeNow_Receipt_${data.bookingId}.pdf`);
+};
+
 
     // ⏳ Clear data after 1 min
     setTimeout(() => localStorage.removeItem("bookingData"), 60000);
