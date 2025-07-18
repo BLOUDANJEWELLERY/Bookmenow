@@ -6,131 +6,144 @@
   <title>Admin Panel – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/script.js"></script>
-  <style>
-    :root {
-      --accent: #007bff;
-      --shadow: rgba(0, 0, 0, 0.08);
-    }
+ <style>
+  .admin-main {
+    max-width: 960px;
+    margin: 4rem auto;
+    padding: 1.8rem;
+    background: #f2fbff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    border: 3px solid transparent;
+    background-image: linear-gradient(#f2fbff, #f2fbff),
+                      linear-gradient(135deg, #007bff, #00c6ff);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2.4rem;
+    color: #003366;
+    margin-bottom: 2.2rem;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .filters select {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 2px solid #007bff;
+    background: #e9f5ff;
+    color: #003366;
+    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.1);
+    transition: border 0.3s ease, background 0.3s ease;
+  }
+
+  .filters select:focus {
+    border-color: #00bfff;
+    background: #d9efff;
+    outline: none;
+  }
+
+  .booking-card {
+    background: linear-gradient(#f2fbff, #f2fbff), 
+                linear-gradient(135deg, #007bff, #00c6ff);
+    background-clip: padding-box, border-box;
+    background-origin: border-box;
+    padding: 1.4rem 1.6rem;
+    border-radius: 12px;
+    margin-bottom: 1.6rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    line-height: 1.6;
+    border: 3px solid transparent;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .booking-card.done {
+    opacity: 0.6;
+    transform: scale(0.97);
+    filter: grayscale(0.2);
+  }
+
+  .booking-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+    color: var(--accent);
+  }
+
+  .card-actions {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+  }
+
+  .btn-mark-done {
+    background: linear-gradient(to right, #28a745, #5dd99c);
+    color: white;
+    padding: 0.6rem 1.4rem;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 8px rgba(40, 167, 69, 0.2);
+  }
+
+  .btn-mark-done:hover {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 600px) {
     .admin-main {
-      max-width: 960px;
-      margin: 4rem auto;
-      padding: 1.8rem;
-      background: #f2fbff;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-      border: 3px solid transparent;
-      background-image: linear-gradient(#f2fbff, #f2fbff),
-                        linear-gradient(135deg, #007bff, #00c6ff);
-      background-origin: border-box;
-      background-clip: padding-box, border-box;
-    }
-    h1 {
-      text-align: center;
-      font-size: 2.4rem;
-      color: #003366;
-      margin-bottom: 2.2rem;
-    }
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-      margin-bottom: 2.5rem;
-    }
-    .filters select {
-      padding: 0.6rem 1.2rem;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: 2px solid #007bff;
-      background: #e9f5ff;
-      color: #003366;
-      box-shadow: 0 2px 6px rgba(0, 123, 255, 0.1);
-    }
-    .booking-card {
-      background: linear-gradient(#f2fbff, #f2fbff), 
-                  linear-gradient(135deg, #007bff, #00c6ff);
-      background-clip: padding-box, border-box;
-      background-origin: border-box;
-      padding: 1.4rem 1.6rem;
-      border-radius: 12px;
-      margin-bottom: 1.6rem;
-      box-shadow: 0 4px 12px var(--shadow);
-      border: 3px solid transparent;
-    }
-    .booking-card.done {
-      opacity: 0.6;
-      transform: scale(0.97);
-      filter: grayscale(0.2);
-    }
-    .booking-card h3 {
-      margin-top: 0;
-      color: var(--accent);
-    }
-    .card-actions {
-      margin-top: 1.2rem;
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.8rem;
-    }
-    .btn-mark-done {
-      background: linear-gradient(to right, #28a745, #5dd99c);
-      color: white;
-      padding: 0.6rem 1.4rem;
-      border: none;
-      border-radius: 30px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 3px 8px rgba(40, 167, 69, 0.2);
+      padding: 1rem;
     }
 
-    .confirm-dialog {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
+    .booking-card {
+      padding: 1rem;
+    }
+
+    .filters {
+      flex-direction: column;
       align-items: center;
+    }
+
+    .card-actions {
       justify-content: center;
-      z-index: 9999;
     }
-    .confirm-box {
-      background: linear-gradient(to bottom right, #f2fbff, #e9f5ff);
-      padding: 2rem;
-      border-radius: 12px;
-      text-align: center;
-      max-width: 340px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-      border: 3px solid transparent;
-      background-image: linear-gradient(#f2fbff, #f2fbff),
-                        linear-gradient(135deg, #007bff, #00c6ff);
-      background-origin: border-box;
-      background-clip: padding-box, border-box;
-    }
-    .confirm-box h3 {
-      margin-bottom: 1.2rem;
-      color: #003366;
-    }
-    .confirm-box button {
-      margin: 0 0.5rem;
-      padding: 0.6rem 1.4rem;
-      border: none;
-      border-radius: 30px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .confirm-yes {
-      background: linear-gradient(to right, #dc3545, #ff6b6b);
-      color: white;
-    }
-    .confirm-no {
-      background: linear-gradient(to right, #ffc107, #ffdd57);
-      color: #333;
-    }
-  </style>
+  }
+</style>
+
 </head>
 <body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">BookMeNow Admin</div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="myappointments.html">My Appointments</a></li>
+        <li><a href="booking.html">Book Again</a></li>
+        <li><button id="theme-toggle">🌙</button></li>
+        <li><button id="logout-btn" class="logout-btn" style="display: none;">Logout</button></li>
+      </ul>
+    </nav>
+  </header>
+
   <main class="admin-main">
     <h1>📋 All Appointments</h1>
+
     <div class="filters">
       <select id="date-filter">
         <option value="today">Today</option>
@@ -138,86 +151,134 @@
         <option value="past">Past</option>
         <option value="all">All</option>
       </select>
+
       <select id="service-filter">
         <option value="all">All Services</option>
-        <option value="Haircut">Haircut</option>
         <option value="Beard Cutting">Beard Cutting</option>
+        <option value="Haircut">Haircut</option>
+        <option value="Facial">Facial</option>
+        <option value="Hair coloring">Hair coloring</option>
+        <option value="Shaving">Shaving</option>
+        <option value="Head Massage">Head Massage</option>
       </select>
     </div>
+
     <div id="cards-container"></div>
   </main>
 
-  <div id="confirm-dialog" class="confirm-dialog" style="display:none;">
-    <div class="confirm-box">
-      <h3>Mark this booking as done?</h3>
-      <button class="confirm-yes">Yes</button>
-      <button class="confirm-no">Cancel</button>
-    </div>
-  </div>
+  <footer>
+    <p>© 2025 BookMeNow | Managed by Captain</p>
+  </footer>
 
+  <!-- Firebase & Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-    const app = initializeApp({
-      apiKey: "AIzaSy...",
-      authDomain: "...",
-      projectId: "..."
-    });
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
+      authDomain: "sampleportfolio-9450c.firebaseapp.com",
+      projectId: "sampleportfolio-9450c",
+      storageBucket: "sampleportfolio-9450c.appspot.com",
+      messagingSenderId: "725347523572",
+      appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
+    };
 
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getFirestore(app);
+
+    const logoutBtn = document.getElementById("logout-btn");
     const container = document.getElementById("cards-container");
     const dateFilter = document.getElementById("date-filter");
     const serviceFilter = document.getElementById("service-filter");
+
     let allBookings = [];
 
-    const showConfirmDialog = (onConfirm) => {
-      const dialog = document.getElementById("confirm-dialog");
-      dialog.style.display = "flex";
-      dialog.querySelector(".confirm-yes").onclick = () => {
-        dialog.style.display = "none";
-        onConfirm();
-      };
-      dialog.querySelector(".confirm-no").onclick = () => {
-        dialog.style.display = "none";
-      };
-    };
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return window.location.href = "login.html";
+      logoutBtn.style.display = "inline-block";
+      logoutBtn.onclick = () => signOut(auth).then(() => location.href = "login.html");
 
-    const renderCards = () => {
+      const snapshot = await getDocs(collection(db, "bookings"));
+      allBookings = snapshot.docs.map(docSnap => {
+        const data = docSnap.data();
+        return {
+          id: docSnap.id,
+          ...data,
+          datetime: new Date(`${data.date}T${data.time}`),
+          done: data.done === true
+        };
+      });
+
+      renderCards();
+    });
+
+    dateFilter.onchange = renderCards;
+    serviceFilter.onchange = renderCards;
+
+    function renderCards() {
       container.innerHTML = "";
-      for (const b of allBookings) {
+      const now = new Date();
+      const dateVal = dateFilter.value;
+      const serviceVal = serviceFilter.value;
+
+      let filtered = allBookings.filter(b => {
+        const isToday =
+          b.datetime.toDateString() === now.toDateString();
+        const isPast = b.datetime < now && !isToday;
+        const isFuture = b.datetime > now && !isToday;
+
+        const dateMatch =
+          dateVal === "all" ||
+          (dateVal === "today" && isToday) ||
+          (dateVal === "past" && isPast) ||
+          (dateVal === "upcoming" && isFuture);
+
+        const serviceMatch = serviceVal === "all" || b.service === serviceVal;
+
+        return dateMatch && serviceMatch;
+      });
+
+      // Sort: not done first
+      filtered.sort((a, b) => {
+        if (a.done && !b.done) return 1;
+        if (!a.done && b.done) return -1;
+        return a.datetime - b.datetime;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = "<p style='text-align:center'>No bookings found.</p>";
+        return;
+      }
+
+      for (const b of filtered) {
         const card = document.createElement("div");
         card.className = `booking-card ${b.done ? "done" : ""}`;
         card.innerHTML = `
           <h3>${b.service}</h3>
           <p><strong>Name:</strong> ${b.name}</p>
+          <p><strong>Phone:</strong> ${b.phone}</p>
           <p><strong>Date:</strong> ${b.date}</p>
           <p><strong>Time:</strong> ${b.time}</p>
-          <p><strong>ID:</strong> ${b.bookingId}</p>
+          <p><strong>Booking ID:</strong> ${b.bookingId}</p>
           <div class="card-actions">
             ${b.done ? "" : `<button class="btn-mark-done">✔️ Mark as Done</button>`}
           </div>
         `;
+
         if (!b.done) {
-          card.querySelector(".btn-mark-done").onclick = () => {
-            showConfirmDialog(async () => {
-              await updateDoc(doc(db, "bookings", b.id), { done: true });
-              b.done = true;
-              renderCards();
-            });
+          card.querySelector(".btn-mark-done").onclick = async () => {
+            await updateDoc(doc(db, "bookings", b.id), { done: true });
+            b.done = true;
+            renderCards();
           };
         }
+
         container.appendChild(card);
       }
-    };
-
-    const fetchBookings = async () => {
-      const snapshot = await getDocs(collection(db, "bookings"));
-      allBookings = snapshot.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
-      renderCards();
-    };
-
-    fetchBookings();
+    }
   </script>
 </body>
 </html>
