@@ -143,6 +143,20 @@ input[type="text"]:focus {
   display: inline-block;
 }
 
+.time-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1 1 120px;
+  min-width: 120px;
+  max-width: 200px;
+}
+.time-block label {
+  font-size: 0.85rem;
+  color: #003366;
+  font-weight: 500;
+}
+
 button {
   padding: 0.7rem 1.4rem;
   background: linear-gradient(to right, #007bff, #00c6ff);
@@ -411,12 +425,29 @@ ul {
 
   <main>
 
-    <div id="schedule-tab" class="tab-content active">
-      <form id="schedule-form">
-        <div id="working-days-container"></div>
-        <button type="submit">Save Schedule</button>
-      </form>
-    </div>
+    <div class="day-row" data-day="Monday">
+  <label class="day-name">Monday</label>
+
+  <div class="time-block">
+    <label>Start</label>
+    <input type="time" class="start-1" data-day="Monday" />
+  </div>
+
+  <div class="time-block">
+    <label>End</label>
+    <input type="time" class="end-1" data-day="Monday" />
+  </div>
+
+  <div class="time-block shift-2" data-day="Monday">
+    <label>Start 2</label>
+    <input type="time" class="start-2" data-day="Monday" />
+  </div>
+
+  <div class="time-block shift-2" data-day="Monday">
+    <label>End 2</label>
+    <input type="time" class="end-2" data-day="Monday" />
+  </div>
+</div>
 
     <div id="holiday-tab" class="tab-content">
       <form id="holiday-form">
