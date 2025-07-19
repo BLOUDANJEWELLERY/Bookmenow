@@ -5,17 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Settings</title>
   <style>
-    body {
-  font-family: Arial, sans-serif;
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #f5f5f5;
+  background: #f5faff;
+  color: #003366;
 }
 
 header {
-  background: #333;
+  background: #003366;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,37 +24,49 @@ header {
 }
 
 main {
-  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
 }
 
 .tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 2rem;
 }
 
 .tab-btn {
-  padding: 10px 15px;
+  padding: 0.75rem 1.4rem;
+  background: #eaf6ff;
+  border: 2px solid #007bff;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  background: #ddd;
-  border: none;
-  border-radius: 4px;
-  white-space: nowrap;
-  flex-shrink: 0;
+  transition: 0.3s ease;
+  color: #003366;
+}
+
+.tab-btn:hover {
+  background: #d6ecff;
+  border-color: #0056b3;
 }
 
 .tab-btn.active {
-  background: #007bff;
+  background: linear-gradient(to right, #007bff, #00c6ff);
   color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
 .tab-content {
   display: none;
   background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 1.6rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .tab-content.active {
@@ -63,9 +76,9 @@ main {
 .day-row {
   display: flex;
   flex-wrap: wrap;
+  gap: 1rem;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 }
 
 .shift-2 {
@@ -78,40 +91,54 @@ main {
 
 label.day-name {
   width: 100px;
-  min-width: 80px;
-  display: inline-block;
-  font-weight: bold;
+  font-weight: 600;
 }
 
-input[type="time"] {
-  padding: 5px;
-  width: 100%;
-  max-width: 140px;
-}
-
+input[type="time"],
 input[type="number"],
 input[type="text"] {
-  padding: 6px;
-  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  background: #eaf6ff;
+  color: #003366;
+  transition: 0.3s ease;
   max-width: 200px;
 }
 
+input[type="time"]:focus,
+input[type="number"]:focus,
+input[type="text"]:focus {
+  outline: none;
+  border-color: #00bfff;
+  background: #d0e9ff;
+}
+
 button {
-  padding: 8px 12px;
-  border: none;
-  background: #007bff;
+  padding: 0.7rem 1.4rem;
+  background: linear-gradient(to right, #007bff, #00c6ff);
   color: white;
-  border-radius: 4px;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
   cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.05);
 }
 
 form > div {
-  margin-bottom: 12px;
+  margin-bottom: 1.2rem;
 }
 
 ul {
-  padding: 0;
   list-style: none;
+  padding: 0;
 }
 
 .blackout-row,
@@ -119,55 +146,87 @@ ul {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #f2fbff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.05);
 }
 
 .user-row div {
-  margin-right: 12px;
+  font-weight: 500;
 }
 
 .action-btn {
-  padding: 4px 8px;
-  margin-left: 4px;
-  cursor: pointer;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
   border: none;
-  border-radius: 4px;
-  white-space: nowrap;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .delete-btn {
-  background: #e74c3c;
+  background: linear-gradient(to right, #dc3545, #ff6b6b);
   color: white;
+}
+
+.delete-btn:hover {
+  filter: brightness(1.1);
 }
 
 .suspend-btn {
-  background: #f39c12;
+  background: linear-gradient(to right, #f39c12, #ffb347);
   color: white;
 }
 
+.suspend-btn:hover {
+  filter: brightness(1.1);
+}
+
+/* 📱 Mobile responsiveness */
 @media (max-width: 600px) {
-  header {
+  main {
+    padding: 1rem;
+  }
+
+  .tabs {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .day-row {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .day-row label.day-name {
-    width: 100%;
+  label.day-name {
+    width: auto;
   }
 
-  .day-row input[type="time"] {
-    max-width: 100%;
-  }
-
+  input[type="time"],
   input[type="number"],
   input[type="text"] {
+    width: 100%;
     max-width: 100%;
   }
 
   .tab-btn {
-    flex: 1 1 auto;
+    width: 100%;
     text-align: center;
+  }
+
+  .blackout-row,
+  .user-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-btn {
+    width: 100%;
+    margin-top: 0.5rem;
   }
 }
   </style>
