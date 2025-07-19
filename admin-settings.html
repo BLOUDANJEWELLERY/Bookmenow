@@ -5,144 +5,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Settings</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-    }
-    header {
-      background: #222;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      background: #eee;
-      padding: 0.5rem;
-    }
-    .tab-btn {
-      background: #ccc;
-      border: none;
-      padding: 0.5rem 1rem;
-      margin: 5px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .tab-btn.active {
-      background: #333;
-      color: white;
-    }
-    .tab-content {
-      display: none;
-      padding: 1rem;
-    }
-    .tab-content.active {
-      display: block;
-    }
-    .day-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .day-name {
-      width: 80px;
-      font-weight: bold;
-    }
-    .time-input, .shift-type-select, .day-enable {
-      margin: 5px;
-    }
-    .shift-2 {
-      display: none;
-    }
-    .shift-2.visible {
-      display: inline-block;
-    }
-    form {
-      margin-top: 1rem;
-    }
-    input, select, textarea {
-      padding: 6px;
-      margin: 5px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      padding: 6px 12px;
-      background: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-    @media (max-width: 600px) {
-      .day-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .day-name {
-        width: auto;
-      }
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+    header { background: #333; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+    main { padding: 20px; }
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+    .tab-btn { padding: 10px 15px; cursor: pointer; background: #ddd; border: none; border-radius: 4px; }
+    .tab-btn.active { background: #007bff; color: white; }
+    .tab-content { display: none; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .tab-content.active { display: block; }
+    .day-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .shift-2 { display: none; }
+    .shift-2.visible { display: inline-block; }
+    label.day-name { width: 100px; display: inline-block; }
+    input[type="time"] { padding: 5px; }
+    input[type="number"], input[type="text"] { padding: 6px; width: 100%; max-width: 200px; }
+    button { padding: 8px 12px; border: none; background: #007bff; color: white; border-radius: 4px; cursor: pointer; }
+    form > div { margin-bottom: 12px; }
+    ul { padding: 0; list-style: none; }
   </style>
 </head>
 <body>
   <header>
-    <h1>Admin Settings</h1>
+    <h2>Admin Settings</h2>
     <button id="logout-btn">Logout</button>
   </header>
 
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="schedule">Working Hours</button>
-    <button class="tab-btn" data-tab="holidays">Special Holidays</button>
-    <button class="tab-btn" data-tab="advanced">Advanced Settings</button>
-    <button class="tab-btn" data-tab="announcement">Announcement Banner</button>
-  </div>
+  <main>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="schedule-tab">Working Days</button>
+      <button class="tab-btn" data-tab="holiday-tab">Holidays</button>
+      <button class="tab-btn" data-tab="advanced-tab">Advanced Settings</button>
+      <button class="tab-btn" data-tab="announcement-tab">Announcement</button>
+    </div>
 
-  <div id="schedule" class="tab-content active">
-    <form id="schedule-form">
-      <div id="working-days-container"></div>
-      <button type="submit">Save Schedule</button>
-    </form>
-  </div>
+    <div id="schedule-tab" class="tab-content active">
+      <form id="schedule-form">
+        <div id="working-days-container"></div>
+        <button type="submit">Save Schedule</button>
+      </form>
+    </div>
 
-  <div id="holidays" class="tab-content">
-    <form id="holiday-form">
-      <input type="date" id="holiday-date" required />
-      <button type="submit">Add Holiday</button>
-    </form>
-    <ul id="holiday-list"></ul>
-  </div>
+    <div id="holiday-tab" class="tab-content">
+      <form id="holiday-form">
+        <input type="date" id="holiday-date" />
+        <button type="submit">Add Holiday</button>
+      </form>
+      <ul id="holiday-list"></ul>
+    </div>
 
-  <div id="advanced" class="tab-content">
-    <form id="advanced-form">
-      <label>Buffer Time (minutes):</label>
-      <input type="number" id="buffer-time" min="0" required /><br/>
-      <label>Max Days in Advance Booking Allowed:</label>
-      <input type="number" id="max-days" min="1" required /><br/>
-      <label>Hours Before Slot Closes:</label>
-      <input type="number" id="hours-before" min="0" required /><br/>
-      <button id="save-advanced">Save Settings</button>
-    </form>
-  </div>
+    <div id="advanced-tab" class="tab-content">
+      <form id="advanced-form">
+        <div>
+          <label>Buffer Time (mins):</label>
+          <input type="number" id="buffer-time" min="0" />
+        </div>
+        <div>
+          <label>Max Advance Booking Days:</label>
+          <input type="number" id="max-days" min="0" />
+        </div>
+        <div>
+          <label>Cutoff Time (hours before):</label>
+          <input type="number" id="hours-before" min="0" />
+        </div>
+        <button type="submit">Save Advanced Settings</button>
+      </form>
+    </div>
 
-  <div id="announcement" class="tab-content">
-    <form id="announcement-form">
-      <label>Announcement Banner Text:</label><br/>
-      <textarea id="banner-text" rows="3" style="width:100%"></textarea><br/>
-      <button type="submit">Save Banner</button>
-    </form>
-  </div>
+    <div id="announcement-tab" class="tab-content">
+      <form id="announcement-form">
+        <div>
+          <label>Enable Banner:</label>
+          <input type="checkbox" id="banner-enabled" />
+        </div>
+        <div>
+          <label>Banner Message:</label><br/>
+          <input type="text" id="banner-message" />
+        </div>
+        <button type="submit">Save Banner</button>
+      </form>
+    </div>
+  </main>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -187,7 +129,7 @@
       workingContainer.appendChild(row);
     });
 
-    document.addEventListener("change", (e) => {
+    document.addEventListener("change", e => {
       if (e.target.classList.contains("shift-type-select")) {
         const day = e.target.dataset.day;
         const val = e.target.value;
@@ -214,7 +156,7 @@
       location.href = "login.html";
     });
 
-    document.getElementById("schedule-form").addEventListener("submit", async (e) => {
+    document.getElementById("schedule-form").addEventListener("submit", async e => {
       e.preventDefault();
       const data = {};
       weekdays.forEach(day => {
@@ -235,118 +177,115 @@
       alert("Schedule saved.");
     });
 
-    document.getElementById("holiday-form").addEventListener("submit", async (e) => {
+    async function loadSchedule() {
+      const snap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
+      if (snap.exists()) {
+        const data = snap.data();
+        weekdays.forEach(day => {
+          const d = data[day];
+          if (!d) return;
+          document.querySelector(`.day-enable[data-day="${day}"]`).checked = d.enabled;
+          document.querySelector(`.shift-type-select[data-day="${day}"]`).value = d.shiftType || "single";
+          document.querySelector(`.start-1[data-day="${day}"]`).value = d.shift1?.start || "";
+          document.querySelector(`.end-1[data-day="${day}"]`).value = d.shift1?.end || "";
+          if (d.shiftType === "double" && d.shift2) {
+            document.querySelector(`.shift-2[data-day="${day}"]`).classList.add("visible");
+            document.querySelector(`.start-2[data-day="${day}"]`).value = d.shift2.start || "";
+            document.querySelector(`.end-2[data-day="${day}"]`).value = d.shift2.end || "";
+          }
+        });
+      }
+    }
+
+    const holidayForm = document.getElementById("holiday-form");
+    const holidayInput = document.getElementById("holiday-date");
+    const holidayList = document.getElementById("holiday-list");
+
+    holidayForm.addEventListener("submit", async e => {
       e.preventDefault();
-      const newDate = document.getElementById("holiday-date").value;
+      const newDate = holidayInput.value;
       if (!newDate) return alert("Select a date.");
-      const ref = doc(db, "adminSettings", "holidays");
-      const snap = await getDoc(ref);
-      let holidays = snap.exists() ? snap.data().dates || [] : [];
-      if (holidays.includes(newDate)) return alert("Already marked.");
+      const docRef = doc(db, "adminSettings", "holidays");
+      const docSnap = await getDoc(docRef);
+      let holidays = docSnap.exists() ? docSnap.data().dates || [] : [];
+      if (holidays.includes(newDate)) return alert("Date already added.");
       holidays.push(newDate);
-      await setDoc(ref, { dates: holidays });
-      document.getElementById("holiday-date").value = "";
+      await setDoc(docRef, { dates: holidays });
+      holidayInput.value = "";
       renderHolidays(holidays);
     });
 
-    window.deleteHoliday = async (dateToRemove) => {
-      const ref = doc(db, "adminSettings", "holidays");
-      const snap = await getDoc(ref);
-      let holidays = snap.exists() ? snap.data().dates || [] : [];
-      holidays = holidays.filter(d => d !== dateToRemove);
-      await setDoc(ref, { dates: holidays });
-      renderHolidays(holidays);
-    };
-
     function renderHolidays(dates) {
-      const list = document.getElementById("holiday-list");
-      list.innerHTML = "";
+      holidayList.innerHTML = "";
       dates.sort().forEach(date => {
         const li = document.createElement("li");
-        li.innerHTML = `
-          <span>${date}</span>
-          <button onclick="deleteHoliday('${date}')">❌</button>
-        `;
-        list.appendChild(li);
+        li.innerHTML = `<span>${date}</span>
+          <button onclick="deleteHoliday('${date}')">❌</button>`;
+        holidayList.appendChild(li);
       });
     }
 
-    document.getElementById("advanced-form").addEventListener("submit", async (e) => {
+    window.deleteHoliday = async (date) => {
+      const docRef = doc(db, "adminSettings", "holidays");
+      const docSnap = await getDoc(docRef);
+      let holidays = docSnap.exists() ? docSnap.data().dates || [] : [];
+      holidays = holidays.filter(d => d !== date);
+      await setDoc(docRef, { dates: holidays });
+      renderHolidays(holidays);
+    };
+
+    async function loadHolidays() {
+      const docSnap = await getDoc(doc(db, "adminSettings", "holidays"));
+      if (docSnap.exists()) renderHolidays(docSnap.data().dates || []);
+    }
+
+    document.getElementById("advanced-form").addEventListener("submit", async e => {
       e.preventDefault();
       const data = {
         bufferTime: parseInt(document.getElementById("buffer-time").value),
-        maxDays: parseInt(document.getElementById("max-days").value),
-        hoursBefore: parseInt(document.getElementById("hours-before").value)
+        maxAdvanceDays: parseInt(document.getElementById("max-days").value),
+        cutoffHours: parseInt(document.getElementById("hours-before").value)
       };
       await setDoc(doc(db, "adminSettings", "advancedSettings"), data);
       alert("Advanced settings saved.");
     });
 
-    document.getElementById("announcement-form").addEventListener("submit", async (e) => {
+    async function loadAdvancedSettings() {
+      const docSnap = await getDoc(doc(db, "adminSettings", "advancedSettings"));
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.getElementById("buffer-time").value = data.bufferTime || "";
+        document.getElementById("max-days").value = data.maxAdvanceDays || "";
+        document.getElementById("hours-before").value = data.cutoffHours || "";
+      }
+    }
+
+    document.getElementById("announcement-form").addEventListener("submit", async e => {
       e.preventDefault();
-      const text = document.getElementById("banner-text").value;
-      await setDoc(doc(db, "adminSettings", "announcement"), { text });
-      alert("Banner saved.");
+      const enabled = document.getElementById("banner-enabled").checked;
+      const message = document.getElementById("banner-message").value;
+      await setDoc(doc(db, "adminSettings", "announcement"), { enabled, message });
+      alert("Banner settings saved.");
     });
 
-document.getElementById("save-advanced").addEventListener("click", async () => {
-  const bufferTime = document.getElementById("buffer-time").value;
-  const maxAdvanceDays = document.getElementById("max-advance-days").value;
-  const cutoffHours = document.getElementById("cutoff-hours").value;
-  const banner = document.getElementById("banner-message").value;
-  const bannerEnabled = document.getElementById("banner-enabled").checked;
-
-  const data = {
-    bufferTime,
-    maxAdvanceDays,
-    cutoffHours,
-    banner,
-    bannerEnabled
-  };
-
-  await setDoc(doc(db, "adminSettings", "advanced"), data);
-  alert("Advanced settings saved.");
-});
-    async function loadSchedule() {
-      const snap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
-      if (!snap.exists()) return;
-      const data = snap.data();
-      weekdays.forEach(day => {
-        const d = data[day];
-        if (!d) return;
-        document.querySelector(`.day-enable[data-day="${day}"]`).checked = d.enabled;
-        document.querySelector(`.shift-type-select[data-day="${day}"]`).value = d.shiftType;
-        document.querySelector(`.start-1[data-day="${day}"]`).value = d.shift1?.start || "";
-        document.querySelector(`.end-1[data-day="${day}"]`).value = d.shift1?.end || "";
-        if (d.shiftType === "double" && d.shift2) {
-          document.querySelector(`.shift-2[data-day="${day}"]`).classList.add("visible");
-          document.querySelector(`.start-2[data-day="${day}"]`).value = d.shift2.start || "";
-          document.querySelector(`.end-2[data-day="${day}"]`).value = d.shift2.end || "";
-        }
-      });
+    async function loadBannerSettings() {
+      const snap = await getDoc(doc(db, "adminSettings", "announcement"));
+      if (snap.exists()) {
+        const data = snap.data();
+        document.getElementById("banner-enabled").checked = data.enabled || false;
+        document.getElementById("banner-message").value = data.message || "";
+      }
     }
 
-    async function loadHolidays() {
-      const snap = await getDoc(doc(db, "adminSettings", "holidays"));
-      if (snap.exists()) renderHolidays(snap.data().dates || []);
-    }
-async function loadAdvancedSettings() {
-  const docRef = doc(db, "adminSettings", "advanced");
-  const snap = await getDoc(docRef);
-  if (snap.exists()) {
-    const data = snap.data();
-    document.getElementById("buffer-time").value = data.bufferTime || "";
-    document.getElementById("max-advance-days").value = data.maxAdvanceDays || "";
-    document.getElementById("cutoff-hours").value = data.cutoffHours || "";
-    document.getElementById("banner-message").value = data.banner || "";
-    document.getElementById("banner-enabled").checked = !!data.bannerEnabled;
-  }
-}
     onAuthStateChanged(auth, (user) => {
-      if (!user) return location.href = "login.html";
-      loadSchedule();
-      loadHolidays();
-      loadAdvancedSettings();
+      if (user) {
+        loadSchedule();
+        loadHolidays();
+        loadAdvancedSettings();
+        loadBannerSettings();
+      } else {
+        location.href = "login.html";
+      }
     });
   </script>
 </body>
