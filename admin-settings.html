@@ -199,7 +199,34 @@ input[type="text"]:focus {
   color: #003366;
   font-weight: 500;
 }
+.save-button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
 
+.save-button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.save-button:hover {
+  background-color: #005fcc;
+  transform: translateY(-2px);
+}
+
+.save-button:active {
+  background-color: #004fa3;
+  transform: scale(0.98);
+}
 button {
   padding: 0.7rem 1.4rem;
   background: linear-gradient(to right, #007bff, #00c6ff);
@@ -473,7 +500,9 @@ ul {
   <h2 class="section-title">Working Days & Hours</h2>
   <form id="schedule-form">
     <div id="working-days-container"></div>
-    <button type="submit">Save Schedule</button>
+     <div class="save-button-wrapper">
+    <button type="submit" class="save-button">Save Schedule</button>
+  </div>
   </form>
 </div>
 
