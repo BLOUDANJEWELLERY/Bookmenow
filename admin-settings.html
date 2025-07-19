@@ -192,11 +192,6 @@ ul {
     padding: 1rem;
   }
 
-  .tabs {
-    flex-direction: column;
-    align-items: center;
-  }
-
   .day-row {
     flex-direction: column;
     align-items: flex-start;
@@ -213,11 +208,6 @@ ul {
     max-width: 100%;
   }
 
-  .tab-btn {
-    width: 100%;
-    text-align: center;
-  }
-
   .blackout-row,
   .user-row {
     flex-direction: column;
@@ -229,6 +219,59 @@ ul {
     margin-top: 0.5rem;
   }
 }
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.tabs-desktop {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tabs-mobile {
+  display: none;
+}
+
+.tab-btn {
+  padding: 10px 15px;
+  cursor: pointer;
+  background: #ddd;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.tab-btn.active {
+  background: #007bff;
+  color: white;
+}
+
+#tab-select {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 2px solid #007bff;
+  background: #f2fbff;
+  color: #003366;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(0, 123, 255, 0.1);
+}
+
+/* Responsive switch */
+@media (max-width: 768px) {
+  .tabs-desktop {
+    display: none;
+  }
+
+  .tabs-mobile {
+    display: block;
+  }
+}
   </style>
 </head>
 <body>
@@ -238,13 +281,25 @@ ul {
   </header>
 
   <main>
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="schedule-tab">Working Days</button>
-      <button class="tab-btn" data-tab="holiday-tab">Holidays</button>
+   <div class="tabs">
+  <div class="tabs-desktop">
+    <button class="tab-btn active" data-tab="schedule-tab">Working Days</button>
+    <button class="tab-btn" data-tab="holiday-tab">Holidays</button>
     <button class="tab-btn" data-tab="blackouts">Blackout Slots</button>
-      <button class="tab-btn" data-tab="advanced-tab">Advanced Settings</button>
-      <button class="tab-btn" data-tab="announcement-tab">Announcement</button>
-    </div>
+    <button class="tab-btn" data-tab="advanced-tab">Advanced Settings</button>
+    <button class="tab-btn" data-tab="announcement-tab">Announcement</button>
+  </div>
+
+  <div class="tabs-mobile">
+    <select id="tab-select">
+      <option value="schedule-tab" selected>Working Days</option>
+      <option value="holiday-tab">Holidays</option>
+      <option value="blackouts">Blackout Slots</option>
+      <option value="advanced-tab">Advanced Settings</option>
+      <option value="announcement-tab">Announcement</option>
+    </select>
+  </div>
+</div>
 
     <div id="schedule-tab" class="tab-content active">
       <form id="schedule-form">
@@ -563,6 +618,16 @@ blackoutForm.addEventListener('submit', async e => {
         location.href = "login.html";
       }
     });
+    
+    document.getElementById('tab-select').addEventListener('change', function () {
+  const selectedTab = this.value;
+
+  // Deactivate all tab contents
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+  // Activate selected tab content
+  document.getElementById(selectedTab)?.classList.add('active');
+});
   </script>
 </body>
 </html>
