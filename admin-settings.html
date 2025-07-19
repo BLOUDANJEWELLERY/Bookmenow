@@ -220,37 +220,12 @@
     <!-- SCHEDULE -->
     <section id="schedule-tab" class="tab-content active">
       <h2>Working Days & Hours</h2>
-      <form id="schedule-form">
-        <div class="weekday-checkboxes">
-          <label><input type="checkbox" value="Sunday"> Sunday</label>
-          <label><input type="checkbox" value="Monday"> Monday</label>
-          <label><input type="checkbox" value="Tuesday"> Tuesday</label>
-          <label><input type="checkbox" value="Wednesday"> Wednesday</label>
-          <label><input type="checkbox" value="Thursday"> Thursday</label>
-          <label><input type="checkbox" value="Friday"> Friday</label>
-          <label><input type="checkbox" value="Saturday"> Saturday</label>
-        </div>
-
-        <label for="shift-type">Shift Type:</label>
-        <select id="shift-type">
-          <option value="single">Single Shift</option>
-          <option value="double">Double Shift</option>
-        </select>
-
-        <div>
-          <label>Shift 1:</label>
-          <input type="time" id="shift1-start" required />
-          <input type="time" id="shift1-end" required />
-        </div>
-
-        <div id="shift2" style="display:none">
-          <label>Shift 2:</label>
-          <input type="time" id="shift2-start" />
-          <input type="time" id="shift2-end" />
-        </div>
-
-        <button type="submit">Save Schedule</button>
-      </form>
+<form id="schedule-form">
+  <div id="working-days-container">
+    <!-- JS injects day rows here -->
+  </div>
+  <button type="submit">Save Schedule</button>
+</form>
     </section>
 
     <!-- HOLIDAYS -->
