@@ -321,11 +321,14 @@ async function loadHolidays() {
     renderHolidays(docSnap.data().dates || []);
   }
 }
-    onAuthStateChanged(auth, user => {
-      if (user) loadSchedule();
-      loadHolidays();
-      else location.href = "login.html";
-    });
+    onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loadSchedule();
+    loadHolidays();
+  } else {
+    location.href = "login.html";
+  }
+});
   </script>
 </body>
 </html>
