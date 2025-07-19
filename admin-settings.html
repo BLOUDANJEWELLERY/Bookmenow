@@ -626,28 +626,30 @@ blackoutForm.addEventListener('submit', async e => {
     
 const hamburger = document.getElementById("hamburger");
 const navLinks = document.getElementById("nav-links");
+let menuOpen = false;  // Keep track of menu state
 
-// Toggle menu open/close
 hamburger.addEventListener("click", () => {
-  navLinks.classList.toggle("active");
+  menuOpen = !menuOpen;
+  navLinks.classList.toggle("active", menuOpen);
 });
 
-// Tab click handler + menu close
+// Close menu when any nav button is clicked (and reset menuOpen flag)
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const target = btn.getAttribute('data-tab');
 
-    // Show selected tab content
+    // Show the correct tab
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
     document.getElementById(target)?.classList.add('active');
 
-    // Update active button
+    // Update button style
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    // Close menu *only on mobile*
-    if (window.innerWidth <= 768 && navLinks.classList.contains('active')) {
+    // Close menu and reset state
+    if (window.innerWidth <= 768) {
       navLinks.classList.remove('active');
+      menuOpen = false;
     }
   });
 });
