@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Settings</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <script defer src="js/script.js"></script>
+ <script defer src="js/script.js"></script>
   <style>
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
@@ -265,15 +264,52 @@ ul {
   }
 }
 
-.nav-links {
-  display: none;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 10px;
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, #007bff, #00bfff);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px var(--shadow);
 }
 
-.nav-links.active {
+.logo {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #ffffff;
+  user-select: none;
+}
+
+.nav-links {
   display: flex;
+  align-items: center;
+  gap: 1rem;
+  list-style: none;
+}
+
+.nav-links li a,
+.nav-links li button {
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  background: white;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.3s ease;
+  color: var(--text);
+  font-size: 1rem;
+  border-radius: 6px;
+  user-select: none;
+}
+
+.nav-links li a.active,
+.nav-links li a:hover,
+.nav-links li button:hover {
+  color: var(--accent);
+  background: white;
 }
   </style>
 </head>
