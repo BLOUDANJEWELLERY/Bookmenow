@@ -105,11 +105,6 @@
     <h4>Existing Blackouts</h4>
     <ul id="blackout-list"></ul>
   </div>
-
-  <div id="users" class="tab-content">
-    <h3>User Accounts</h3>
-    <div id="user-list"></div>
-  </div>
   </main>
 
   <script type="module">
@@ -355,40 +350,9 @@ blackoutForm.addEventListener('submit', async e => {
       if (snap.exists()) renderBlackouts(snap.data().slots || []);
     }
 
-    // USERS: view, suspend/unsuspend, delete
-    const userList = document.getElementById('user-list');
-    async function loadUsers() {
-      userList.innerHTML = '';
-      const col = collection(db, 'adminSettings', 'usersList', 'users');
-      const snap = await getDocs(col);
-      snap.forEach(docSnap => {
-        const d = docSnap.data();
-        const uid = docSnap.id;
-        const div = document.createElement('div');
-        div.className = 'user-row';
-        div.innerHTML = `
-          <div><strong>${d.name}</strong> (${d.email})</div>
-          <div>Status: ${d.suspended ? 'Suspended' : 'Active'}</div>
-          <button class="action-btn suspend-btn" onclick="toggleSuspend('${uid}',${!d.suspended})">
-            ${d.suspended ? 'Unsuspend' : 'Suspend'}
-          </button>
-          <button class="action-btn delete-btn" onclick="removeUser('${uid}')">Delete</button>
-        `;
-        userList.appendChild(div);
-      });
-    }
+    
 
-    window.toggleSuspend = async (uid, suspend) => {
-      const ref = doc(db, 'adminSettings', 'usersList', 'users', uid);
-      await updateDoc(ref, { suspended: suspend });
-      loadUsers();
-    };
-
-    window.removeUser = async (uid) => {
-      if (!confirm("Delete this user?")) return;
-      await deleteDoc(doc(db, 'adminSettings', 'usersList', 'users', uid));
-      loadUsers();
-    }
+    
     onAuthStateChanged(auth, (user) => {
       if (user) {
         loadSchedule();
@@ -396,7 +360,6 @@ blackoutForm.addEventListener('submit', async e => {
         loadAdvancedSettings();
         loadBannerSettings();
         loadBlackouts();
-      loadUsers();
       } else {
         location.href = "login.html";
       }
