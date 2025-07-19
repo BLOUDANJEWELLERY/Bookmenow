@@ -470,14 +470,25 @@ const blackoutForm = document.getElementById('blackout-form');
       }
     });
 
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        document.querySelectorAll(".tab-content").forEach(sec => sec.classList.remove("active"));
-        btn.classList.add("active");
-        document.getElementById(btn.dataset.tab).classList.add("active");
-      });
+     document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      // Switch tab visuals
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(sec => sec.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById(btn.dataset.tab).classList.add("active");
+
+      // CLOSE the hamburger menu if open
+      const navLinks = document.getElementById("nav-links");
+      const hamburgerIcon = document.getElementById("hamburger");
+
+      if (navLinks.classList.contains("show")) {
+        navLinks.classList.remove("show");
+        hamburgerIcon.classList.remove("open");
+      }
     });
+  });
+
 
     document.getElementById("logout-btn").addEventListener("click", async () => {
       await signOut(auth);
