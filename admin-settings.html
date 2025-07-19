@@ -613,24 +613,33 @@ blackoutForm.addEventListener('submit', async e => {
       }
     });
     
-   document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.getAttribute('data-tab');
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.getElementById(target)?.classList.add('active');
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
+   const hamburger = document.getElementById("hamburger");
+const navLinks = document.getElementById("nav-links");
+
+// Toggle menu open/close
+hamburger.addEventListener("click", () => {
+  navLinks.classList.toggle("active");
+});
+
+// Tab switch + close menu
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.getAttribute('data-tab');
+
+    // Activate the correct tab
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.getElementById(target)?.classList.add('active');
+
+    // Update active tab button
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Auto-close mobile menu
+    if (navLinks.classList.contains('active')) {
+      navLinks.classList.remove('active');
+    }
   });
-
-
-  
-  const hamburger = document.getElementById("hamburger");
-  const navLinks = document.getElementById("nav-links");
-
-  hamburger.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
-  });
+});
 </script>
 </body>
 </html>
