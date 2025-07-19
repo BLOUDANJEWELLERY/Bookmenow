@@ -142,7 +142,29 @@ input[type="text"]:focus {
   background: #d0e9ff;
   box-shadow: 0 0 0 2px rgba(0, 191, 255, 0.2);
 }
+.shift-type-select {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  background: #eaf6ff;
+  color: #003366;
+  font-weight: 600;
+  appearance: none; /* Remove default arrow (for full control) */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='14' height='10' viewBox='0 0 14 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 8L13 1' stroke='%230073CC' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 14px 10px;
+  min-width: 140px;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
 
+.shift-type-select:focus {
+  outline: none;
+  border-color: #00bfff;
+  background-color: #d0e9ff;
+  box-shadow: 0 0 0 2px rgba(0, 191, 255, 0.2);
+}
 /* Second shift field visibility toggle */
 .shift-2 {
   display: none;
