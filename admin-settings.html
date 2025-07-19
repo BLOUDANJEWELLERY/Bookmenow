@@ -65,27 +65,50 @@ main {
   display: block;
 }
 
+/* Schedule tab container styling (match .booking-form aesthetics) */
+#schedule-tab {
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  max-width: 900px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 20px rgba(0, 51, 102, 0.08);
+  border: 2px solid transparent;
+  position: relative;
+}
+
+#schedule-tab::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  z-index: -1;
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+/* Each day row block */
 .day-row {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  background-color: #f5f9ff;
+  border: 1px solid #d6e6ff;
 }
 
-.shift-2 {
-  display: none;
-}
-
-.shift-2.visible {
-  display: inline-block;
-}
-
+/* Day label */
 label.day-name {
   width: 100px;
   font-weight: 600;
+  font-size: 1rem;
+  color: #003366;
 }
 
+/* Inputs: time, number, text */
 input[type="time"],
 input[type="number"],
 input[type="text"] {
@@ -97,14 +120,27 @@ input[type="text"] {
   color: #003366;
   transition: 0.3s ease;
   max-width: 200px;
+  min-width: 120px;
+  flex: 1;
 }
 
+/* Input focus */
 input[type="time"]:focus,
 input[type="number"]:focus,
 input[type="text"]:focus {
   outline: none;
   border-color: #00bfff;
   background: #d0e9ff;
+  box-shadow: 0 0 0 2px rgba(0, 191, 255, 0.2);
+}
+
+/* Second shift field visibility toggle */
+.shift-2 {
+  display: none;
+}
+
+.shift-2.visible {
+  display: inline-block;
 }
 
 button {
