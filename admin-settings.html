@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Settings</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/script.js"></script>
   <style>
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
@@ -275,31 +277,29 @@ ul {
   </style>
 </head>
 <body>
-  <header>
+<header>
+  <div class="header-top">
     <h2>Admin Settings</h2>
     <button id="logout-btn">Logout</button>
-  </header>
+  </div>
+
+  <nav class="navbar">
+    <div class="nav-left">
+      <button class="back-btn" onclick="location.href='admin.html'">← Back</button>
+      <div class="logo">BookMeNow</div>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      <li><button class="tab-btn active" data-tab="schedule-tab">Working Days</button></li>
+      <li><button class="tab-btn" data-tab="holiday-tab">Holidays</button></li>
+      <li><button class="tab-btn" data-tab="blackouts">Blackout Slots</button></li>
+      <li><button class="tab-btn" data-tab="advanced-tab">Advanced Settings</button></li>
+      <li><button class="tab-btn" data-tab="announcement-tab">Announcement</button></li>
+    </ul>
+  </nav>
+</header>
+
 
   <main>
-   <div class="tabs">
-  <div class="tabs-desktop">
-    <button class="tab-btn active" data-tab="schedule-tab">Working Days</button>
-    <button class="tab-btn" data-tab="holiday-tab">Holidays</button>
-    <button class="tab-btn" data-tab="blackouts">Blackout Slots</button>
-    <button class="tab-btn" data-tab="advanced-tab">Advanced Settings</button>
-    <button class="tab-btn" data-tab="announcement-tab">Announcement</button>
-  </div>
-
-  <div class="tabs-mobile">
-    <select id="tab-select">
-      <option value="schedule-tab" selected>Working Days</option>
-      <option value="holiday-tab">Holidays</option>
-      <option value="blackouts">Blackout Slots</option>
-      <option value="advanced-tab">Advanced Settings</option>
-      <option value="announcement-tab">Announcement</option>
-    </select>
-  </div>
-</div>
 
     <div id="schedule-tab" class="tab-content active">
       <form id="schedule-form">
@@ -619,15 +619,15 @@ blackoutForm.addEventListener('submit', async e => {
       }
     });
     
-    document.getElementById('tab-select').addEventListener('change', function () {
-  const selectedTab = this.value;
-
-  // Deactivate all tab contents
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-  // Activate selected tab content
-  document.getElementById(selectedTab)?.classList.add('active');
-});
+   document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-tab');
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.getElementById(target)?.classList.add('active');
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
   </script>
 </body>
 </html>
