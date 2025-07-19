@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Settings</title>
   <script type="module" src="js/auth.js"></script>
-  <script type="module" src="js/admin-settings.js"></script>
   <style>
     :root {
       --primary: #004080;
@@ -107,72 +106,53 @@
       gap: 0.8rem;
       margin-bottom: 1rem;
     }
-.day-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 12px 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  margin-bottom: 12px;
-  background: var(--card);
-}
 
-.day-row > * {
-  flex-shrink: 0;
-}
+    .day-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 12px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 12px;
+      background: var(--card);
+    }
 
-.day-name {
-  flex-basis: 120px;
-  font-weight: 600;
-  color: var(--primary);
-}
+    .day-row > * {
+      flex-shrink: 0;
+    }
 
-.day-enable {
-  margin-right: 6px;
-  transform: scale(1.3);
-}
+    .day-name {
+      flex-basis: 120px;
+      font-weight: 600;
+      color: var(--primary);
+    }
 
-.shift-type-select {
-  width: 140px;
-  padding: 4px 6px;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-}
+    .shift-type-select,
+    .time-input {
+      padding: 4px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
 
-.time-input {
-  width: 110px;
-  padding: 4px 6px;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-}
+    .shift-type-select {
+      width: 140px;
+    }
 
-.shift-2 {
-  display: none;
-  gap: 0.5rem;
-}
+    .time-input {
+      width: 110px;
+    }
 
-.shift-2.visible {
-  display: flex;
-}
+    .shift-2 {
+      display: none;
+      gap: 0.5rem;
+    }
 
-@media (max-width: 600px) {
-  .day-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .day-name {
-    flex-basis: auto;
-  }
-  .time-input {
-    width: 100%;
-  }
-  .shift-2 {
-    flex-direction: column;
-  }
-}
+    .shift-2.visible {
+      display: flex;
+    }
+
     label {
       font-weight: 500;
     }
@@ -182,11 +162,6 @@
       border: 1px solid var(--border);
       border-radius: 5px;
       width: 100%;
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 80px;
     }
 
     button[type="submit"] {
@@ -204,46 +179,6 @@
       background: #0077aa;
     }
 
-    .weekday-checkboxes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .weekday-checkboxes label {
-      flex: 1 1 30%;
-    }
-
-    #user-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-    }
-
-    #user-table th, #user-table td {
-      padding: 0.6rem;
-      border: 1px solid var(--border);
-      text-align: left;
-    }
-
-    #user-table th {
-      background-color: var(--bg);
-    }
-
-    ul {
-      list-style: none;
-      margin: 0;
-      padding-left: 0;
-    }
-
-    ul li {
-      background: #fff;
-      padding: 0.6rem;
-      margin: 0.3rem 0;
-      border: 1px solid var(--border);
-      border-radius: 5px;
-    }
-
     @media (max-width: 600px) {
       nav {
         flex-direction: column;
@@ -253,16 +188,17 @@
         width: 100%;
       }
 
-      .weekday-checkboxes label {
-        flex: 1 1 45%;
+      .day-row {
+        flex-direction: column;
+        align-items: flex-start;
       }
 
-      input[type="time"] {
-        width: 48%;
+      .time-input, .shift-type-select {
+        width: 100%;
       }
 
-      #user-table th, #user-table td {
-        font-size: 0.85rem;
+      .shift-2 {
+        flex-direction: column;
       }
     }
   </style>
@@ -275,47 +211,20 @@
 
   <nav>
     <button class="tab-btn active" data-tab="schedule-tab">Schedule</button>
-    <button class="tab-btn" data-tab="holidays-tab">Holidays</button>
-    <button class="tab-btn" data-tab="blackout-tab">Blackout Slots</button>
     <button class="tab-btn" data-tab="general-tab">General</button>
-    <button class="tab-btn" data-tab="users-tab">User Bookings</button>
   </nav>
 
   <main>
     <!-- SCHEDULE -->
     <section id="schedule-tab" class="tab-content active">
       <h2>Working Days & Hours</h2>
-<form id="schedule-form">
-  <div id="working-days-container">
-    <!-- JS injects day rows here -->
-  </div>
-  <button type="submit">Save Schedule</button>
-</form>
-    </section>
-
-    <!-- HOLIDAYS -->
-    <section id="holidays-tab" class="tab-content">
-      <h2>Special Holidays</h2>
-      <form id="holiday-form">
-        <input type="date" id="holiday-date" required />
-        <button type="submit">Add Holiday</button>
+      <form id="schedule-form">
+        <div id="working-days-container"></div>
+        <button type="submit">Save Schedule</button>
       </form>
-      <ul id="holiday-list"></ul>
     </section>
 
-    <!-- BLACKOUTS -->
-    <section id="blackout-tab" class="tab-content">
-      <h2>Blackout Slots</h2>
-      <form id="blackout-form">
-        <input type="date" id="blackout-date" required />
-        <input type="time" id="blackout-start" required />
-        <input type="time" id="blackout-end" required />
-        <button type="submit">Add Blackout</button>
-      </form>
-      <ul id="blackout-list"></ul>
-    </section>
-
-    <!-- GENERAL SETTINGS -->
+    <!-- GENERAL -->
     <section id="general-tab" class="tab-content">
       <h2>General Settings</h2>
       <form id="general-settings-form">
@@ -329,253 +238,147 @@
         <input type="number" id="buffer-time" required min="0" />
 
         <label>Announcement Banner:</label>
-        <textarea id="announcement-text" placeholder="Write message to show on top of booking page..."></textarea>
+        <textarea id="announcement-text" placeholder="Message for users..."></textarea>
 
         <button type="submit">Save Settings</button>
       </form>
     </section>
-
-    <!-- USERS -->
-    <section id="users-tab" class="tab-content">
-      <h2>User Bookings</h2>
-      <table id="user-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Service</th>
-            <th>Date</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
   </main>
-</body>
-<script>
-// js/admin-settings.js
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  <script type="module">
+    import { auth, db } from "./js/firebase.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// Your Firebase config here
-const firebaseConfig = {
-  apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
-  authDomain: "sampleportfolio-9450c.firebaseapp.com",
-  projectId: "sampleportfolio-9450c",
-  storageBucket: "sampleportfolio-9450c.appspot.com",
-  messagingSenderId: "725347523572",
-  appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
-};
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const workingDaysContainer = document.getElementById("working-days-container");
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      };
+    });
 
-// Ensure user is logged in, otherwise redirect to login
-onAuthStateChanged(auth, user => {
-  if (!user) {
-    window.location.href = "login.html";
-  }
-});
+    // Auth check
+    onAuthStateChanged(auth, user => {
+      if (!user) window.location.href = "login.html";
+    });
 
-// Logout button
-document.getElementById("logout-btn").addEventListener("click", () => {
-  signOut(auth).then(() => window.location.href = "login.html");
-});
+    document.getElementById("logout-btn").onclick = () => signOut(auth);
 
-// Tab navigation logic
-const tabs = document.querySelectorAll(".tab-btn");
-const sections = document.querySelectorAll(".tab-content");
-tabs.forEach(tab => {
-  tab.addEventListener("click", () => {
-    tabs.forEach(t => t.classList.remove("active"));
-    sections.forEach(s => s.classList.remove("active"));
-    tab.classList.add("active");
-    document.getElementById(tab.dataset.tab).classList.add("active");
-  });
-});
+    // Load schedule
+    async function loadSchedule() {
+      const snap = await getDoc(doc(db, "settings", "schedule"));
+      const data = snap.exists() ? snap.data() : {};
 
-// Days array for schedule UI
-const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const wdContainer = document.getElementById("working-days-container");
+      days.forEach(day => {
+        const d = data[day] || {};
+        const row = document.createElement("div");
+        row.className = "day-row";
 
-// Create day row element
-function createDayRow(day) {
-  const row = document.createElement("div");
-  row.className = "day-row";
+        const label = document.createElement("div");
+        label.className = "day-name";
+        label.textContent = day;
 
-  row.innerHTML = `
-    <label class="day-name">
-      <input type="checkbox" class="day-enable" data-day="${day}" />
-      ${day}
-    </label>
-    <select class="shift-type-select" data-day="${day}">
-      <option value="single" selected>Single Shift</option>
-      <option value="double">Double Shift</option>
-    </select>
-    <input type="time" class="time-input" id="${day}-shift1-start" placeholder="Shift 1 Start" />
-    <input type="time" class="time-input" id="${day}-shift1-end" placeholder="Shift 1 End" />
-    <div class="shift-2" id="${day}-shift2-container">
-      <input type="time" class="time-input" id="${day}-shift2-start" placeholder="Shift 2 Start" />
-      <input type="time" class="time-input" id="${day}-shift2-end" placeholder="Shift 2 End" />
-    </div>
-  `;
+        const select = document.createElement("select");
+        select.className = "shift-type-select";
+        select.innerHTML = `
+          <option value="single">Single Shift</option>
+          <option value="double">Double Shift</option>
+        `;
+        select.value = d.shiftType || "single";
 
-  // Show/hide shift 2 based on select value
-  const select = row.querySelector(".shift-type-select");
-  const shift2Container = row.querySelector(`#${day}-shift2-container`);
+        const time1Start = document.createElement("input");
+        time1Start.type = "time";
+        time1Start.className = "time-input";
+        time1Start.value = d.start1 || "";
 
-  select.addEventListener("change", () => {
-    if (select.value === "double") {
-      shift2Container.classList.add("visible");
-    } else {
-      shift2Container.classList.remove("visible");
-    }
-  });
+        const time1End = document.createElement("input");
+        time1End.type = "time";
+        time1End.className = "time-input";
+        time1End.value = d.end1 || "";
 
-  return row;
-}
+        const shift2Div = document.createElement("div");
+        shift2Div.className = "shift-2";
+        if (select.value === "double") shift2Div.classList.add("visible");
 
-// Initialize working days UI
-function initWorkingDaysUI() {
-  wdContainer.innerHTML = "";
-  days.forEach(day => {
-    wdContainer.appendChild(createDayRow(day));
-  });
-}
+        const time2Start = document.createElement("input");
+        time2Start.type = "time";
+        time2Start.className = "time-input";
+        time2Start.value = d.start2 || "";
 
-// Validate time format (basic)
-function isValidTime(t) {
-  return /^([01]\d|2[0-3]):([0-5]\d)$/.test(t);
-}
+        const time2End = document.createElement("input");
+        time2End.type = "time";
+        time2End.className = "time-input";
+        time2End.value = d.end2 || "";
 
-// Validate schedule data before saving
-function validateSchedule(schedule) {
-  for (const day of days) {
-    const dayData = schedule[day];
-    if (!dayData.enabled) continue; // skip disabled days
+        shift2Div.append(time2Start, time2End);
 
-    // Validate shift1 times
-    if (!isValidTime(dayData.shift1.start) || !isValidTime(dayData.shift1.end)) {
-      alert(`Invalid or missing Shift 1 times for ${day}`);
-      return false;
-    }
-    if (dayData.shift1.start >= dayData.shift1.end) {
-      alert(`Shift 1 start time must be before end time on ${day}`);
-      return false;
+        select.onchange = () => {
+          if (select.value === "double") {
+            shift2Div.classList.add("visible");
+          } else {
+            shift2Div.classList.remove("visible");
+          }
+        };
+
+        row.append(label, select, time1Start, time1End, shift2Div);
+        row.dataset.day = day;
+        workingDaysContainer.appendChild(row);
+      });
     }
 
-    if (dayData.type === "double") {
-      // Validate shift2 times
-      if (!isValidTime(dayData.shift2.start) || !isValidTime(dayData.shift2.end)) {
-        alert(`Invalid or missing Shift 2 times for ${day}`);
-        return false;
-      }
-      if (dayData.shift2.start >= dayData.shift2.end) {
-        alert(`Shift 2 start time must be before end time on ${day}`);
-        return false;
-      }
-      if (dayData.shift1.end > dayData.shift2.start) {
-        alert(`Shift 2 must start after Shift 1 ends on ${day}`);
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-// Load schedule from Firestore and populate UI
-async function loadSchedule() {
-  const docRef = doc(db, "settings", "workingDays");
-  const docSnap = await getDoc(docRef);
-  if (!docSnap.exists()) {
-    console.log("No schedule found, starting fresh.");
-    return;
-  }
-  const data = docSnap.data();
-
-  days.forEach(day => {
-    const dayData = data[day];
-    if (!dayData) return;
-
-    const enableCheckbox = document.querySelector(`.day-enable[data-day="${day}"]`);
-    const shiftSelect = document.querySelector(`.shift-type-select[data-day="${day}"]`);
-    const shift1Start = document.getElementById(`${day}-shift1-start`);
-    const shift1End = document.getElementById(`${day}-shift1-end`);
-    const shift2Container = document.getElementById(`${day}-shift2-container`);
-    const shift2Start = document.getElementById(`${day}-shift2-start`);
-    const shift2End = document.getElementById(`${day}-shift2-end`);
-
-    enableCheckbox.checked = dayData.enabled || false;
-    shiftSelect.value = dayData.type || "single";
-
-    shift1Start.value = dayData.shift1?.start || "";
-    shift1End.value = dayData.shift1?.end || "";
-
-    if (dayData.type === "double") {
-      shift2Container.classList.add("visible");
-      shift2Start.value = dayData.shift2?.start || "";
-      shift2End.value = dayData.shift2?.end || "";
-    } else {
-      shift2Container.classList.remove("visible");
-      shift2Start.value = "";
-      shift2End.value = "";
-    }
-  });
-}
-
-// Collect schedule data from UI to object
-function collectScheduleData() {
-  const schedule = {};
-  days.forEach(day => {
-    const enabled = document.querySelector(`.day-enable[data-day="${day}"]`).checked;
-    const type = document.querySelector(`.shift-type-select[data-day="${day}"]`).value;
-    const shift1Start = document.getElementById(`${day}-shift1-start`).value;
-    const shift1End = document.getElementById(`${day}-shift1-end`).value;
-    const shift2Start = document.getElementById(`${day}-shift2-start`).value;
-    const shift2End = document.getElementById(`${day}-shift2-end`).value;
-
-    schedule[day] = {
-      enabled,
-      type,
-      shift1: {
-        start: shift1Start,
-        end: shift1End,
-      },
-      shift2: {
-        start: type === "double" ? shift2Start : "",
-        end: type === "double" ? shift2End : "",
-      }
+    // Save schedule
+    document.getElementById("schedule-form").onsubmit = async e => {
+      e.preventDefault();
+      const result = {};
+      document.querySelectorAll(".day-row").forEach(row => {
+        const [label, select, t1s, t1e, shift2Div] = row.children;
+        const [t2s, t2e] = shift2Div.children;
+        result[row.dataset.day] = {
+          shiftType: select.value,
+          start1: t1s.value,
+          end1: t1e.value,
+          ...(select.value === "double" ? {
+            start2: t2s.value,
+            end2: t2e.value
+          } : {})
+        };
+      });
+      await setDoc(doc(db, "settings", "schedule"), result);
+      alert("Schedule saved");
     };
-  });
-  return schedule;
-}
 
-// Handle schedule form submission
-document.getElementById("schedule-form").addEventListener("submit", async e => {
-  e.preventDefault();
+    // Load general settings
+    async function loadGeneralSettings() {
+      const snap = await getDoc(doc(db, "settings", "general"));
+      if (!snap.exists()) return;
+      const data = snap.data();
+      document.getElementById("max-days").value = data.maxDays || 7;
+      document.getElementById("cutoff-hours").value = data.cutoffHours || 0;
+      document.getElementById("buffer-time").value = data.bufferTime || 0;
+      document.getElementById("announcement-text").value = data.announcement || "";
+    }
 
-  const schedule = collectScheduleData();
+    // Save general settings
+    document.getElementById("general-settings-form").onsubmit = async e => {
+      e.preventDefault();
+      const data = {
+        maxDays: +document.getElementById("max-days").value,
+        cutoffHours: +document.getElementById("cutoff-hours").value,
+        bufferTime: +document.getElementById("buffer-time").value,
+        announcement: document.getElementById("announcement-text").value.trim()
+      };
+      await setDoc(doc(db, "settings", "general"), data);
+      alert("General settings saved");
+    };
 
-  if (!validateSchedule(schedule)) {
-    // Validation failed, do not proceed
-    return;
-  }
-
-  try {
-    await setDoc(doc(db, "settings", "workingDays"), schedule);
-    alert("Schedule saved successfully.");
-  } catch (err) {
-    console.error("Error saving schedule:", err);
-    alert("Failed to save schedule. Check console for details.");
-  }
-});
-
-// Initialize UI and load existing data
-initWorkingDaysUI();
-loadSchedule();
-</script>
+    loadSchedule();
+    loadGeneralSettings();
+  </script>
+</body>
 </html>
