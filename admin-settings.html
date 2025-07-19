@@ -1,214 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Admin Panel</title>
-<style>
-  body { font-family: 'Segoe UI',sans-serif; margin:0; background:#f4f4f4; }
-  .navbar { display:flex; background:#0077cc; padding:10px 20px; justify-content:center; gap:20px; overflow-x:auto;}
-  .nav-button { background:none; border:none; color:white; font-weight:bold; font-size:16px; cursor:pointer; padding:10px 15px; white-space:nowrap;}
-  .nav-button.active { background:#005fa3; border-radius:6px; }
-  .section { display:none; max-width:1000px; margin:30px auto; background:white; padding:30px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.05); }
-  .section.active { display:block; }
-  h2 { margin-top:0; }
-  .day-row, .holiday-form, .blackout-form { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:10px; }
-  input[type="time"],input[type="date"],input[type="text"],input[type="number"],select,textarea { padding:6px 10px; border:1px solid #ccc; border-radius:6px; min-width:120px; font-size:14px; }
-  textarea { width:100%; min-height:80px; resize:vertical; }
-  .shift { display:flex; align-items:center; gap:5px; }
-  .hidden { display:none!important; }
-  .save-btn { margin-top:20px; padding:10px 15px; background:#0077cc; color:white; border:none; border-radius:6px; cursor:pointer; width:100%; font-size:16px; }
-  .save-btn:hover { background:#005fa3; }
-  table { width:100%; border-collapse:collapse; margin-top:20px; }
-  table th,table td{padding:10px; border:1px solid #ccc;}
-  ul{padding-left:20px;}
-
-  @media(max-width:768px){
-    .navbar { gap:10px; padding:10px; }
-    .nav-button { font-size:14px; padding:8px 12px; }
-    .section { margin:15px 10px; padding:20px 15px; }
-    .day-row,.holiday-form,.blackout-form { flex-direction:column; align-items:stretch; }
-    .day-row label,.holiday-form input,.blackout-form input,.holiday-form button,.blackout-form button,.shift select,.shift input[type="time"]{width:100%; box-sizing:border-box;}
-    .shift { flex-direction:column; gap:10px; margin-top:5px; }
-    table,table thead,table tbody,table th,table td,table tr {display:block; width:100%;}
-    table tr { margin-bottom:15px; border-bottom:1px solid #ccc; }
-    table td { padding-left:50%; position:relative; text-align:left; }
-    table td::before { content:attr(data-label); position:absolute; left:10px; font-weight:bold; }
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Settings</title>
+  <link rel="stylesheet" href="admin-settings.css" />
+  <script type="module" src="js/auth.js"></script>
+  <script type="module" src="js/admin-settings.js"></script>
 </head>
 <body>
+  <header>
+    <h1>Admin Settings</h1>
+    <button id="logout-btn">Logout</button>
+  </header>
 
-<div class="navbar">
-  <button class="nav-button active" onclick="showSection('schedule')">Schedule</button>
-  <button class="nav-button" onclick="showSection('holidays')">Holidays</button>
-  <button class="nav-button" onclick="showSection('blackouts')">Blackout Slots</button>
-  <button class="nav-button" onclick="showSection('userdata')">User Data</button>
-  <button class="nav-button" onclick="showSection('settings')">Settings</button>
-</div>
+  <nav>
+    <button class="tab-btn active" data-tab="schedule-tab">Schedule</button>
+    <button class="tab-btn" data-tab="holidays-tab">Holidays</button>
+    <button class="tab-btn" data-tab="blackout-tab">Blackout Slots</button>
+    <button class="tab-btn" data-tab="general-tab">General Settings</button>
+    <button class="tab-btn" data-tab="users-tab">User Bookings</button>
+  </nav>
 
-<div class="section active" id="schedule">
-  <h2>🕒 Working Days & Hours</h2>
-  <div id="working-days-container"></div>
-  <button class="save-btn" id="save-schedule">💾 Save Working Hours</button>
-</div>
+  <main>
+    <!-- SCHEDULE -->
+    <section id="schedule-tab" class="tab-content active">
+      <h2>Working Days & Hours</h2>
+      <form id="schedule-form">
+        <div class="weekday-checkboxes">
+          <label><input type="checkbox" value="Sunday"> Sunday</label>
+          <label><input type="checkbox" value="Monday"> Monday</label>
+          <label><input type="checkbox" value="Tuesday"> Tuesday</label>
+          <label><input type="checkbox" value="Wednesday"> Wednesday</label>
+          <label><input type="checkbox" value="Thursday"> Thursday</label>
+          <label><input type="checkbox" value="Friday"> Friday</label>
+          <label><input type="checkbox" value="Saturday"> Saturday</label>
+        </div>
 
-<div class="section" id="holidays">
-  <h2>📅 Special Holidays</h2>
-  <div class="holiday-form">
-    <input type="date" id="holiday-date" />
-    <input type="text" id="holiday-reason" placeholder="Reason (optional)" />
-    <button onclick="addHoliday()">Add Holiday</button>
-  </div>
-  <ul id="holiday-list"></ul>
-  <button class="save-btn" onclick="saveHolidays()">💾 Save Holidays</button>
-</div>
+        <label for="shift-type">Shift Type:</label>
+        <select id="shift-type">
+          <option value="single">Single Shift</option>
+          <option value="double">Double Shift</option>
+        </select>
 
-<div class="section" id="blackouts">
-  <h2>⛔ Blackout Slots</h2>
-  <div class="blackout-form">
-    <select id="blackout-day">
-      <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
-      <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
-    </select>
-    <input type="time" id="blackout-start" />
-    <input type="time" id="blackout-end" />
-    <button onclick="addBlackout()">Add Break</button>
-  </div>
-  <ul id="blackout-list"></ul>
-  <button class="save-btn" onclick="saveBlackouts()">💾 Save Blackouts</button>
-</div>
+        <div>
+          <label>Shift 1:</label>
+          <input type="time" id="shift1-start" required />
+          <input type="time" id="shift1-end" required />
+        </div>
 
-<div class="section" id="userdata">
-  <h2>👥 User Data</h2>
-  <input type="text" placeholder="Search..." />
-  <button onclick="exportUsers()">Export CSV</button>
-  <table>
-    <thead><tr><th>User</th><th>Service</th><th>Date</th><th>Status</th></tr></thead>
-    <tbody id="user-table-body"></tbody>
-  </table>
-</div>
+        <div id="shift2" style="display:none">
+          <label>Shift 2:</label>
+          <input type="time" id="shift2-start" />
+          <input type="time" id="shift2-end" />
+        </div>
 
-<div class="section" id="settings">
-  <h2>⚙️ Advanced Settings</h2>
-  <label>Max days ahead users can book:
-    <input type="number" id="max-days" value="14" />
-  </label><br><br>
-  <label>Minimum hours before slot closes:
-    <input type="number" id="min-hours" value="1" />
-  </label><br><br>
-  <label>Buffer time between appointments (minutes):
-    <input type="number" id="buffer-time" value="0" min="0" />
-  </label><br><br>
-  <label>Public Notice:
-    <input type="text" id="public-notice" placeholder="Closed Friday for maintenance" />
-  </label><br><br>
-  <label>Announcement Banner:
-    <textarea id="announcement-banner" placeholder="E.g. Closed for Eid"></textarea>
-  </label><br><br>
-  <label><input type="checkbox" id="booking-toggle" checked /> Allow new bookings</label><br><br>
-  <button class="save-btn" onclick="saveSettings()">💾 Save Settings</button>
-</div>
+        <button type="submit">Save Schedule</button>
+      </form>
+    </section>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    <!-- HOLIDAYS -->
+    <section id="holidays-tab" class="tab-content">
+      <h2>Special Holidays</h2>
+      <form id="holiday-form">
+        <input type="date" id="holiday-date" required />
+        <button type="submit">Add Holiday</button>
+      </form>
+      <ul id="holiday-list"></ul>
+    </section>
 
-  const firebaseConfig = {
-    apiKey: "...",
-    authDomain: "sampleportfolio-9450c.firebaseapp.com",
-    projectId: "sampleportfolio-9450c",
-    storageBucket: "sampleportfolio-9450c.appspot.com",
-    messagingSenderId: "725347523572",
-    appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
-  };
+    <!-- BLACKOUTS -->
+    <section id="blackout-tab" class="tab-content">
+      <h2>Blackout Slots</h2>
+      <form id="blackout-form">
+        <input type="date" id="blackout-date" required />
+        <input type="time" id="blackout-start" required />
+        <input type="time" id="blackout-end" required />
+        <button type="submit">Add Blackout</button>
+      </form>
+      <ul id="blackout-list"></ul>
+    </section>
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    <!-- GENERAL SETTINGS -->
+    <section id="general-tab" class="tab-content">
+      <h2>General Settings</h2>
+      <form id="general-settings-form">
+        <label>Max Booking Days Ahead:</label>
+        <input type="number" id="max-days" required min="1" />
 
-  onAuthStateChanged(auth, user => {
-    if (!user) window.location.href = "login.html";
-  });
+        <label>Cutoff Time Before Slot (in hours):</label>
+        <input type="number" id="cutoff-hours" required min="0" />
 
-  // NAV
-  function showSection(id){
-    document.querySelectorAll('.nav-button').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-    document.querySelector(`[onclick="showSection('${id}')"]`).classList.add('active');
-    document.getElementById(id).classList.add('active');
-  }
+        <label>Buffer Time Between Appointments (in minutes):</label>
+        <input type="number" id="buffer-time" required min="0" />
 
-  const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-  const wdContainer = document.getElementById("working-days-container");
+        <label>Announcement Banner:</label>
+        <textarea id="announcement-text" placeholder="Write message to show on top of booking page..."></textarea>
 
-  days.forEach(day => {
-    const row = document.createElement("div");
-    row.className = "day-row";
-    row.innerHTML = `
-      <label><input type="checkbox" class="day-enable" data-day="${day}" />${day}</label>
-      <label><input type="radio" name="${day}-type" value="single" checked /> Single</label>
-      <label><input type="radio" name="${day}-type" value="double" /> Double</label>
-      <div class="shift shift-1" data-day="${day}">
-        <input type="time" id="${day}-shift1-start" /> - <input type="time" id="${day}-shift1-end" />
-      </div>
-      <div class="shift shift-2 hidden" data-day="${day}">
-        <input type="time" id="${day}-shift2-start" /> - <input type="time" id="${day}-shift2-end" />
-      </div>`;
-    wdContainer.appendChild(row);
-  });
+        <button type="submit">Save Settings</button>
+      </form>
+    </section>
 
-  wdContainer.addEventListener("change", e => {
-    if (e.target.type === "radio") {
-      const [day] = e.target.name.split("-"); 
-      document.querySelector(`.shift-2[data-day="${day}"]`).classList.toggle("hidden", e.target.value === "single");
-    }
-  });
-
-  async function loadSchedule(){
-    const docSnap = await getDoc(doc(db, "settings", "workingDays"));
-    if (!docSnap.exists()) return;
-    const data = docSnap.data();
-    days.forEach(day => {
-      const cfg = data[day];
-      if (!cfg) return;
-      document.querySelector(`.day-enable[data-day="${day}"]`).checked = true;
-      document.querySelector(`input[name="${day}-type"][value="${cfg.type}"]`).checked = true;
-      document.getElementById(`${day}-shift1-start`).value = cfg.shift1.start;
-      document.getElementById(`${day}-shift1-end`).value = cfg.shift1.end;
-      if (cfg.type === "double") {
-        document.getElementById(`${day}-shift2-start`).value = cfg.shift2?.start;
-        document.getElementById(`${day}-shift2-end`).value = cfg.shift2?.end;
-        document.querySelector(`.shift-2[data-day="${day}"]`).classList.remove("hidden");
-      }
-    });
-  }
-
-  document.getElementById("save-schedule").addEventListener("click", async ()=>{
-    const obj = {};
-    days.forEach(day => {
-      const enabled = document.querySelector(`.day-enable[data-day="${day}"]`).checked;
-      const type = document.querySelector(`input[name="${day}-type"]:checked`).value;
-      const shift1Start = document.getElementById(`${day}-shift1-start`).value;
-      const shift1End = document.getElementById(`${day}-shift1-end`).value;
-      const cfg = { enabled, type, shift1: { start: shift1Start, end: shift1End } };
-      if (type === "double") {
-        cfg.shift2 = {
-          start: document.getElementById(`${day}-shift2-start`).value,
-          end: document.getElementById(`${day}-shift2-end`).value
-        };
-      }
-      obj[day] = cfg;
-    });
-    await setDoc(doc(db, "settings", "workingDays"), obj);
-    alert("Schedule saved.");
-  });
-
-  loadSchedule();
-
-  // TODO: Implement similar handlers for saveHolidays(), saveBlackouts(), saveSettings(), and exportUsers()
-
-</script>
+    <!-- USERS -->
+    <section id="users-tab" class="tab-content">
+      <h2>User Bookings</h2>
+      <table id="user-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
 </body>
 </html>
