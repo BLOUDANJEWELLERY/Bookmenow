@@ -65,10 +65,6 @@ main {
   display: block;
 }
 
-
-#schedule-form{
-  align-items:center;
-  }
 /* Schedule tab container styling (match .booking-form aesthetics) */
 #schedule-tab {
   padding: 2rem;
@@ -92,6 +88,16 @@ main {
   pointer-events: none;
 }
 
+.section-title {
+  text-align: center;
+  font-size: 1.75rem;
+  color: #003366;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #007bff, #00c6ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 /* Each day row block */
 .day-row {
   display: flex;
@@ -445,13 +451,13 @@ ul {
 
   <main>
 
-   <div id="schedule-tab" class="tab-content active">
-      <form id="schedule-form">
-        <h3>Working Days & Hours</h3>
-        <div id="working-days-container"></div>
-        <button type="submit">Save Schedule</button>
-      </form>
-    </div>
+  <div id="schedule-tab" class="tab-content active">
+  <h2 class="section-title">Working Days & Hours</h2>
+  <form id="schedule-form">
+    <div id="working-days-container"></div>
+    <button type="submit">Save Schedule</button>
+  </form>
+</div>
 
     <div id="holiday-tab" class="tab-content">
       <form id="holiday-form">
