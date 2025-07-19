@@ -5,103 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Settings</title>
   <style>
-    * { box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
       background: #f9f9f9;
-      color: #333;
     }
     header {
-      background-color: #004a99;
+      background: #222;
       color: white;
-      padding: 15px 20px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .tabs {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
       flex-wrap: wrap;
-    }
-    header h1 {
-      font-size: 20px;
-      margin: 0;
-    }
-    header button {
-      padding: 8px 16px;
-      background-color: #ff4d4f;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    nav {
-      display: flex;
-      gap: 10px;
-      padding: 10px;
-      background: #e3e3e3;
-      flex-wrap: wrap;
+      justify-content: center;
+      background: #eee;
+      padding: 0.5rem;
     }
     .tab-btn {
-      background: #ddd;
+      background: #ccc;
       border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      margin: 5px;
+      border-radius: 4px;
       cursor: pointer;
       font-weight: bold;
     }
     .tab-btn.active {
-      background: #004a99;
+      background: #333;
       color: white;
     }
     .tab-content {
       display: none;
-      padding: 20px;
+      padding: 1rem;
     }
     .tab-content.active {
       display: block;
     }
     .day-row {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       margin-bottom: 10px;
-      flex-wrap: wrap;
-      gap: 10px;
     }
     .day-name {
-      width: 100px;
+      width: 80px;
       font-weight: bold;
     }
-    .time-input, .shift-type-select {
-      padding: 5px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    .shift-1, .shift-2 {
-      display: flex;
-      gap: 5px;
+    .time-input, .shift-type-select, .day-enable {
+      margin: 5px;
     }
     .shift-2 {
       display: none;
     }
     .shift-2.visible {
-      display: flex;
+      display: inline-block;
     }
-    form button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background: #004a99;
+    form {
+      margin-top: 1rem;
+    }
+    input, select, textarea {
+      padding: 6px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 6px 12px;
+      background: #007BFF;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 4px;
+      margin-top: 10px;
       cursor: pointer;
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 0;
     }
     @media (max-width: 600px) {
       .day-row {
         flex-direction: column;
         align-items: flex-start;
       }
-      .shift-1, .shift-2 {
-        flex-direction: column;
+      .day-name {
+        width: auto;
       }
     }
   </style>
@@ -112,55 +102,52 @@
     <button id="logout-btn">Logout</button>
   </header>
 
-  <nav>
-    <button class="tab-btn active" data-tab="working">Working Days & Hours</button>
-    <button class="tab-btn" data-tab="holidays">Holidays</button>
-    <button class="tab-btn" data-tab="blackout">Blackout Slots</button>
-    <button class="tab-btn" data-tab="general">General Settings</button>
-    <button class="tab-btn" data-tab="users">User Bookings</button>
-  </nav>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="schedule">Working Hours</button>
+    <button class="tab-btn" data-tab="holidays">Special Holidays</button>
+    <button class="tab-btn" data-tab="advanced">Advanced Settings</button>
+    <button class="tab-btn" data-tab="announcement">Announcement Banner</button>
+  </div>
 
-  <section class="tab-content active" id="working">
-    <h2>Configure Working Days & Hours</h2>
+  <div id="schedule" class="tab-content active">
     <form id="schedule-form">
       <div id="working-days-container"></div>
       <button type="submit">Save Schedule</button>
     </form>
-  </section>
+  </div>
 
-  <section class="tab-content" id="holidays">
-  <h2>Manage Holidays</h2>
-  <form id="holiday-form">
-    <input type="date" id="holiday-date" required />
-    <button type="submit">Add Holiday</button>
-  </form>
-  <ul id="holiday-list" style="margin-top: 15px; padding: 0; list-style: none;"></ul>
-</section>
+  <div id="holidays" class="tab-content">
+    <form id="holiday-form">
+      <input type="date" id="holiday-date" required />
+      <button type="submit">Add Holiday</button>
+    </form>
+    <ul id="holiday-list"></ul>
+  </div>
 
-  <section class="tab-content" id="blackout">
-    <p>Coming soon...</p>
-  </section>
-  <section class="tab-content" id="general">
-    <p>Coming soon...</p>
-  </section>
-  <section class="tab-content" id="users">
-    <p>Coming soon...</p>
-  </section>
+  <div id="advanced" class="tab-content">
+    <form id="advanced-form">
+      <label>Buffer Time (minutes):</label>
+      <input type="number" id="buffer-time" min="0" required /><br/>
+      <label>Max Days in Advance Booking Allowed:</label>
+      <input type="number" id="max-days" min="1" required /><br/>
+      <label>Hours Before Slot Closes:</label>
+      <input type="number" id="hours-before" min="0" required /><br/>
+      <button type="submit">Save Advanced Settings</button>
+    </form>
+  </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js" type="module"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js" type="module"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js" type="module"></script>
+  <div id="announcement" class="tab-content">
+    <form id="announcement-form">
+      <label>Announcement Banner Text:</label><br/>
+      <textarea id="banner-text" rows="3" style="width:100%"></textarea><br/>
+      <button type="submit">Save Banner</button>
+    </form>
+  </div>
 
-  <!-- Admin Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getAuth, onAuthStateChanged, signOut
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import {
-      getFirestore, doc, setDoc, getDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
@@ -248,87 +235,89 @@
       alert("Schedule saved.");
     });
 
+    document.getElementById("holiday-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const newDate = document.getElementById("holiday-date").value;
+      if (!newDate) return alert("Select a date.");
+      const ref = doc(db, "adminSettings", "holidays");
+      const snap = await getDoc(ref);
+      let holidays = snap.exists() ? snap.data().dates || [] : [];
+      if (holidays.includes(newDate)) return alert("Already marked.");
+      holidays.push(newDate);
+      await setDoc(ref, { dates: holidays });
+      document.getElementById("holiday-date").value = "";
+      renderHolidays(holidays);
+    });
+
+    window.deleteHoliday = async (dateToRemove) => {
+      const ref = doc(db, "adminSettings", "holidays");
+      const snap = await getDoc(ref);
+      let holidays = snap.exists() ? snap.data().dates || [] : [];
+      holidays = holidays.filter(d => d !== dateToRemove);
+      await setDoc(ref, { dates: holidays });
+      renderHolidays(holidays);
+    };
+
+    function renderHolidays(dates) {
+      const list = document.getElementById("holiday-list");
+      list.innerHTML = "";
+      dates.sort().forEach(date => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span>${date}</span>
+          <button onclick="deleteHoliday('${date}')">❌</button>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    document.getElementById("advanced-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = {
+        bufferTime: parseInt(document.getElementById("buffer-time").value),
+        maxDays: parseInt(document.getElementById("max-days").value),
+        hoursBefore: parseInt(document.getElementById("hours-before").value)
+      };
+      await setDoc(doc(db, "adminSettings", "advancedSettings"), data);
+      alert("Advanced settings saved.");
+    });
+
+    document.getElementById("announcement-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const text = document.getElementById("banner-text").value;
+      await setDoc(doc(db, "adminSettings", "announcement"), { text });
+      alert("Banner saved.");
+    });
+
     async function loadSchedule() {
       const snap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
-      if (snap.exists()) {
-        const data = snap.data();
-        weekdays.forEach(day => {
-          const d = data[day];
-          if (!d) return;
-          document.querySelector(`.day-enable[data-day="${day}"]`).checked = d.enabled;
-          document.querySelector(`.shift-type-select[data-day="${day}"]`).value = d.shiftType || "single";
-          document.querySelector(`.start-1[data-day="${day}"]`).value = d.shift1?.start || "";
-          document.querySelector(`.end-1[data-day="${day}"]`).value = d.shift1?.end || "";
-          if (d.shiftType === "double" && d.shift2) {
-            document.querySelector(`.shift-2[data-day="${day}"]`).classList.add("visible");
-            document.querySelector(`.start-2[data-day="${day}"]`).value = d.shift2.start || "";
-            document.querySelector(`.end-2[data-day="${day}"]`).value = d.shift2.end || "";
-          }
-        });
-      }
+      if (!snap.exists()) return;
+      const data = snap.data();
+      weekdays.forEach(day => {
+        const d = data[day];
+        if (!d) return;
+        document.querySelector(`.day-enable[data-day="${day}"]`).checked = d.enabled;
+        document.querySelector(`.shift-type-select[data-day="${day}"]`).value = d.shiftType;
+        document.querySelector(`.start-1[data-day="${day}"]`).value = d.shift1?.start || "";
+        document.querySelector(`.end-1[data-day="${day}"]`).value = d.shift1?.end || "";
+        if (d.shiftType === "double" && d.shift2) {
+          document.querySelector(`.shift-2[data-day="${day}"]`).classList.add("visible");
+          document.querySelector(`.start-2[data-day="${day}"]`).value = d.shift2.start || "";
+          document.querySelector(`.end-2[data-day="${day}"]`).value = d.shift2.end || "";
+        }
+      });
     }
-const holidayForm = document.getElementById("holiday-form");
-const holidayInput = document.getElementById("holiday-date");
-const holidayList = document.getElementById("holiday-list");
 
-holidayForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const newDate = holidayInput.value;
-  if (!newDate) return alert("Select a date.");
+    async function loadHolidays() {
+      const snap = await getDoc(doc(db, "adminSettings", "holidays"));
+      if (snap.exists()) renderHolidays(snap.data().dates || []);
+    }
 
-  const docRef = doc(db, "adminSettings", "holidays");
-  const docSnap = await getDoc(docRef);
-  let holidays = docSnap.exists() ? docSnap.data().dates || [] : [];
-  
-  if (holidays.includes(newDate)) {
-    alert("This date is already marked as a holiday.");
-    return;
-  }
-
-  holidays.push(newDate);
-  await setDoc(docRef, { dates: holidays });
-  holidayInput.value = "";
-  renderHolidays(holidays);
-});
-
-function renderHolidays(dates) {
-  holidayList.innerHTML = "";
-  dates.sort().forEach(date => {
-    const li = document.createElement("li");
-    li.style.marginBottom = "8px";
-    li.innerHTML = `
-      <span>${date}</span>
-      <button style="margin-left:10px; background:#ff4d4f; color:white; border:none; padding:2px 8px; border-radius:4px; cursor:pointer;"
-        onclick="deleteHoliday('${date}')">❌</button>
-    `;
-    holidayList.appendChild(li);
-  });
-}
-
-window.deleteHoliday = async (dateToRemove) => {
-  const docRef = doc(db, "adminSettings", "holidays");
-  const docSnap = await getDoc(docRef);
-  let holidays = docSnap.exists() ? docSnap.data().dates || [] : [];
-
-  holidays = holidays.filter(d => d !== dateToRemove);
-  await setDoc(docRef, { dates: holidays });
-  renderHolidays(holidays);
-};
-
-async function loadHolidays() {
-  const docSnap = await getDoc(doc(db, "adminSettings", "holidays"));
-  if (docSnap.exists()) {
-    renderHolidays(docSnap.data().dates || []);
-  }
-}
     onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loadSchedule();
-    loadHolidays();
-  } else {
-    location.href = "login.html";
-  }
-});
+      if (!user) return location.href = "login.html";
+      loadSchedule();
+      loadHolidays();
+    });
   </script>
 </body>
 </html>
