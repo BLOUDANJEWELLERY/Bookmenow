@@ -629,8 +629,13 @@ const navLinks = document.getElementById("nav-links");
 let menuOpen = false;  // Keep track of menu state
 
 hamburger.addEventListener("click", () => {
-  menuOpen = !menuOpen;
-  navLinks.classList.toggle("active", menuOpen);
+  if (menuOpen) {
+    navLinks.classList.remove("active");
+    menuOpen = false;
+  } else {
+    navLinks.classList.add("active");
+    menuOpen = true;
+  }
 });
 
 // Close menu when any nav button is clicked (and reset menuOpen flag)
