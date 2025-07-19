@@ -4,200 +4,103 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Settings</title>
-  <script type="module" src="js/auth.js"></script>
   <style>
-    :root {
-      --primary: #004080;
-      --accent: #00aaff;
-      --bg: #f8f9fa;
-      --card: #ffffff;
-      --border: #dee2e6;
-      --text: #212529;
-    }
-
-    * {
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: "Segoe UI", sans-serif;
+      background: #f9f9f9;
+      color: #333;
     }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      padding: 1rem;
-    }
-
     header {
+      background-color: #004a99;
+      color: white;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
     }
-
     header h1 {
-      font-size: 1.5rem;
-      color: var(--primary);
+      font-size: 20px;
+      margin: 0;
     }
-
-    #logout-btn {
-      padding: 0.5rem 1rem;
-      background: var(--primary);
+    header button {
+      padding: 8px 16px;
+      background-color: #ff4d4f;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 4px;
       cursor: pointer;
     }
-
     nav {
       display: flex;
+      gap: 10px;
+      padding: 10px;
+      background: #e3e3e3;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
     }
-
     .tab-btn {
-      flex: 1;
-      min-width: 120px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 0.6rem;
+      background: #ddd;
+      border: none;
+      padding: 10px 20px;
       border-radius: 5px;
       cursor: pointer;
-      text-align: center;
-      transition: background 0.2s;
+      font-weight: bold;
     }
-
     .tab-btn.active {
-      background: var(--primary);
+      background: #004a99;
       color: white;
     }
-
-    main {
-      background: var(--card);
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-
-    section.tab-content {
+    .tab-content {
       display: none;
+      padding: 20px;
     }
-
-    section.tab-content.active {
+    .tab-content.active {
       display: block;
-      animation: fadeIn 0.3s ease;
     }
-
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-
-    h2 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-      color: var(--primary);
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-      margin-bottom: 1rem;
-    }
-
     .day-row {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      gap: 0.75rem;
-      padding: 12px 10px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      margin-bottom: 12px;
-      background: var(--card);
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-
-    .day-row > * {
-      flex-shrink: 0;
-    }
-
     .day-name {
-      flex-basis: 120px;
-      font-weight: 600;
-      color: var(--primary);
+      width: 100px;
+      font-weight: bold;
     }
-
-    .shift-type-select,
-    .time-input {
-      padding: 4px 6px;
+    .time-input, .shift-type-select {
+      padding: 5px;
       border-radius: 4px;
-      border: 1px solid var(--border);
+      border: 1px solid #ccc;
     }
-
-    .shift-type-select {
-      width: 140px;
+    .shift-1, .shift-2 {
+      display: flex;
+      gap: 5px;
     }
-
-    .time-input {
-      width: 110px;
-    }
-
     .shift-2 {
       display: none;
-      gap: 0.5rem;
     }
-
     .shift-2.visible {
       display: flex;
     }
-
-    label {
-      font-weight: 500;
-    }
-
-    input, select, textarea {
-      padding: 0.5rem;
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      width: 100%;
-    }
-
-    button[type="submit"] {
-      background: var(--accent);
+    form button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #004a99;
       color: white;
       border: none;
-      padding: 0.6rem;
       border-radius: 5px;
-      font-weight: bold;
       cursor: pointer;
-      transition: background 0.2s;
     }
-
-    button[type="submit"]:hover {
-      background: #0077aa;
-    }
-
     @media (max-width: 600px) {
-      nav {
-        flex-direction: column;
-      }
-
-      .tab-btn {
-        width: 100%;
-      }
-
       .day-row {
         flex-direction: column;
         align-items: flex-start;
       }
-
-      .time-input, .shift-type-select {
-        width: 100%;
-      }
-
-      .shift-2 {
+      .shift-1, .shift-2 {
         flex-direction: column;
       }
     }
@@ -210,175 +113,159 @@
   </header>
 
   <nav>
-    <button class="tab-btn active" data-tab="schedule-tab">Schedule</button>
-    <button class="tab-btn" data-tab="general-tab">General</button>
+    <button class="tab-btn active" data-tab="working">Working Days & Hours</button>
+    <button class="tab-btn" data-tab="holidays">Holidays</button>
+    <button class="tab-btn" data-tab="blackout">Blackout Slots</button>
+    <button class="tab-btn" data-tab="general">General Settings</button>
+    <button class="tab-btn" data-tab="users">User Bookings</button>
   </nav>
 
-  <main>
-    <!-- SCHEDULE -->
-    <section id="schedule-tab" class="tab-content active">
-      <h2>Working Days & Hours</h2>
-      <form id="schedule-form">
-        <div id="working-days-container"></div>
-        <button type="submit">Save Schedule</button>
-      </form>
-    </section>
+  <section class="tab-content active" id="working">
+    <h2>Configure Working Days & Hours</h2>
+    <form id="schedule-form">
+      <div id="working-days-container"></div>
+      <button type="submit">Save Schedule</button>
+    </form>
+  </section>
 
-    <!-- GENERAL -->
-    <section id="general-tab" class="tab-content">
-      <h2>General Settings</h2>
-      <form id="general-settings-form">
-        <label>Max Booking Days Ahead:</label>
-        <input type="number" id="max-days" required min="1" />
+  <section class="tab-content" id="holidays">
+    <p>Coming soon...</p>
+  </section>
+  <section class="tab-content" id="blackout">
+    <p>Coming soon...</p>
+  </section>
+  <section class="tab-content" id="general">
+    <p>Coming soon...</p>
+  </section>
+  <section class="tab-content" id="users">
+    <p>Coming soon...</p>
+  </section>
 
-        <label>Cutoff Time Before Slot (in hours):</label>
-        <input type="number" id="cutoff-hours" required min="0" />
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js" type="module"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js" type="module"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js" type="module"></script>
 
-        <label>Buffer Time Between Appointments (in minutes):</label>
-        <input type="number" id="buffer-time" required min="0" />
-
-        <label>Announcement Banner:</label>
-        <textarea id="announcement-text" placeholder="Message for users..."></textarea>
-
-        <button type="submit">Save Settings</button>
-      </form>
-    </section>
-  </main>
-
+  <!-- Admin Script -->
   <script type="module">
-    import { auth, db } from "./js/firebase.js";
-    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getAuth, onAuthStateChanged, signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import {
+      getFirestore, doc, setDoc, getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const workingDaysContainer = document.getElementById("working-days-container");
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
+      authDomain: "sampleportfolio-9450c.firebaseapp.com",
+      projectId: "sampleportfolio-9450c",
+      storageBucket: "sampleportfolio-9450c.appspot.com",
+      messagingSenderId: "725347523572",
+      appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
+    };
 
-    // Tab switching
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.onclick = () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById(btn.dataset.tab).classList.add('active');
-      };
-    });
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    // Auth check
-    onAuthStateChanged(auth, user => {
-      if (!user) window.location.href = "login.html";
-    });
+    const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const workingContainer = document.getElementById("working-days-container");
 
-    document.getElementById("logout-btn").onclick = () => signOut(auth);
-
-    // Load schedule
-    async function loadSchedule() {
-      const snap = await getDoc(doc(db, "settings", "schedule"));
-      const data = snap.exists() ? snap.data() : {};
-
-      days.forEach(day => {
-        const d = data[day] || {};
-        const row = document.createElement("div");
-        row.className = "day-row";
-
-        const label = document.createElement("div");
-        label.className = "day-name";
-        label.textContent = day;
-
-        const select = document.createElement("select");
-        select.className = "shift-type-select";
-        select.innerHTML = `
+    weekdays.forEach(day => {
+      const row = document.createElement("div");
+      row.className = "day-row";
+      row.innerHTML = `
+        <label class="day-name">${day}</label>
+        <input type="checkbox" class="day-enable" data-day="${day}" />
+        <select class="shift-type-select" data-day="${day}">
           <option value="single">Single Shift</option>
           <option value="double">Double Shift</option>
-        `;
-        select.value = d.shiftType || "single";
+        </select>
+        <div class="shift-1" data-day="${day}">
+          <input type="time" class="time-input start-1" data-day="${day}" />
+          <input type="time" class="time-input end-1" data-day="${day}" />
+        </div>
+        <div class="shift-2" data-day="${day}">
+          <input type="time" class="time-input start-2" data-day="${day}" />
+          <input type="time" class="time-input end-2" data-day="${day}" />
+        </div>
+      `;
+      workingContainer.appendChild(row);
+    });
 
-        const time1Start = document.createElement("input");
-        time1Start.type = "time";
-        time1Start.className = "time-input";
-        time1Start.value = d.start1 || "";
+    document.addEventListener("change", (e) => {
+      if (e.target.classList.contains("shift-type-select")) {
+        const day = e.target.dataset.day;
+        const val = e.target.value;
+        const shift2 = document.querySelector(`.shift-2[data-day="${day}"]`);
+        if (val === "double") {
+          shift2.classList.add("visible");
+        } else {
+          shift2.classList.remove("visible");
+        }
+      }
+    });
 
-        const time1End = document.createElement("input");
-        time1End.type = "time";
-        time1End.className = "time-input";
-        time1End.value = d.end1 || "";
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(sec => sec.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab).classList.add("active");
+      });
+    });
 
-        const shift2Div = document.createElement("div");
-        shift2Div.className = "shift-2";
-        if (select.value === "double") shift2Div.classList.add("visible");
+    document.getElementById("logout-btn").addEventListener("click", async () => {
+      await signOut(auth);
+      location.href = "login.html";
+    });
 
-        const time2Start = document.createElement("input");
-        time2Start.type = "time";
-        time2Start.className = "time-input";
-        time2Start.value = d.start2 || "";
+    document.getElementById("schedule-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = {};
+      weekdays.forEach(day => {
+        const enabled = document.querySelector(`.day-enable[data-day="${day}"]`).checked;
+        const type = document.querySelector(`.shift-type-select[data-day="${day}"]`).value;
+        const start1 = document.querySelector(`.start-1[data-day="${day}"]`).value;
+        const end1 = document.querySelector(`.end-1[data-day="${day}"]`).value;
+        const start2 = document.querySelector(`.start-2[data-day="${day}"]`)?.value || "";
+        const end2 = document.querySelector(`.end-2[data-day="${day}"]`)?.value || "";
+        data[day] = {
+          enabled,
+          shiftType: type,
+          shift1: { start: start1, end: end1 },
+          shift2: type === "double" ? { start: start2, end: end2 } : null
+        };
+      });
+      await setDoc(doc(db, "adminSettings", "workingSchedule"), data);
+      alert("Schedule saved.");
+    });
 
-        const time2End = document.createElement("input");
-        time2End.type = "time";
-        time2End.className = "time-input";
-        time2End.value = d.end2 || "";
-
-        shift2Div.append(time2Start, time2End);
-
-        select.onchange = () => {
-          if (select.value === "double") {
-            shift2Div.classList.add("visible");
-          } else {
-            shift2Div.classList.remove("visible");
+    async function loadSchedule() {
+      const snap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
+      if (snap.exists()) {
+        const data = snap.data();
+        weekdays.forEach(day => {
+          const d = data[day];
+          if (!d) return;
+          document.querySelector(`.day-enable[data-day="${day}"]`).checked = d.enabled;
+          document.querySelector(`.shift-type-select[data-day="${day}"]`).value = d.shiftType || "single";
+          document.querySelector(`.start-1[data-day="${day}"]`).value = d.shift1?.start || "";
+          document.querySelector(`.end-1[data-day="${day}"]`).value = d.shift1?.end || "";
+          if (d.shiftType === "double" && d.shift2) {
+            document.querySelector(`.shift-2[data-day="${day}"]`).classList.add("visible");
+            document.querySelector(`.start-2[data-day="${day}"]`).value = d.shift2.start || "";
+            document.querySelector(`.end-2[data-day="${day}"]`).value = d.shift2.end || "";
           }
-        };
-
-        row.append(label, select, time1Start, time1End, shift2Div);
-        row.dataset.day = day;
-        workingDaysContainer.appendChild(row);
-      });
+        });
+      }
     }
 
-    // Save schedule
-    document.getElementById("schedule-form").onsubmit = async e => {
-      e.preventDefault();
-      const result = {};
-      document.querySelectorAll(".day-row").forEach(row => {
-        const [label, select, t1s, t1e, shift2Div] = row.children;
-        const [t2s, t2e] = shift2Div.children;
-        result[row.dataset.day] = {
-          shiftType: select.value,
-          start1: t1s.value,
-          end1: t1e.value,
-          ...(select.value === "double" ? {
-            start2: t2s.value,
-            end2: t2e.value
-          } : {})
-        };
-      });
-      await setDoc(doc(db, "settings", "schedule"), result);
-      alert("Schedule saved");
-    };
-
-    // Load general settings
-    async function loadGeneralSettings() {
-      const snap = await getDoc(doc(db, "settings", "general"));
-      if (!snap.exists()) return;
-      const data = snap.data();
-      document.getElementById("max-days").value = data.maxDays || 7;
-      document.getElementById("cutoff-hours").value = data.cutoffHours || 0;
-      document.getElementById("buffer-time").value = data.bufferTime || 0;
-      document.getElementById("announcement-text").value = data.announcement || "";
-    }
-
-    // Save general settings
-    document.getElementById("general-settings-form").onsubmit = async e => {
-      e.preventDefault();
-      const data = {
-        maxDays: +document.getElementById("max-days").value,
-        cutoffHours: +document.getElementById("cutoff-hours").value,
-        bufferTime: +document.getElementById("buffer-time").value,
-        announcement: document.getElementById("announcement-text").value.trim()
-      };
-      await setDoc(doc(db, "settings", "general"), data);
-      alert("General settings saved");
-    };
-
-    loadSchedule();
-    loadGeneralSettings();
+    onAuthStateChanged(auth, user => {
+      if (user) loadSchedule();
+      else location.href = "login.html";
+    });
   </script>
 </body>
 </html>
