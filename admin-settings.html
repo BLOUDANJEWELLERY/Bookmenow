@@ -22,6 +22,12 @@
     button { padding: 8px 12px; border: none; background: #007bff; color: white; border-radius: 4px; cursor: pointer; }
     form > div { margin-bottom: 12px; }
     ul { padding: 0; list-style: none; }
+     .blackout-row, .user-row { display: flex; align-items: center; margin-bottom: 8px; }
+    .user-row div { margin-right: 12px; }
+    .action-btn { padding: 4px 8px; margin-left: 4px; cursor: pointer; border: none; border-radius:4px; }
+    .delete-btn { background: #e74c3c; color: white; }
+    .suspend-btn { background: #f39c12; color: white; }
+  
   </style>
 </head>
 <body>
@@ -34,8 +40,11 @@
     <div class="tabs">
       <button class="tab-btn active" data-tab="schedule-tab">Working Days</button>
       <button class="tab-btn" data-tab="holiday-tab">Holidays</button>
+    <button class="tab-btn" data-tab="blackouts">Blackout Slots</button>
       <button class="tab-btn" data-tab="advanced-tab">Advanced Settings</button>
       <button class="tab-btn" data-tab="announcement-tab">Announcement</button>
+    <button class="tab-btn" data-tab="users">User Management</button>
+ 
     </div>
 
     <div id="schedule-tab" class="tab-content active">
@@ -84,12 +93,34 @@
         <button type="submit">Save Banner</button>
       </form>
     </div>
+    
+    <div id="blackouts" class="tab-content">
+    <h3>Add Blackout Slot</h3>
+    <form id="blackout-form">
+      <input type="date" id="blackout-date" required />
+      <input type="time" id="blackout-start" required />
+      <input type="time" id="blackout-end" required />
+      <button type="submit">Add Slot</button>
+    </form>
+    <h4>Existing Blackouts</h4>
+    <ul id="blackout-list"></ul>
+  </div>
+
+  <div id="users" class="tab-content">
+    <h3>User Accounts</h3>
+    <div id="user-list"></div>
+  </div>
   </main>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+       import { getAuth, onAuthStateChanged, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { collection, doc, getDocs, setDoc, getDoc, deleteDoc, updateDoc, getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    const db = getFirestore();
+
+   
 
     const firebaseConfig = {
       apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
@@ -104,6 +135,10 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+const blackoutForm = document.getElementById('blackout-form');
+    const blackoutList = document.getElementById('blackout-list');
+
+    
     const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const workingContainer = document.getElementById("working-days-container");
 
@@ -276,13 +311,90 @@
         document.getElementById("banner-message").value = data.message || "";
       }
     }
+blackoutForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const d = blackoutForm['blackout-date'].value;
+      const s = blackoutForm['blackout-start'].value;
+      const eT = blackoutForm['blackout-end'].value;
+      if (s >= eT) return alert("End must be after start.");
+      const ref = doc(db, 'adminSettings', 'blackouts');
+      const snap = await getDoc(ref);
+      let arr = snap.exists() ? snap.data().slots : [];
+      arr.push({ date: d, start: s, end: eT });
+      await setDoc(ref, { slots: arr });
+      blackoutForm.reset();
+      renderBlackouts(arr);
+    });
 
+    window.deleteBlackout = async (idx) => {
+      const ref = doc(db, 'adminSettings', 'blackouts');
+      const snap = await getDoc(ref);
+      let arr = snap.exists() ? snap.data().slots : [];
+      arr.splice(idx, 1);
+      await setDoc(ref, { slots: arr });
+      renderBlackouts(arr);
+    };
+
+    function renderBlackouts(slots){
+      blackoutList.innerHTML = '';
+      slots.forEach((b, i) => {
+        const li = document.createElement('li');
+        li.className = 'blackout-row';
+        li.innerHTML = `
+          <div>${b.date} ${b.start} - ${b.end}</div>
+          <button class="action-btn delete-btn" onclick="deleteBlackout(${i})">Delete</button>
+        `;
+        blackoutList.appendChild(li);
+      });
+    }
+
+    async function loadBlackouts(){
+      const snap = await getDoc(doc(db, 'adminSettings', 'blackouts'));
+      if (snap.exists()) renderBlackouts(snap.data().slots || []);
+    }
+
+    // USERS: view, suspend/unsuspend, delete
+    const userList = document.getElementById('user-list');
+    async function loadUsers() {
+      userList.innerHTML = '';
+      const col = collection(db, 'adminSettings', 'usersList', 'users');
+      const snap = await getDocs(col);
+      snap.forEach(docSnap => {
+        const d = docSnap.data();
+        const uid = docSnap.id;
+        const div = document.createElement('div');
+        div.className = 'user-row';
+        div.innerHTML = `
+          <div><strong>${d.name}</strong> (${d.email})</div>
+          <div>Status: ${d.suspended ? 'Suspended' : 'Active'}</div>
+          <button class="action-btn suspend-btn" onclick="toggleSuspend('${uid}',${!d.suspended})">
+            ${d.suspended ? 'Unsuspend' : 'Suspend'}
+          </button>
+          <button class="action-btn delete-btn" onclick="removeUser('${uid}')">Delete</button>
+        `;
+        userList.appendChild(div);
+      });
+    }
+
+    window.toggleSuspend = async (uid, suspend) => {
+      const ref = doc(db, 'adminSettings', 'usersList', 'users', uid);
+      await updateDoc(ref, { suspended: suspend });
+      loadUsers();
+    };
+
+    window.removeUser = async (uid) => {
+      if (!confirm("Delete this user?")) return;
+      await deleteDoc(doc(db, 'adminSettings', 'usersList', 'users', uid));
+      loadUsers();
+    }
     onAuthStateChanged(auth, (user) => {
       if (user) {
         loadSchedule();
         loadHolidays();
         loadAdvancedSettings();
         loadBannerSettings();
+        loadBlackouts();
+      loadUsers();
       } else {
         location.href = "login.html";
       }
