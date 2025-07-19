@@ -5,29 +5,171 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Settings</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
-    header { background: #333; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
-    main { padding: 20px; }
-    .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-    .tab-btn { padding: 10px 15px; cursor: pointer; background: #ddd; border: none; border-radius: 4px; }
-    .tab-btn.active { background: #007bff; color: white; }
-    .tab-content { display: none; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .tab-content.active { display: block; }
-    .day-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .shift-2 { display: none; }
-    .shift-2.visible { display: inline-block; }
-    label.day-name { width: 100px; display: inline-block; }
-    input[type="time"] { padding: 5px; }
-    input[type="number"], input[type="text"] { padding: 6px; width: 100%; max-width: 200px; }
-    button { padding: 8px 12px; border: none; background: #007bff; color: white; border-radius: 4px; cursor: pointer; }
-    form > div { margin-bottom: 12px; }
-    ul { padding: 0; list-style: none; }
-     .blackout-row, .user-row { display: flex; align-items: center; margin-bottom: 8px; }
-    .user-row div { margin-right: 12px; }
-    .action-btn { padding: 4px 8px; margin-left: 4px; cursor: pointer; border: none; border-radius:4px; }
-    .delete-btn { background: #e74c3c; color: white; }
-    .suspend-btn { background: #f39c12; color: white; }
-  
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
+}
+
+header {
+  background: #333;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+main {
+  padding: 20px;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  padding: 10px 15px;
+  cursor: pointer;
+  background: #ddd;
+  border: none;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tab-btn.active {
+  background: #007bff;
+  color: white;
+}
+
+.tab-content {
+  display: none;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.day-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.shift-2 {
+  display: none;
+}
+
+.shift-2.visible {
+  display: inline-block;
+}
+
+label.day-name {
+  width: 100px;
+  min-width: 80px;
+  display: inline-block;
+  font-weight: bold;
+}
+
+input[type="time"] {
+  padding: 5px;
+  width: 100%;
+  max-width: 140px;
+}
+
+input[type="number"],
+input[type="text"] {
+  padding: 6px;
+  width: 100%;
+  max-width: 200px;
+}
+
+button {
+  padding: 8px 12px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form > div {
+  margin-bottom: 12px;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+.blackout-row,
+.user-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.user-row div {
+  margin-right: 12px;
+}
+
+.action-btn {
+  padding: 4px 8px;
+  margin-left: 4px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.suspend-btn {
+  background: #f39c12;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .day-row label.day-name {
+    width: 100%;
+  }
+
+  .day-row input[type="time"] {
+    max-width: 100%;
+  }
+
+  input[type="number"],
+  input[type="text"] {
+    max-width: 100%;
+  }
+
+  .tab-btn {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}
   </style>
 </head>
 <body>
