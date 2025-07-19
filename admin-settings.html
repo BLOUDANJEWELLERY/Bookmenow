@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Settings</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .settings-container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    h3 {
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .working-days .day-row,
+    .blackout-form,
+    .holiday-form {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    input[type="time"],
+    input[type="date"],
+    input[type="text"],
+    input[type="number"],
+    select {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      min-width: 120px;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.2);
+      margin-right: 8px;
+    }
+
+    button {
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      padding: 7px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    ul {
+      list-style: disc;
+      padding-left: 20px;
+    }
+
+    .user-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .user-table th, .user-table td {
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .save-btn {
+      display: block;
+      width: 100%;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="settings-container">
+    <h2>Admin Settings</h2>
+
+    <!-- Working Days & Hours -->
+    <section>
+      <h3>🕒 Working Days & Hours</h3>
+      <div class="working-days">
+        <div class="day-row"><label><input type="checkbox" checked /> Monday</label><input type="time" value="09:00" /> - <input type="time" value="17:00" /></div>
+        <div class="day-row"><label><input type="checkbox" checked /> Tuesday</label><input type="time" value="09:00" /> - <input type="time" value="17:00" /></div>
+        <div class="day-row"><label><input type="checkbox" checked /> Wednesday</label><input type="time" value="09:00" /> - <input type="time" value="17:00" /></div>
+        <div class="day-row"><label><input type="checkbox" checked /> Thursday</label><input type="time" value="09:00" /> - <input type="time" value="17:00" /></div>
+        <div class="day-row"><label><input type="checkbox" checked /> Friday</label><input type="time" value="09:00" /> - <input type="time" value="17:00" /></div>
+        <div class="day-row"><label><input type="checkbox" /> Saturday</label><input type="time" value="10:00" /> - <input type="time" value="14:00" /></div>
+        <div class="day-row"><label><input type="checkbox" /> Sunday</label><input type="time" value="10:00" /> - <input type="time" value="14:00" /></div>
+      </div>
+    </section>
+
+    <!-- Special Holidays -->
+    <section>
+      <h3>📅 Special Holidays</h3>
+      <div class="holiday-form">
+        <input type="date" id="holiday-date" />
+        <input type="text" placeholder="Reason (optional)" id="holiday-reason" />
+        <button onclick="addHoliday()">Add Holiday</button>
+      </div>
+      <ul id="holiday-list"></ul>
+    </section>
+
+    <!-- Blackout Slots -->
+    <section>
+      <h3>⛔ Blackout Slots</h3>
+      <div class="blackout-form">
+        <select id="blackout-day">
+          <option>Monday</option>
+          <option>Tuesday</option>
+          <option>Wednesday</option>
+          <option>Thursday</option>
+          <option>Friday</option>
+          <option>Saturday</option>
+          <option>Sunday</option>
+        </select>
+        <input type="time" id="blackout-start" />
+        <input type="time" id="blackout-end" />
+        <button onclick="addBlackout()">Add Break</button>
+      </div>
+      <ul id="blackout-list"></ul>
+    </section>
+
+    <!-- User Data -->
+    <section>
+      <h3>👥 User Data</h3>
+      <input type="text" placeholder="Search by name or date..." />
+      <button>Export CSV</button>
+      <table class="user-table">
+        <thead>
+          <tr><th>User</th><th>Service</th><th>Date</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>John Doe</td><td>Haircut</td><td>2025-07-20</td><td>Confirmed</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Advanced Options -->
+    <section>
+      <h3>⚙️ Advanced Settings</h3>
+      <label>Max days ahead users can book:
+        <input type="number" value="14" />
+      </label>
+      <br /><br />
+      <label>Minimum hours before slot closes:
+        <input type="number" value="1" />
+      </label>
+      <br /><br />
+      <label>Public Notice:
+        <input type="text" placeholder="e.g., Closed this Friday for maintenance" />
+      </label>
+      <br /><br />
+      <label><input type="checkbox" checked /> Allow new bookings</label>
+    </section>
+
+    <button class="save-btn">💾 Save Changes</button>
+  </div>
+
+  <script>
+    function addHoliday() {
+      const date = document.getElementById('holiday-date').value;
+      const reason = document.getElementById('holiday-reason').value;
+      if (date) {
+        const list = document.getElementById('holiday-list');
+        const li = document.createElement('li');
+        li.textContent = `${date} - ${reason || 'No reason provided'}`;
+        list.appendChild(li);
+      }
+    }
+
+    function addBlackout() {
+      const day = document.getElementById('blackout-day').value;
+      const start = document.getElementById('blackout-start').value;
+      const end = document.getElementById('blackout-end').value;
+      if (start && end) {
+        const list = document.getElementById('blackout-list');
+        const li = document.createElement('li');
+        li.textContent = `${day}: ${start} - ${end}`;
+        list.appendChild(li);
+      }
+    }
+  </script>
+</body>
+</html>
