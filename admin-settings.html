@@ -277,13 +277,6 @@ ul {
   box-shadow: 0 2px 4px var(--shadow);
 }
 
-.logo {
-  font-size: 1.7rem;
-  font-weight: bold;
-  color: #ffffff;
-  user-select: none;
-}
-
 .nav-links {
   display: flex;
   align-items: center;
@@ -313,6 +306,12 @@ ul {
   background: white;
 }
 
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* spacing between Back button and logo */
+}
+
 .back-btn {
   background: none;
   border: none;
@@ -323,6 +322,12 @@ ul {
   margin: 0;
   text-decoration: none;
   font-family: inherit;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
 }
 .back-btn:hover {
   text-decoration: underline;
