@@ -624,29 +624,29 @@ blackoutForm.addEventListener('submit', async e => {
       }
     });
     
-   const hamburger = document.getElementById("hamburger");
+const hamburger = document.getElementById("hamburger");
 const navLinks = document.getElementById("nav-links");
 
-// Toggle hamburger menu visibility
+// Toggle menu open/close
 hamburger.addEventListener("click", () => {
   navLinks.classList.toggle("active");
 });
 
-// Handle tab switching + close hamburger on click
+// Tab click handler + menu close
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const target = btn.getAttribute('data-tab');
 
-    // Activate the selected tab
+    // Show selected tab content
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
     document.getElementById(target)?.classList.add('active');
 
-    // Highlight the clicked tab button
+    // Update active button
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    // Close the menu if it's open
-    if (navLinks.classList.contains('active')) {
+    // Close menu *only on mobile*
+    if (window.innerWidth <= 768 && navLinks.classList.contains('active')) {
       navLinks.classList.remove('active');
     }
   });
