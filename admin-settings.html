@@ -320,8 +320,16 @@ ul {
   cursor: pointer;
   padding: 0;
   margin: 0;
-  text-decoration: none;
   font-family: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.arrow-img {
+  width: 18px; /* adjust as needed */
+  height: auto;
+  margin-right: 6px;
+  filter: brightness(0) invert(1); /* makes the image white if it's a dark PNG/SVG */
 }
 
 .logo {
@@ -341,7 +349,9 @@ ul {
 <header>
   <nav class="navbar">
     <div class="nav-left">
-      <button class="back-btn" onclick="location.href='admin.html'"><strong>↩</strong></button>
+      <button class="back-btn" onclick="location.href='admin.html'">
+  <img src="Arrow.PNG" alt="Back Arrow" class="arrow-img" />
+</button>
       <div class="logo">BookMeNow</div>
     </div>
 
