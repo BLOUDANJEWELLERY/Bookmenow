@@ -129,8 +129,14 @@
   </section>
 
   <section class="tab-content" id="holidays">
-    <p>Coming soon...</p>
-  </section>
+  <h2>Manage Holidays</h2>
+  <form id="holiday-form">
+    <input type="date" id="holiday-date" required />
+    <button type="submit">Add Holiday</button>
+  </form>
+  <ul id="holiday-list" style="margin-top: 15px; padding: 0; list-style: none;"></ul>
+</section>
+
   <section class="tab-content" id="blackout">
     <p>Coming soon...</p>
   </section>
@@ -261,9 +267,63 @@
         });
       }
     }
+const holidayForm = document.getElementById("holiday-form");
+const holidayInput = document.getElementById("holiday-date");
+const holidayList = document.getElementById("holiday-list");
 
+holidayForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const newDate = holidayInput.value;
+  if (!newDate) return alert("Select a date.");
+
+  const docRef = doc(db, "adminSettings", "holidays");
+  const docSnap = await getDoc(docRef);
+  let holidays = docSnap.exists() ? docSnap.data().dates || [] : [];
+  
+  if (holidays.includes(newDate)) {
+    alert("This date is already marked as a holiday.");
+    return;
+  }
+
+  holidays.push(newDate);
+  await setDoc(docRef, { dates: holidays });
+  holidayInput.value = "";
+  renderHolidays(holidays);
+});
+
+function renderHolidays(dates) {
+  holidayList.innerHTML = "";
+  dates.sort().forEach(date => {
+    const li = document.createElement("li");
+    li.style.marginBottom = "8px";
+    li.innerHTML = `
+      <span>${date}</span>
+      <button style="margin-left:10px; background:#ff4d4f; color:white; border:none; padding:2px 8px; border-radius:4px; cursor:pointer;"
+        onclick="deleteHoliday('${date}')">❌</button>
+    `;
+    holidayList.appendChild(li);
+  });
+}
+
+window.deleteHoliday = async (dateToRemove) => {
+  const docRef = doc(db, "adminSettings", "holidays");
+  const docSnap = await getDoc(docRef);
+  let holidays = docSnap.exists() ? docSnap.data().dates || [] : [];
+
+  holidays = holidays.filter(d => d !== dateToRemove);
+  await setDoc(docRef, { dates: holidays });
+  renderHolidays(holidays);
+};
+
+async function loadHolidays() {
+  const docSnap = await getDoc(doc(db, "adminSettings", "holidays"));
+  if (docSnap.exists()) {
+    renderHolidays(docSnap.data().dates || []);
+  }
+}
     onAuthStateChanged(auth, user => {
       if (user) loadSchedule();
+      loadHolidays();
       else location.href = "login.html";
     });
   </script>
