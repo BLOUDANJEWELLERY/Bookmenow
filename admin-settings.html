@@ -132,7 +132,7 @@
       <input type="number" id="max-days" min="1" required /><br/>
       <label>Hours Before Slot Closes:</label>
       <input type="number" id="hours-before" min="0" required /><br/>
-      <button type="submit">Save Advanced Settings</button>
+      <button id="save-advanced">Save Settings</button>
     </form>
   </div>
 
@@ -289,6 +289,24 @@
       alert("Banner saved.");
     });
 
+document.getElementById("save-advanced").addEventListener("click", async () => {
+  const bufferTime = document.getElementById("buffer-time").value;
+  const maxAdvanceDays = document.getElementById("max-advance-days").value;
+  const cutoffHours = document.getElementById("cutoff-hours").value;
+  const banner = document.getElementById("banner-message").value;
+  const bannerEnabled = document.getElementById("banner-enabled").checked;
+
+  const data = {
+    bufferTime,
+    maxAdvanceDays,
+    cutoffHours,
+    banner,
+    bannerEnabled
+  };
+
+  await setDoc(doc(db, "adminSettings", "advanced"), data);
+  alert("Advanced settings saved.");
+});
     async function loadSchedule() {
       const snap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
       if (!snap.exists()) return;
@@ -312,11 +330,23 @@
       const snap = await getDoc(doc(db, "adminSettings", "holidays"));
       if (snap.exists()) renderHolidays(snap.data().dates || []);
     }
-
+async function loadAdvancedSettings() {
+  const docRef = doc(db, "adminSettings", "advanced");
+  const snap = await getDoc(docRef);
+  if (snap.exists()) {
+    const data = snap.data();
+    document.getElementById("buffer-time").value = data.bufferTime || "";
+    document.getElementById("max-advance-days").value = data.maxAdvanceDays || "";
+    document.getElementById("cutoff-hours").value = data.cutoffHours || "";
+    document.getElementById("banner-message").value = data.banner || "";
+    document.getElementById("banner-enabled").checked = !!data.bannerEnabled;
+  }
+}
     onAuthStateChanged(auth, (user) => {
       if (!user) return location.href = "login.html";
       loadSchedule();
       loadHolidays();
+      loadAdvancedSettings();
     });
   </script>
 </body>
