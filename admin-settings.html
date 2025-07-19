@@ -2,11 +2,205 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Settings</title>
-  <link rel="stylesheet" href="admin-settings.css" />
   <script type="module" src="js/auth.js"></script>
   <script type="module" src="js/admin-settings.js"></script>
+  <style>
+    :root {
+      --primary: #004080;
+      --accent: #00aaff;
+      --bg: #f8f9fa;
+      --card: #ffffff;
+      --border: #dee2e6;
+      --text: #212529;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 1rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    #logout-btn {
+      padding: 0.5rem 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 120px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 0.6rem;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    main {
+      background: var(--card);
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    section.tab-content {
+      display: none;
+    }
+
+    section.tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      font-weight: 500;
+    }
+
+    input, select, textarea {
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      width: 100%;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button[type="submit"] {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.6rem;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button[type="submit"]:hover {
+      background: #0077aa;
+    }
+
+    .weekday-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .weekday-checkboxes label {
+      flex: 1 1 30%;
+    }
+
+    #user-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    #user-table th, #user-table td {
+      padding: 0.6rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    #user-table th {
+      background-color: var(--bg);
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding-left: 0;
+    }
+
+    ul li {
+      background: #fff;
+      padding: 0.6rem;
+      margin: 0.3rem 0;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+      }
+
+      .tab-btn {
+        width: 100%;
+      }
+
+      .weekday-checkboxes label {
+        flex: 1 1 45%;
+      }
+
+      input[type="time"] {
+        width: 48%;
+      }
+
+      #user-table th, #user-table td {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -18,7 +212,7 @@
     <button class="tab-btn active" data-tab="schedule-tab">Schedule</button>
     <button class="tab-btn" data-tab="holidays-tab">Holidays</button>
     <button class="tab-btn" data-tab="blackout-tab">Blackout Slots</button>
-    <button class="tab-btn" data-tab="general-tab">General Settings</button>
+    <button class="tab-btn" data-tab="general-tab">General</button>
     <button class="tab-btn" data-tab="users-tab">User Bookings</button>
   </nav>
 
