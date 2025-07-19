@@ -277,23 +277,27 @@ ul {
   </style>
 </head>
 <body>
-<header>
-  <div class="header-top">
-    <h2>Admin Settings</h2>
-    <button id="logout-btn">Logout</button>
-  </div>
 
+<header>
   <nav class="navbar">
     <div class="nav-left">
       <button class="back-btn" onclick="location.href='admin.html'">← Back</button>
       <div class="logo">BookMeNow</div>
     </div>
+
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
     <ul class="nav-links" id="nav-links">
       <li><button class="tab-btn active" data-tab="schedule-tab">Working Days</button></li>
       <li><button class="tab-btn" data-tab="holiday-tab">Holidays</button></li>
       <li><button class="tab-btn" data-tab="blackouts">Blackout Slots</button></li>
       <li><button class="tab-btn" data-tab="advanced-tab">Advanced Settings</button></li>
       <li><button class="tab-btn" data-tab="announcement-tab">Announcement</button></li>
+      <li><button id="logout-btn" class="logout-btn">Logout</button></li>
     </ul>
   </nav>
 </header>
@@ -628,6 +632,15 @@ blackoutForm.addEventListener('submit', async e => {
       btn.classList.add('active');
     });
   });
-  </script>
+
+
+  
+  const hamburger = document.getElementById("hamburger");
+  const navLinks = document.getElementById("nav-links");
+
+  hamburger.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
+</script>
 </body>
 </html>
