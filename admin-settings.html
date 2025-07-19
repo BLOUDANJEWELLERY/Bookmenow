@@ -425,29 +425,12 @@ ul {
 
   <main>
 
-    <div class="day-row" data-day="Monday">
-  <label class="day-name">Monday</label>
-
-  <div class="time-block">
-    <label>Start</label>
-    <input type="time" class="start-1" data-day="Monday" />
-  </div>
-
-  <div class="time-block">
-    <label>End</label>
-    <input type="time" class="end-1" data-day="Monday" />
-  </div>
-
-  <div class="time-block shift-2" data-day="Monday">
-    <label>Start 2</label>
-    <input type="time" class="start-2" data-day="Monday" />
-  </div>
-
-  <div class="time-block shift-2" data-day="Monday">
-    <label>End 2</label>
-    <input type="time" class="end-2" data-day="Monday" />
-  </div>
-</div>
+   <div id="schedule-tab" class="tab-content active">
+      <form id="schedule-form">
+        <div id="working-days-container"></div>
+        <button type="submit">Save Schedule</button>
+      </form>
+    </div>
 
     <div id="holiday-tab" class="tab-content">
       <form id="holiday-form">
