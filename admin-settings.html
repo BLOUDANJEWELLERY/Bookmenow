@@ -1068,7 +1068,26 @@ function createTimePicker(input) {
   const hourWheel = createWheel([...Array(12).keys()].map(i => i + 1), "hour");
   const minuteWheel = createWheel([...Array(12).keys()].map(i => (i * 5).toString().padStart(2, "0")), "minute");
   const ampmWheel = createWheel(["AM", "PM"], "ampm");
+  
+function selectItemInWheel(wheel, target) {
+  const items = wheel.querySelectorAll(".wheel-item");
+  const isAMPM = target.toString().toUpperCase() === "AM" || target.toString().toUpperCase() === "PM";
+  const normalizedTarget = isAMPM
+    ? target.toString().trim().toUpperCase()
+    : target.toString().padStart(2, "0").trim().toUpperCase();
 
+  items.forEach(item => {
+    let itemText = item.textContent.trim().toUpperCase();
+    if (!isAMPM) itemText = itemText.padStart(2, "0");
+
+    if (itemText === normalizedTarget) {
+      item.classList.add("selected");
+      animateSelection(item);
+    } else {
+      item.classList.remove("selected");
+    }
+  });
+}
   const scrollToValue = (wheel, target) => {
     const items = wheel.querySelectorAll(".wheel-item");
 
@@ -1097,10 +1116,14 @@ if (input.value) {
     const ampm = ampmStr.toUpperCase();
 
     requestAnimationFrame(() => {
-      scrollToValue(hourWheel, hour);
-      scrollToValue(minuteWheel, minuteRounded);
-      scrollToValue(ampmWheel, ampm);
-    });
+  scrollToValue(hourWheel, hour);
+  scrollToValue(minuteWheel, minuteRounded);
+  scrollToValue(ampmWheel, ampm);
+
+  selectItemInWheel(hourWheel, hour);
+  selectItemInWheel(minuteWheel, minuteRounded);
+  selectItemInWheel(ampmWheel, ampm);
+});
   }
 }
 
