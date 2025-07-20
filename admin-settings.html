@@ -1076,15 +1076,18 @@ if (input.value) {
   if (match) {
     const [_, hourStr, minuteStr, ampmStr] = match;
     const hour = parseInt(hourStr, 10);
-    const minute = parseInt(minuteStr, 10);
+    const minute = roundToNearestFive(parseInt(minuteStr, 10)).toString().padStart(2, '0');
     const ampm = ampmStr.toUpperCase();
 
     const scrollToValue = (wheel, target) => {
   const items = wheel.querySelectorAll(".wheel-item");
   const paddedTarget = target.toString().padStart(2, "0");
   items.forEach((item, i) => {
-    if (item.textContent.trim() === paddedTarget || item.textContent.trim().toUpperCase() === target.toUpperCase()) {
-      wheel.scrollTo({ top: i * 50, behavior: "smooth" });
+    if (
+  item.textContent.trim() === paddedTarget ||
+  item.textContent.trim().toUpperCase() === target.toString().toUpperCase()
+) {
+    wheel.scrollTo({ top: i * 50, behavior: "smooth" });
     }
   });
 };
@@ -1148,7 +1151,9 @@ function animateSelection(item) {
     item.style.transform = "scale(1.2)";
   }, 100);
 }
-
+function roundToNearestFive(minute) {
+  return Math.round(minute / 5) * 5;
+}
 
 </script>
 </body>
