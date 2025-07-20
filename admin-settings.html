@@ -627,6 +627,7 @@ const blackoutForm = document.getElementById('blackout-form');
     
 const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const workingContainer = document.getElementById("working-days-container");
+const visibilityUpdaters = {}; // store updateVisibility functions by day
 
 weekdays.forEach(day => {
   const row = document.createElement("div");
@@ -655,7 +656,6 @@ weekdays.forEach(day => {
   const shift1 = row.querySelector('.shift-1');
   const shift2 = row.querySelector('.shift-2');
 
-  // ✅ Hide/Show logic
   const updateVisibility = () => {
     if (toggle.checked) {
       shiftType.style.display = "inline-block";
@@ -668,10 +668,12 @@ weekdays.forEach(day => {
     }
   };
 
+  // Store for later use
+  visibilityUpdaters[day] = updateVisibility;
+
   toggle.addEventListener('change', updateVisibility);
   shiftType.addEventListener('change', updateVisibility);
 
-  // Trigger default state (open by default)
   updateVisibility();
 });
 
@@ -735,24 +737,26 @@ weekdays.forEach(day => {
     });
 
     async function loadSchedule() {
-      const snap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
-      if (snap.exists()) {
-        const data = snap.data();
-        weekdays.forEach(day => {
-          const d = data[day];
-          if (!d) return;
-          document.querySelector(`.day-enable[data-day="${day}"]`).checked = d.enabled;
-          document.querySelector(`.shift-type-select[data-day="${day}"]`).value = d.shiftType || "single";
-          document.querySelector(`.start-1[data-day="${day}"]`).value = d.shift1?.start || "";
-          document.querySelector(`.end-1[data-day="${day}"]`).value = d.shift1?.end || "";
-          if (d.shiftType === "double" && d.shift2) {
-            document.querySelector(`.shift-2[data-day="${day}"]`).classList.add("visible");
-            document.querySelector(`.start-2[data-day="${day}"]`).value = d.shift2.start || "";
-            document.querySelector(`.end-2[data-day="${day}"]`).value = d.shift2.end || "";
-          }
-        });
+  const snap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
+  if (snap.exists()) {
+    const data = snap.data();
+    weekdays.forEach(day => {
+      const d = data[day];
+      if (!d) return;
+      document.querySelector(`.day-enable[data-day="${day}"]`).checked = d.enabled;
+      document.querySelector(`.shift-type-select[data-day="${day}"]`).value = d.shiftType || "single";
+      document.querySelector(`.start-1[data-day="${day}"]`).value = d.shift1?.start || "";
+      document.querySelector(`.end-1[data-day="${day}"]`).value = d.shift1?.end || "";
+      if (d.shiftType === "double" && d.shift2) {
+        document.querySelector(`.start-2[data-day="${day}"]`).value = d.shift2.start || "";
+        document.querySelector(`.end-2[data-day="${day}"]`).value = d.shift2.end || "";
       }
-    }
+
+      // 🧠 FORCE visibility update after setting values
+      if (visibilityUpdaters[day]) visibilityUpdaters[day]();
+    });
+  }
+}
 
     const holidayForm = document.getElementById("holiday-form");
     const holidayInput = document.getElementById("holiday-date");
