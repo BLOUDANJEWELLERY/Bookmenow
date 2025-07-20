@@ -167,67 +167,30 @@ label.day-name {
   box-sizing: border-box;
   cursor: pointer;
 }
-
 .time-picker-popup {
   position: absolute;
   z-index: 1000;
   background: white;
   border: 2px solid #007bff;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  display: flex;
-  gap: 1rem;
-  padding: 1rem;
-}
-
-.time-wheel {
-  height: 160px;
-  overflow-y: scroll;
-  width: 80px;
-  scroll-snap-type: y mandatory;
-  border-right: 1px solid #ccc;
-  padding-right: 0.5rem;
-}
-
-.time-wheel div {
-  scroll-snap-align: start;
-  padding: 0.5rem;
-  text-align: center;
-  font-size: 1.1rem;
-  color: #004080;
-  cursor: pointer;
-}
-
-.time-wheel div:hover {
-  background: #e0f0ff;
-}
-.time-picker-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-}
-
-.time-picker-popup {
-  position: absolute;
-  z-index: 1000;
-  background: white;
-  border: 2px solid #007bff;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
   display: flex;
   gap: 1rem;
   padding: 1rem;
   align-items: center;
+  overflow: hidden;
 }
 
 .time-wheel {
-  height: 150px;
-  overflow-y: auto;
+  position: relative;
   width: 80px;
+  height: 160px;
+  overflow-y: scroll;
   scroll-snap-type: y mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  position: relative;
+  perspective: 800px;
+  mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
 }
 
 .time-wheel::-webkit-scrollbar {
@@ -236,10 +199,22 @@ label.day-name {
 
 .time-wheel div {
   scroll-snap-align: center;
-  padding: 0.6rem;
   text-align: center;
   font-size: 1.2rem;
+  padding: 0.6rem 0;
   color: #004080;
+  transform-origin: center center;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: rotateX(0deg);
+  opacity: 0.4;
+}
+
+.time-wheel div.active {
+  font-size: 1.4rem;
+  color: #007bff;
+  font-weight: 600;
+  opacity: 1;
+  transform: rotateX(0deg) scale(1.1);
 }
 
 .time-picker-popup::after {
@@ -249,13 +224,17 @@ label.day-name {
   left: 0;
   width: 100%;
   height: 40px;
-  border-top: 2px dashed #007bff;
-  border-bottom: 2px dashed #007bff;
+  border-top: 2px solid #007bff;
+  border-bottom: 2px solid #007bff;
   transform: translateY(-50%);
   pointer-events: none;
 }
 
-
+.time-picker-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+}
 .ampm-toggle {
   display: flex;
   flex-direction: column;
@@ -1016,29 +995,20 @@ const createTimePicker = (input) => {
   const popup = document.createElement("div");
   popup.className = "time-picker-popup";
 
-  const hourWheel = document.createElement("div");
-  hourWheel.className = "time-wheel";
-  for (let i = 1; i <= 12; i++) {
-    const div = document.createElement("div");
-    div.textContent = i.toString().padStart(2, "0");
-    hourWheel.appendChild(div);
-  }
+  const createWheel = (values) => {
+    const wheel = document.createElement("div");
+    wheel.className = "time-wheel";
+    values.forEach(val => {
+      const div = document.createElement("div");
+      div.textContent = val.toString().padStart(2, "0");
+      wheel.appendChild(div);
+    });
+    return wheel;
+  };
 
-  const minuteWheel = document.createElement("div");
-  minuteWheel.className = "time-wheel";
-  for (let i = 0; i < 60; i += 5) {
-    const div = document.createElement("div");
-    div.textContent = i.toString().padStart(2, "0");
-    minuteWheel.appendChild(div);
-  }
-
-  const ampmWheel = document.createElement("div");
-  ampmWheel.className = "time-wheel";
-  ["AM", "PM"].forEach(p => {
-    const div = document.createElement("div");
-    div.textContent = p;
-    ampmWheel.appendChild(div);
-  });
+  const hourWheel = createWheel([...Array(12).keys()].map(i => i + 1));
+  const minuteWheel = createWheel([...Array(12).keys()].map(i => i * 5));
+  const ampmWheel = createWheel(["AM", "PM"]);
 
   popup.appendChild(hourWheel);
   popup.appendChild(minuteWheel);
@@ -1049,54 +1019,60 @@ const createTimePicker = (input) => {
   popup.style.top = `${rect.bottom + window.scrollY + 5}px`;
   popup.style.left = `${rect.left + window.scrollX}px`;
 
-  const getSelectedValue = (wheel) => {
-    const scrollMiddle = wheel.scrollTop + wheel.clientHeight / 2;
+  const highlightCenter = (wheel) => {
+    const center = wheel.scrollTop + wheel.clientHeight / 2;
     let closest = null;
     let minDiff = Infinity;
-    wheel.childNodes.forEach(child => {
-      const offset = child.offsetTop + child.offsetHeight / 2;
-      const diff = Math.abs(scrollMiddle - offset);
+    wheel.childNodes.forEach(div => {
+      const mid = div.offsetTop + div.offsetHeight / 2;
+      const diff = Math.abs(center - mid);
       if (diff < minDiff) {
         minDiff = diff;
-        closest = child.textContent;
+        closest = div;
       }
+      div.classList.remove("active");
     });
-    return closest;
+    if (closest) closest.classList.add("active");
   };
 
-  let updateTimer;
-  const updateInput = () => {
-    const hour = getSelectedValue(hourWheel);
-    const minute = getSelectedValue(minuteWheel);
-    const period = getSelectedValue(ampmWheel);
-    input.value = `${hour}:${minute} ${period}`;
+  const getValue = (wheel) => {
+    const active = wheel.querySelector(".active");
+    return active ? active.textContent : "00";
   };
 
   const debounce = (fn) => {
-    clearTimeout(updateTimer);
-    updateTimer = setTimeout(fn, 200);
+    clearTimeout(fn._t);
+    fn._t = setTimeout(fn, 200);
   };
 
   [hourWheel, minuteWheel, ampmWheel].forEach(wheel => {
-    wheel.addEventListener("scroll", () => debounce(updateInput));
+    wheel.addEventListener("scroll", () => {
+      debounce(() => {
+        highlightCenter(wheel);
+        const h = getValue(hourWheel);
+        const m = getValue(minuteWheel);
+        const p = getValue(ampmWheel);
+        input.value = `${h}:${m} ${p}`;
+      });
+    });
   });
 
-  // Auto-focus to current time
-  const scrollToValue = (wheel, value) => {
-    const el = Array.from(wheel.children).find(child => child.textContent === value);
+  // Auto-scroll to match existing value or default
+  const scrollTo = (wheel, value) => {
+    const el = Array.from(wheel.children).find(d => d.textContent === value);
     if (el) wheel.scrollTop = el.offsetTop - wheel.clientHeight / 2 + el.offsetHeight / 2;
+    highlightCenter(wheel);
   };
 
-  // Parse current value if exists
   const match = input.value.match(/(\d{2}):(\d{2})\s?(AM|PM)?/);
   if (match) {
-    scrollToValue(hourWheel, match[1]);
-    scrollToValue(minuteWheel, match[2]);
-    scrollToValue(ampmWheel, match[3] || "AM");
+    scrollTo(hourWheel, match[1]);
+    scrollTo(minuteWheel, match[2]);
+    scrollTo(ampmWheel, match[3] || "AM");
   } else {
-    scrollToValue(hourWheel, "08");
-    scrollToValue(minuteWheel, "00");
-    scrollToValue(ampmWheel, "AM");
+    scrollTo(hourWheel, "08");
+    scrollTo(minuteWheel, "00");
+    scrollTo(ampmWheel, "AM");
   }
 
   overlay.addEventListener("click", () => {
