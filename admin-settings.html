@@ -167,6 +167,34 @@ input[type="text"] {
   box-sizing: border-box;
   margin: 0;
   flex: 1 1 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+}
+
+/* Remove default time picker icon (Chrome/Safari) */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+  pointer-events: none;
+}
+
+/* Optional: Custom dropdown arrow look (SVG chevron) */
+input[type="time"] {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%230073c2" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2rem;
+  cursor: pointer;
+}
+
+/* Focus state */
+input[type="time"]:focus {
+  border-color: #0056b3;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
 /* Input focus */
