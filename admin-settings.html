@@ -218,7 +218,83 @@ label.day-name {
   color: white;
   cursor: pointer;
 }
+.time-picker-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+}
 
+.time-picker-popup {
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  border: 2px solid #007bff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  align-items: center;
+}
+
+.time-wheel {
+  height: 160px;
+  overflow-y: scroll;
+  width: 80px;
+  scroll-snap-type: y mandatory;
+  padding-right: 0.5rem;
+  position: relative;
+}
+
+.time-wheel div {
+  scroll-snap-align: center;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #004080;
+  cursor: pointer;
+}
+
+.time-wheel div:hover {
+  background: #e0f0ff;
+}
+
+.time-picker-center-band {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 2rem;
+  width: 100%;
+  transform: translateY(-50%);
+  border-top: 2px dashed #007bff;
+  border-bottom: 2px dashed #007bff;
+  pointer-events: none;
+}
+
+.ampm-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1rem;
+  color: #004080;
+  gap: 0.5rem;
+}
+
+.ampm-toggle div {
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.ampm-toggle div:hover {
+  background-color: #e0f0ff;
+}
+
+.ampm-toggle .selected {
+  background-color: #007bff;
+  color: white;
+}
 .shift-type-select {
   padding: 0.35rem 1.3rem 0.35rem 0.6rem; /* more right padding */
   font-size: 0.8rem;
@@ -946,10 +1022,8 @@ blackoutForm.addEventListener('submit', async e => {
     });
     
 const createTimePicker = (input) => {
-  // Remove any previous
   document.querySelectorAll(".time-picker-popup, .time-picker-overlay").forEach(el => el.remove());
 
-  // Overlay to close on click outside
   const overlay = document.createElement("div");
   overlay.className = "time-picker-overlay";
   document.body.appendChild(overlay);
@@ -959,10 +1033,10 @@ const createTimePicker = (input) => {
 
   const hourWheel = document.createElement("div");
   hourWheel.className = "time-wheel";
-  for (let i = 0; i < 24; i++) {
+  for (let i = 1; i <= 12; i++) {
     const hour = document.createElement("div");
     hour.textContent = i.toString().padStart(2, "0");
-    hour.dataset.value = hour.textContent;
+    hour.dataset.value = i;
     hourWheel.appendChild(hour);
   }
 
@@ -975,8 +1049,25 @@ const createTimePicker = (input) => {
     minuteWheel.appendChild(minute);
   }
 
+  const ampmToggle = document.createElement("div");
+  ampmToggle.className = "ampm-toggle";
+  const amDiv = document.createElement("div");
+  const pmDiv = document.createElement("div");
+  amDiv.textContent = "AM";
+  pmDiv.textContent = "PM";
+  amDiv.classList.add("selected");
+  ampmToggle.append(amDiv, pmDiv);
+
+  // Center bands
+  const centerBand1 = document.createElement("div");
+  centerBand1.className = "time-picker-center-band";
+  const centerBand2 = centerBand1.cloneNode();
+  hourWheel.appendChild(centerBand1);
+  minuteWheel.appendChild(centerBand2);
+
   popup.appendChild(hourWheel);
   popup.appendChild(minuteWheel);
+  popup.appendChild(ampmToggle);
   document.body.appendChild(popup);
 
   // Position the popup
@@ -986,26 +1077,39 @@ const createTimePicker = (input) => {
 
   let selectedHour = null;
   let selectedMinute = null;
+  let selectedPeriod = "AM";
+
+  amDiv.addEventListener("click", () => {
+    selectedPeriod = "AM";
+    amDiv.classList.add("selected");
+    pmDiv.classList.remove("selected");
+  });
+
+  pmDiv.addEventListener("click", () => {
+    selectedPeriod = "PM";
+    pmDiv.classList.add("selected");
+    amDiv.classList.remove("selected");
+  });
+
+  const trySetTime = () => {
+    if (selectedHour !== null && selectedMinute !== null) {
+      input.value = `${selectedHour}:${selectedMinute} ${selectedPeriod}`;
+      document.body.removeChild(popup);
+      document.body.removeChild(overlay);
+    }
+  };
 
   hourWheel.addEventListener("click", (e) => {
     if (e.target.dataset.value) {
-      selectedHour = e.target.dataset.value;
-      if (selectedMinute !== null) {
-        input.value = `${selectedHour}:${selectedMinute}`;
-        document.body.removeChild(popup);
-        document.body.removeChild(overlay);
-      }
+      selectedHour = e.target.dataset.value.padStart(2, "0");
+      trySetTime();
     }
   });
 
   minuteWheel.addEventListener("click", (e) => {
     if (e.target.dataset.value) {
       selectedMinute = e.target.dataset.value;
-      if (selectedHour !== null) {
-        input.value = `${selectedHour}:${selectedMinute}`;
-        document.body.removeChild(popup);
-        document.body.removeChild(overlay);
-      }
+      trySetTime();
     }
   });
 
