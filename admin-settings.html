@@ -659,12 +659,12 @@ weekdays.forEach(day => {
       <option value="double">Double Shift</option>
     </select>
     <div class="shift-1" data-day="${day}">
-      <input type="time" class="time-input start-1" data-day="${day}" />
-      <input type="time" class="time-input end-1" data-day="${day}" />
-    </div>
+        <input type="text" class="custom-time-picker start-1" data-day="${day}" />
+  <input type="text" class="custom-time-picker end-1" data-day="${day}" />
+      </div>
     <div class="shift-2" data-day="${day}">
-      <input type="time" class="time-input start-2" data-day="${day}" />
-      <input type="time" class="time-input end-2" data-day="${day}" />
+      <input type="text" class="custom-time-picker start-2" data-day="${day}" />
+      <input type="text" class="custom-time-picker end-2" data-day="${day}" />
     </div>
   `;
 
