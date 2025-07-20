@@ -204,7 +204,7 @@ label.day-name {
   padding: 0.6rem 0;
   color: #004080;
   transform-origin: center center;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: none;
   transform: rotateX(0deg);
   opacity: 0.4;
 }
@@ -216,7 +216,9 @@ label.day-name {
   opacity: 1;
   transform: rotateX(0deg) scale(1.1);
 }
-
+.time-wheel div:not(.active) {
+  transition: transform 0.1s ease, opacity 0.1s ease;
+}
 .time-picker-popup::after {
   content: "";
   position: absolute;
@@ -1045,17 +1047,19 @@ const createTimePicker = (input) => {
     fn._t = setTimeout(fn, 200);
   };
 
-  [hourWheel, minuteWheel, ampmWheel].forEach(wheel => {
-    wheel.addEventListener("scroll", () => {
-      debounce(() => {
-        highlightCenter(wheel);
-        const h = getValue(hourWheel);
-        const m = getValue(minuteWheel);
-        const p = getValue(ampmWheel);
-        input.value = `${h}:${m} ${p}`;
-      });
+  const wheels = [hourWheel, minuteWheel, ampmWheel];
+
+wheels.forEach(wheel => {
+  wheel.addEventListener("scroll", () => {
+    debounce(() => {
+      wheels.forEach(w => highlightCenter(w)); // Highlight all
+      const h = getValue(hourWheel);
+      const m = getValue(minuteWheel);
+      const p = getValue(ampmWheel);
+      input.value = `${h}:${m} ${p}`;
     });
   });
+});
 
   // Auto-scroll to match existing value or default
   const scrollTo = (wheel, value) => {
@@ -1076,9 +1080,14 @@ const createTimePicker = (input) => {
   }
 
   overlay.addEventListener("click", () => {
-    document.body.removeChild(popup);
-    document.body.removeChild(overlay);
-  });
+  wheels.forEach(w => highlightCenter(w)); // Force highlight all
+  const h = getValue(hourWheel);
+  const m = getValue(minuteWheel);
+  const p = getValue(ampmWheel);
+  input.value = `${h}:${m} ${p}`;
+  document.body.removeChild(popup);
+  document.body.removeChild(overlay);
+});
 };
 </script>
 </body>
