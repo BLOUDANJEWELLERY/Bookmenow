@@ -658,17 +658,21 @@ weekdays.forEach(day => {
 
   const updateVisibility = () => {
     if (toggle.checked) {
-      shiftType.style.display = "flex";
-      shift1.style.display = "flex";
-      shift2.style.display = shiftType.value === "double" ? "flex" : "none";
+      shiftType.classList.add("visible");
+      shift1.classList.add("visible");
+      if (shiftType.value === "double") {
+        shift2.classList.add("visible");
+      } else {
+        shift2.classList.remove("visible");
+      }
     } else {
-      shiftType.style.display = "none";
-      shift1.style.display = "none";
-      shift2.style.display = "none";
+      shiftType.classList.remove("visible");
+      shift1.classList.remove("visible");
+      shift2.classList.remove("visible");
     }
   };
 
-  // Store for later use
+  // Store for external reference
   visibilityUpdaters[day] = updateVisibility;
 
   toggle.addEventListener('change', updateVisibility);
