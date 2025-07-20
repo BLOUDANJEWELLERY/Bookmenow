@@ -696,6 +696,12 @@ weekdays.forEach(day => {
   const shift1 = row.querySelector('.shift-1');
   const shift2 = row.querySelector('.shift-2');
 
+  // Attach time picker to all new time fields for this day
+  row.querySelectorAll('.custom-time-picker').forEach(input => {
+    input.setAttribute("readonly", true); // Optional: block keyboard
+    input.addEventListener("click", () => createTimePicker(input));
+  });
+  
   const updateVisibility = () => {
     if (toggle.checked) {
       shiftType.style.display = "flex";
@@ -1008,13 +1014,6 @@ const createTimePicker = (input) => {
     document.body.removeChild(overlay);
   });
 };
-
-// Attach to all relevant inputs
-document.addEventListener("click", e => {
-  if (e.target.classList.contains("custom-time-picker")) {
-    createTimePicker(e.target);
-  }
-});
 </script>
 </body>
 </html>
