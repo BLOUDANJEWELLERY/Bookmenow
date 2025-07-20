@@ -1080,13 +1080,14 @@ if (input.value) {
     const ampm = ampmStr.toUpperCase();
 
     const scrollToValue = (wheel, target) => {
-      const items = wheel.querySelectorAll(".wheel-item");
-      items.forEach((item, i) => {
-        if (item.textContent == target.toString().padStart(2, "0")) {
-          wheel.scrollTo({ top: i * 50, behavior: "smooth" });
-        }
-      });
-    };
+  const items = wheel.querySelectorAll(".wheel-item");
+  const paddedTarget = target.toString().padStart(2, "0");
+  items.forEach((item, i) => {
+    if (item.textContent.trim() === paddedTarget || item.textContent.trim().toUpperCase() === target.toUpperCase()) {
+      wheel.scrollTo({ top: i * 50, behavior: "smooth" });
+    }
+  });
+};
 
     scrollToValue(hourWheel, hour);
     scrollToValue(minuteWheel, minuteStr);
