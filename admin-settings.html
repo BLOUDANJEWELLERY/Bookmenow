@@ -193,6 +193,8 @@ label.day-name {
   width: 60px;
   height: 150px;
   overflow-y: scroll;
+  overflow-x: hidden; /* Lock horizontal scroll */
+  touch-action: pan-y; /* Restrict to vertical swipe on touch devices */
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -214,22 +216,24 @@ label.day-name {
   font-size: 1rem;
   color: #666;
   scroll-snap-align: center;
-  transition: transform 0.15s ease, color 0.15s ease, opacity 0.15s ease;
-  transform: rotateX(25deg);
-  opacity: 0.4;
+  transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+  transform: rotateX(25deg) translateZ(0);
+  opacity: 0.3;
   transform-origin: center;
-  backface-visibility: hidden;
   user-select: none;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .wheel-item.selected {
   color: #007bff;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   opacity: 1;
-  transform: rotateX(0deg) scale(1.15);
+  transform: rotateX(0deg) scale(1.2);
+  text-shadow: 0 0 4px rgba(0,123,255,0.3);
   z-index: 2;
-  animation: pop 0.15s ease;
+  animation: pop 0.25s ease-out;
 }
 
 @keyframes pop {
@@ -273,13 +277,13 @@ label.day-name {
   right: 0;
   height: 50px;
   margin-top: -25px;
-  background: linear-gradient(to bottom, #e0f0ff, #ffffff 60%, #e0f0ff);
-  border-top: 1px solid #b0d4f1;
-  border-bottom: 1px solid #b0d4f1;
-  box-shadow: inset 0 0 8px rgba(0, 123, 255, 0.2);
-  z-index: 2;
+  background: radial-gradient(ellipse at center, #ffffff 0%, #dceeff 100%);
+  border-top: 1px solid #c0e0ff;
+  border-bottom: 1px solid #c0e0ff;
+  box-shadow: inset 0 0 10px rgba(0, 123, 255, 0.25);
+  border-radius: 8px;
   pointer-events: none;
-  border-radius: 6px;
+  z-index: 10;
 }
 
 
@@ -1090,7 +1094,23 @@ wheel.appendChild(highlight);
     overlay.remove();
   });
 }
+function animateSelection(item) {
+  item.style.transform = "scale(1.35)";
+  setTimeout(() => {
+    item.style.transform = "scale(1.2)";
+  }, 100);
+}
 
+function smoothSnap(wheel) {
+  const index = Math.round(wheel.scrollTop / 50);
+  const items = wheel.querySelectorAll(".wheel-item");
+  items.forEach((item, i) => {
+    const selected = i === index;
+    item.classList.toggle("selected", selected);
+    if (selected) animateSelection(item);
+  });
+  wheel.scrollTo({ top: index * 50, behavior: "smooth" });
+}
 
 
 </script>
