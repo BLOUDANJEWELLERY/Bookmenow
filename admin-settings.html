@@ -1087,20 +1087,22 @@ function createTimePicker(input) {
     });
   };
 
-  // Parse input value and scroll to its time
-  if (input.value) {
-    const match = input.value.match(/(\d{1,2}):(\d{2})\s?(AM|PM)/i);
-    if (match) {
-      const [_, hourStr, minuteStr, ampmStr] = match;
-      const hour = parseInt(hourStr, 10);
-      const minuteRounded = roundToNearestFive(parseInt(minuteStr, 10)).toString().padStart(2, '0');
-      const ampm = ampmStr.toUpperCase();
+  // Parse input value and scroll to its time after rendering
+if (input.value) {
+  const match = input.value.match(/(\d{1,2}):(\d{2})\s?(AM|PM)/i);
+  if (match) {
+    const [_, hourStr, minuteStr, ampmStr] = match;
+    const hour = parseInt(hourStr, 10);
+    const minuteRounded = roundToNearestFive(parseInt(minuteStr, 10)).toString().padStart(2, '0');
+    const ampm = ampmStr.toUpperCase();
 
+    requestAnimationFrame(() => {
       scrollToValue(hourWheel, hour);
       scrollToValue(minuteWheel, minuteRounded);
       scrollToValue(ampmWheel, ampm);
-    }
+    });
   }
+}
 
   wheelsContainer.append(hourWheel, minuteWheel, ampmWheel);
   document.body.append(popup, overlay);
