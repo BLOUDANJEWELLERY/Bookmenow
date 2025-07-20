@@ -1076,9 +1076,13 @@ if (input.value) {
   if (match) {
     const [_, hourStr, minuteStr, ampmStr] = match;
     const hour = parseInt(hourStr, 10);
-    const minute = roundToNearestFive(parseInt(minuteStr, 10)).toString().padStart(2, '0');
+        const minuteRounded = roundToNearestFive(parseInt(minuteStr, 10)).toString().padStart(2, '0');
     const ampm = ampmStr.toUpperCase();
 
+    scrollToValue(hourWheel, hour);
+    scrollToValue(minuteWheel, minuteRounded);  // ✅ correct usage
+    scrollToValue(ampmWheel, ampm);
+    
 const scrollToValue = (wheel, target) => {
   const items = wheel.querySelectorAll(".wheel-item");
 
