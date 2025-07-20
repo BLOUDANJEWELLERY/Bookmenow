@@ -242,12 +242,14 @@ label.day-name {
 }
 
 .wheel-item.selected {
-  color: #007bff;
+  background: linear-gradient(to bottom, #007bff, #00c6ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-weight: bold;
   font-size: 1.3rem;
   opacity: 1;
   transform: rotateX(0deg) scale(1.2);
-  text-shadow: 0 0 4px rgba(0,123,255,0.3);
+  text-shadow: 0 0 4px rgba(0, 123, 255, 0.15);
   z-index: 2;
   animation: pop 0.25s ease-out;
 }
