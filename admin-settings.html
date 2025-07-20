@@ -1082,7 +1082,7 @@ if (input.value) {
     const scrollToValue = (wheel, target) => {
       const items = wheel.querySelectorAll(".wheel-item");
       items.forEach((item, i) => {
-        if (item.textContent === target.toString().padStart(2, "0") || item.textContent === target) {
+        if (item.textContent == target.toString().padStart(2, "0")) {
           wheel.scrollTop = i * 50;
         }
       });
