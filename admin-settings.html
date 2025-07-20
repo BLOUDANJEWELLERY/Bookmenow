@@ -217,7 +217,7 @@ label.day-name {
   color: #666;
   scroll-snap-align: center;
   transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
-  transform: rotateX(25deg) translateZ(0);
+  transform: rotateX(25deg) translateZ(-20px);
   opacity: 0.3;
   transform-origin: center;
   user-select: none;
@@ -230,7 +230,7 @@ label.day-name {
   font-weight: bold;
   font-size: 1.3rem;
   opacity: 1;
-  transform: rotateX(0deg) scale(1.2);
+  transform: rotateX(0deg) translateZ(0) scale(1.2);
   text-shadow: 0 0 4px rgba(0,123,255,0.3);
   z-index: 2;
   animation: pop 0.25s ease-out;
@@ -1039,10 +1039,10 @@ function createTimePicker(input) {
     const wheel = document.createElement("div");
     wheel.className = `time-wheel ${className}`;
     wheel.appendChild(document.createElement("div")).className = "spacer";
-
+    
 const highlight = document.createElement("div");
 highlight.className = "highlight-bar";
-wheel.appendChild(highlight);
+popup.append(wheelsContainer, highlight);
 
     values.forEach(val => {
       const item = document.createElement("div");
