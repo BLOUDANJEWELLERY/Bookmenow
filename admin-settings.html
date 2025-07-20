@@ -983,15 +983,19 @@ document.querySelectorAll('.custom-time-picker').forEach(input => {
   input.addEventListener('focus', () => createTimePicker(input));
 });
 
-document.querySelectorAll('.custom-time-picker').forEach(input => {
-  input.addEventListener('click', () => createTimePicker(input));
-});
-
 function createTimePicker(input) {
   document.querySelectorAll(".time-picker-popup, .time-picker-overlay").forEach(el => el.remove());
 
   const overlay = document.createElement("div");
   overlay.className = "time-picker-overlay";
+  overlay.onclick = () => {
+    const hour = getSelected(hourWheel);
+    const minute = getSelected(minuteWheel);
+    const ampm = getSelected(ampmWheel);
+    input.value = `${hour}:${minute} ${ampm}`;
+    popup.remove();
+    overlay.remove();
+  };
   document.body.appendChild(overlay);
 
   const popup = document.createElement("div");
@@ -1013,34 +1017,24 @@ function createTimePicker(input) {
     return wheel;
   };
 
+  const getSelected = (wheel) => {
+    const scroll = wheel.scrollTop;
+    const index = Math.round(scroll / 50); // 50px height per item
+    return wheel.querySelectorAll(".wheel-item")[index - 1]?.textContent || "";
+  };
+
   const hourWheel = createWheel([...Array(12).keys()].map(i => i + 1), "hour");
   const minuteWheel = createWheel([...Array(12).keys()].map(i => i * 5), "minute");
   const ampmWheel = createWheel(["AM", "PM"], "ampm");
 
-  const wheels = [hourWheel, minuteWheel, ampmWheel];
-
-  const highlightSelected = (wheel) => {
-    const items = wheel.querySelectorAll(".wheel-item");
-    const scroll = wheel.scrollTop;
-    const index = Math.round(scroll / 50);
-    items.forEach((item, i) => {
-      item.classList.toggle("selected", i === index - 1);
-    });
-  };
-
-  wheels.forEach(wheel => {
-    let timeout;
-
+  [hourWheel, minuteWheel, ampmWheel].forEach(wheel => {
     wheel.addEventListener("scroll", () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        const index = Math.round(wheel.scrollTop / 50);
-        wheel.scrollTo({ top: index * 50, behavior: "smooth" });
-        highlightSelected(wheel);
-      }, 100);
+      const scroll = wheel.scrollTop;
+      const index = Math.round(scroll / 50);
+      wheel.scrollTo({ top: index * 50, behavior: "smooth" });
     });
 
-    // Mouse scroll support
+    // Mouse wheel support
     wheel.addEventListener("wheel", e => {
       e.preventDefault();
       wheel.scrollTop += e.deltaY;
@@ -1055,45 +1049,12 @@ function createTimePicker(input) {
   const rect = input.getBoundingClientRect();
   popup.style.top = `${rect.bottom + window.scrollY + 5}px`;
   popup.style.left = `${rect.left + window.scrollX}px`;
-
-  const getSelected = (wheel) => {
-    const scroll = wheel.scrollTop;
-    const index = Math.round(scroll / 50);
-    return wheel.querySelectorAll(".wheel-item")[index - 1]?.textContent || "";
-  };
-
-  const setScrollToValue = (wheel, value) => {
-    const items = wheel.querySelectorAll(".wheel-item");
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].textContent === value) {
-        wheel.scrollTop = (i + 1) * 50; // +1 because of spacer
-        highlightSelected(wheel);
-        break;
-      }
-    }
-  };
-
-  const match = input.value.match(/(\d+):(\d+)\s?(AM|PM)?/);
-  if (match) {
-    setScrollToValue(hourWheel, match[1].padStart(2, "0"));
-    setScrollToValue(minuteWheel, match[2].padStart(2, "0"));
-    setScrollToValue(ampmWheel, (match[3] || "AM"));
-  } else {
-    setScrollToValue(hourWheel, "08");
-    setScrollToValue(minuteWheel, "00");
-    setScrollToValue(ampmWheel, "AM");
-  }
-
-  overlay.onclick = () => {
-    const hour = getSelected(hourWheel);
-    const minute = getSelected(minuteWheel);
-    const ampm = getSelected(ampmWheel);
-    input.value = `${hour}:${minute} ${ampm}`;
-    popup.remove();
-    overlay.remove();
-  };
 }
 
+// Bind to input
+document.querySelectorAll(".custom-time-picker").forEach(input => {
+  input.addEventListener("click", () => createTimePicker(input));
+});
 
 
 </script>
