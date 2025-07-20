@@ -624,7 +624,6 @@ import {
 const blackoutForm = document.getElementById('blackout-form');
     const blackoutList = document.getElementById('blackout-list');
 
-    
 const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const workingContainer = document.getElementById("working-days-container");
 const visibilityUpdaters = {}; // store updateVisibility functions by day
@@ -658,21 +657,22 @@ weekdays.forEach(day => {
 
   const updateVisibility = () => {
     if (toggle.checked) {
-      shiftType.classList.add("visible");
-      shift1.classList.add("visible");
+      shiftType.style.display = "flex";
+      shift1.style.display = "flex";
+
       if (shiftType.value === "double") {
         shift2.classList.add("visible");
       } else {
         shift2.classList.remove("visible");
       }
     } else {
-      shiftType.classList.remove("visible");
-      shift1.classList.remove("visible");
+      shiftType.style.display = "none";
+      shift1.style.display = "none";
       shift2.classList.remove("visible");
     }
   };
 
-  // Store for external reference
+  // Store for later use
   visibilityUpdaters[day] = updateVisibility;
 
   toggle.addEventListener('change', updateVisibility);
