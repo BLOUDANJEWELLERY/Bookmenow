@@ -1096,8 +1096,7 @@ wheelsContainer.append(hourWheel, minuteWheel, ampmWheel);
 const highlight = document.createElement("div");
 highlight.className = "highlight-bar";
 
-popup.append(wheelsContainer, highlight);
-  document.body.append(popup, overlay);
+document.body.append(popup, overlay);
 
   const rect = input.getBoundingClientRect();
   popup.style.top = `${rect.bottom + window.scrollY + 6}px`;
