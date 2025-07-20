@@ -628,10 +628,9 @@ const blackoutForm = document.getElementById('blackout-form');
     const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const workingContainer = document.getElementById("working-days-container");
 
-// Fetch data from Firestore first
-const db = firebase.firestore();
-db.collection("settings").doc("workingHours").get().then(doc => {
-  const data = doc.data();
+// Fetch working hours from Firestore first
+firebase.firestore().collection("settings").doc("workingHours").get().then(doc => {
+  const data = doc.data() || {};
 
   weekdays.forEach(day => {
     const row = document.createElement("div");
@@ -652,25 +651,30 @@ db.collection("settings").doc("workingHours").get().then(doc => {
         <input type="time" class="time-input end-2" data-day="${day}" />
       </div>
     `;
+
     workingContainer.appendChild(row);
 
-    // Access all elements
     const toggle = row.querySelector('.day-enable');
     const shiftType = row.querySelector('.shift-type-select');
     const shift1 = row.querySelector('.shift-1');
     const shift2 = row.querySelector('.shift-2');
 
-    // Load Firestore data
+    const start1 = row.querySelector('.start-1');
+    const end1 = row.querySelector('.end-1');
+    const start2 = row.querySelector('.start-2');
+    const end2 = row.querySelector('.end-2');
+
+    // 🔁 Load from Firestore if available
     const dayData = data[day] || {};
     toggle.checked = !!dayData.enabled;
     shiftType.value = dayData.shiftType || "single";
 
-    // Optional: prefill time inputs
-    row.querySelector('.start-1').value = dayData.start1 || "";
-    row.querySelector('.end-1').value = dayData.end1 || "";
-    row.querySelector('.start-2').value = dayData.start2 || "";
-    row.querySelector('.end-2').value = dayData.end2 || "";
+    start1.value = dayData.start1 || "";
+    end1.value = dayData.end1 || "";
+    start2.value = dayData.start2 || "";
+    end2.value = dayData.end2 || "";
 
+    // ✅ Visibility logic
     const updateVisibility = () => {
       if (toggle.checked) {
         shiftType.style.display = "inline-block";
@@ -686,7 +690,7 @@ db.collection("settings").doc("workingHours").get().then(doc => {
     toggle.addEventListener('change', updateVisibility);
     shiftType.addEventListener('change', updateVisibility);
 
-    // Apply visibility based on loaded data
+    // 🔥 Trigger correct state immediately after setting values
     updateVisibility();
   });
 });
