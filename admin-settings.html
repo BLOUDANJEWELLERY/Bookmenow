@@ -155,48 +155,54 @@ label.day-name {
   content: 'Open';
   left: 25px;
 }
-/* Inputs: time, number, text */
-input[type="time"],
-input[type="number"],
-input[type="text"] {
-  padding: 0.5rem 0.8rem;
-  font-size: 1rem;
+.time-picker-popup {
+  position: absolute;
+  background: #ffffff;
   border: 2px solid #007bff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.15);
+  display: none;
+  flex-direction: row;
+  z-index: 9999;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.time-wheel {
+  max-height: 150px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  text-align: center;
+  border: 1px solid #007bff;
   border-radius: 8px;
+  width: 60px;
   background: #eaf6ff;
   color: #003366;
-  width: 100%;
-  box-sizing: border-box;
-  margin: 0;
-  flex: 1 1 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  position: relative;
 }
 
-/* Remove default time picker icon (Chrome/Safari) */
-input[type="time"]::-webkit-calendar-picker-indicator {
-  opacity: 0;
+.time-wheel::-webkit-scrollbar {
   display: none;
-  pointer-events: none;
 }
 
-/* Optional: Custom dropdown arrow look (SVG chevron) */
-input[type="time"] {
-  background-image: url('data:image/svg+xml;utf8,<svg fill="%230073c2" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 1rem;
-  padding-right: 2rem;
+.time-wheel div {
+  padding: 0.5rem 0;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
-/* Focus state */
-input[type="time"]:focus {
-  border-color: #0056b3;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+.time-wheel div:hover {
+  background: #007bff;
+  color: white;
+}
+
+.time-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9998;
 }
 .shift-type-select {
   padding: 0.35rem 1.3rem 0.35rem 0.6rem; /* more right padding */
@@ -918,7 +924,82 @@ blackoutForm.addEventListener('submit', async e => {
       }
     });
     
+const createTimePicker = (input) => {
+  // Remove any previous
+  document.querySelectorAll(".time-picker-popup, .time-picker-overlay").forEach(el => el.remove());
 
+  // Overlay to close on click outside
+  const overlay = document.createElement("div");
+  overlay.className = "time-picker-overlay";
+  document.body.appendChild(overlay);
+
+  const popup = document.createElement("div");
+  popup.className = "time-picker-popup";
+
+  const hourWheel = document.createElement("div");
+  hourWheel.className = "time-wheel";
+  for (let i = 0; i < 24; i++) {
+    const hour = document.createElement("div");
+    hour.textContent = i.toString().padStart(2, "0");
+    hour.dataset.value = hour.textContent;
+    hourWheel.appendChild(hour);
+  }
+
+  const minuteWheel = document.createElement("div");
+  minuteWheel.className = "time-wheel";
+  for (let i = 0; i < 60; i += 5) {
+    const minute = document.createElement("div");
+    minute.textContent = i.toString().padStart(2, "0");
+    minute.dataset.value = minute.textContent;
+    minuteWheel.appendChild(minute);
+  }
+
+  popup.appendChild(hourWheel);
+  popup.appendChild(minuteWheel);
+  document.body.appendChild(popup);
+
+  // Position the popup
+  const rect = input.getBoundingClientRect();
+  popup.style.top = `${rect.bottom + window.scrollY + 5}px`;
+  popup.style.left = `${rect.left + window.scrollX}px`;
+
+  let selectedHour = null;
+  let selectedMinute = null;
+
+  hourWheel.addEventListener("click", (e) => {
+    if (e.target.dataset.value) {
+      selectedHour = e.target.dataset.value;
+      if (selectedMinute !== null) {
+        input.value = `${selectedHour}:${selectedMinute}`;
+        document.body.removeChild(popup);
+        document.body.removeChild(overlay);
+      }
+    }
+  });
+
+  minuteWheel.addEventListener("click", (e) => {
+    if (e.target.dataset.value) {
+      selectedMinute = e.target.dataset.value;
+      if (selectedHour !== null) {
+        input.value = `${selectedHour}:${selectedMinute}`;
+        document.body.removeChild(popup);
+        document.body.removeChild(overlay);
+      }
+    }
+  });
+
+  overlay.addEventListener("click", () => {
+    document.body.removeChild(popup);
+    document.body.removeChild(overlay);
+  });
+};
+
+// Attach to all relevant inputs
+document.addEventListener("click", e => {
+  if (e.target.classList.contains("custom-time-picker")) {
+    createTimePicker(e.target);
+  }
+});
 </script>
 </body>
 </html>
