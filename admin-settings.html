@@ -198,6 +198,9 @@ label.day-name {
   -ms-overflow-style: none;
   perspective: 1000px;
   position: relative;
+  text-align: center;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .time-wheel::-webkit-scrollbar {
@@ -207,13 +210,16 @@ label.day-name {
 .wheel-item {
   height: 50px;
   line-height: 50px;
-  text-align: center;
   font-size: 1.1rem;
   color: #444;
   scroll-snap-align: center;
   transform-style: preserve-3d;
-  transform: rotateX(0deg);
   transition: all 0.15s ease;
+  white-space: nowrap;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  user-select: none;
 }
 
 .wheel-item.selected {
@@ -249,6 +255,7 @@ label.day-name {
   bottom: 0;
   background: linear-gradient(to top, #fff 0%, transparent 100%);
 }
+
 
 .shift-type-select {
   padding: 0.35rem 1.3rem 0.35rem 0.6rem; /* more right padding */
