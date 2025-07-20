@@ -625,74 +625,54 @@ const blackoutForm = document.getElementById('blackout-form');
     const blackoutList = document.getElementById('blackout-list');
 
     
-    const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const workingContainer = document.getElementById("working-days-container");
 
-// Fetch working hours from Firestore first
-firebase.firestore().collection("settings").doc("workingHours").get().then(doc => {
-  const data = doc.data() || {};
+weekdays.forEach(day => {
+  const row = document.createElement("div");
+  row.className = "day-row";
+  row.innerHTML = `
+    <label class="day-name">${day}</label>
+    <input type="checkbox" class="day-enable" data-day="${day}" checked />
+    <select class="shift-type-select" data-day="${day}">
+      <option value="single">Single Shift</option>
+      <option value="double">Double Shift</option>
+    </select>
+    <div class="shift-1" data-day="${day}">
+      <input type="time" class="time-input start-1" data-day="${day}" />
+      <input type="time" class="time-input end-1" data-day="${day}" />
+    </div>
+    <div class="shift-2" data-day="${day}">
+      <input type="time" class="time-input start-2" data-day="${day}" />
+      <input type="time" class="time-input end-2" data-day="${day}" />
+    </div>
+  `;
 
-  weekdays.forEach(day => {
-    const row = document.createElement("div");
-    row.className = "day-row";
-    row.innerHTML = `
-      <label class="day-name">${day}</label>
-      <input type="checkbox" class="day-enable" data-day="${day}" />
-      <select class="shift-type-select" data-day="${day}">
-        <option value="single">Single Shift</option>
-        <option value="double">Double Shift</option>
-      </select>
-      <div class="shift-1" data-day="${day}">
-        <input type="time" class="time-input start-1" data-day="${day}" />
-        <input type="time" class="time-input end-1" data-day="${day}" />
-      </div>
-      <div class="shift-2" data-day="${day}">
-        <input type="time" class="time-input start-2" data-day="${day}" />
-        <input type="time" class="time-input end-2" data-day="${day}" />
-      </div>
-    `;
+  workingContainer.appendChild(row);
 
-    workingContainer.appendChild(row);
+  const toggle = row.querySelector('.day-enable');
+  const shiftType = row.querySelector('.shift-type-select');
+  const shift1 = row.querySelector('.shift-1');
+  const shift2 = row.querySelector('.shift-2');
 
-    const toggle = row.querySelector('.day-enable');
-    const shiftType = row.querySelector('.shift-type-select');
-    const shift1 = row.querySelector('.shift-1');
-    const shift2 = row.querySelector('.shift-2');
+  // ✅ Hide/Show logic
+  const updateVisibility = () => {
+    if (toggle.checked) {
+      shiftType.style.display = "inline-block";
+      shift1.style.display = "flex";
+      shift2.style.display = shiftType.value === "double" ? "flex" : "none";
+    } else {
+      shiftType.style.display = "none";
+      shift1.style.display = "none";
+      shift2.style.display = "none";
+    }
+  };
 
-    const start1 = row.querySelector('.start-1');
-    const end1 = row.querySelector('.end-1');
-    const start2 = row.querySelector('.start-2');
-    const end2 = row.querySelector('.end-2');
+  toggle.addEventListener('change', updateVisibility);
+  shiftType.addEventListener('change', updateVisibility);
 
-    // 🔁 Load from Firestore if available
-    const dayData = data[day] || {};
-    toggle.checked = !!dayData.enabled;
-    shiftType.value = dayData.shiftType || "single";
-
-    start1.value = dayData.start1 || "";
-    end1.value = dayData.end1 || "";
-    start2.value = dayData.start2 || "";
-    end2.value = dayData.end2 || "";
-
-    // ✅ Visibility logic
-    const updateVisibility = () => {
-      if (toggle.checked) {
-        shiftType.style.display = "inline-block";
-        shift1.style.display = "flex";
-        shift2.style.display = shiftType.value === "double" ? "flex" : "none";
-      } else {
-        shiftType.style.display = "none";
-        shift1.style.display = "none";
-        shift2.style.display = "none";
-      }
-    };
-
-    toggle.addEventListener('change', updateVisibility);
-    shiftType.addEventListener('change', updateVisibility);
-
-    // 🔥 Trigger correct state immediately after setting values
-    updateVisibility();
-  });
+  // Trigger default state (open by default)
+  updateVisibility();
 });
 
     document.addEventListener("change", e => {
