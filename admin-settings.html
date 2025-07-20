@@ -217,7 +217,7 @@ label.day-name {
   color: #666;
   scroll-snap-align: center;
   transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
-  transform: rotateX(25deg) translateZ(-20px);
+  transform: rotateX(25deg) translateZ(0);
   opacity: 0.3;
   transform-origin: center;
   user-select: none;
@@ -230,7 +230,7 @@ label.day-name {
   font-weight: bold;
   font-size: 1.3rem;
   opacity: 1;
-  transform: rotateX(0deg) translateZ(0) scale(1.2);
+  transform: rotateX(0deg) scale(1.2);
   text-shadow: 0 0 4px rgba(0,123,255,0.3);
   z-index: 2;
   animation: pop 0.25s ease-out;
@@ -1035,14 +1035,22 @@ function createTimePicker(input) {
   const popup = document.createElement("div");
   popup.className = "time-picker-popup";
 
+  const wheelsContainer = document.createElement("div");
+  wheelsContainer.className = "wheels-container";
+
+  // Append highlight bar only ONCE
+  const highlight = document.createElement("div");
+  highlight.className = "highlight-bar";
+
+  popup.append(wheelsContainer, highlight);
+
   const createWheel = (values, className) => {
     const wheel = document.createElement("div");
     wheel.className = `time-wheel ${className}`;
-    wheel.appendChild(document.createElement("div")).className = "spacer";
-    
-const highlight = document.createElement("div");
-highlight.className = "highlight-bar";
-popup.append(wheelsContainer, highlight);
+
+    const topSpacer = document.createElement("div");
+    topSpacer.className = "spacer";
+    wheel.appendChild(topSpacer);
 
     values.forEach(val => {
       const item = document.createElement("div");
@@ -1051,52 +1059,51 @@ popup.append(wheelsContainer, highlight);
       wheel.appendChild(item);
     });
 
-    wheel.appendChild(document.createElement("div")).className = "spacer";
+    const bottomSpacer = document.createElement("div");
+    bottomSpacer.className = "spacer";
+    wheel.appendChild(bottomSpacer);
+
     return wheel;
-  };
-
-  const getSelectedValue = (wheel) => {
-    const index = Math.round(wheel.scrollTop / 50);
-    const items = wheel.querySelectorAll(".wheel-item");
-    items.forEach((item, i) => {
-      item.classList.toggle("selected", i === index);
-    });
-    return items[index]?.textContent || "";
-  };
-
-  const smoothSnap = (wheel) => {
-    const index = Math.round(wheel.scrollTop / 50);
-    wheel.scrollTo({ top: index * 50, behavior: "smooth" });
-    getSelectedValue(wheel);
   };
 
   const hourWheel = createWheel([...Array(12).keys()].map(i => i + 1), "hour");
   const minuteWheel = createWheel([...Array(12).keys()].map(i => (i * 5).toString().padStart(2, "0")), "minute");
   const ampmWheel = createWheel(["AM", "PM"], "ampm");
 
+  wheelsContainer.append(hourWheel, minuteWheel, ampmWheel);
+  document.body.append(popup, overlay);
+
+  const updateSelection = (wheel) => {
+    const index = Math.round(wheel.scrollTop / 50);
+    const items = wheel.querySelectorAll(".wheel-item");
+    items.forEach((item, i) => {
+      const selected = i === index;
+      item.classList.toggle("selected", selected);
+      if (selected) animateSelection(item);
+    });
+    wheel.scrollTo({ top: index * 50, behavior: "smooth" });
+  };
+
   [hourWheel, minuteWheel, ampmWheel].forEach(wheel => {
     wheel.addEventListener("scroll", () => {
       clearTimeout(wheel._scrollTimeout);
-      wheel._scrollTimeout = setTimeout(() => smoothSnap(wheel), 120);
+      wheel._scrollTimeout = setTimeout(() => updateSelection(wheel), 120);
     });
 
     wheel.addEventListener("wheel", e => {
       e.preventDefault();
       wheel.scrollTop += e.deltaY;
-    });
+    }, { passive: false });
 
-    wheel.addEventListener("touchend", () => smoothSnap(wheel));
-    wheel.addEventListener("mouseup", () => smoothSnap(wheel));
+    wheel.addEventListener("touchend", () => updateSelection(wheel));
+    wheel.addEventListener("mouseup", () => updateSelection(wheel));
   });
 
-  const wheelsContainer = document.createElement("div");
-wheelsContainer.className = "wheels-container";
-wheelsContainer.append(hourWheel, minuteWheel, ampmWheel);
-
-const highlight = document.createElement("div");
-highlight.className = "highlight-bar";
-
-document.body.append(popup, overlay);
+  const getSelectedValue = (wheel) => {
+    const index = Math.round(wheel.scrollTop / 50);
+    const items = wheel.querySelectorAll(".wheel-item");
+    return items[index]?.textContent || "";
+  };
 
   const rect = input.getBoundingClientRect();
   popup.style.top = `${rect.bottom + window.scrollY + 6}px`;
@@ -1108,22 +1115,13 @@ document.body.append(popup, overlay);
     overlay.remove();
   });
 }
+
 function animateSelection(item) {
+  item.style.transition = "transform 0.1s ease";
   item.style.transform = "scale(1.35)";
   setTimeout(() => {
     item.style.transform = "scale(1.2)";
   }, 100);
-}
-
-function smoothSnap(wheel) {
-  const index = Math.round(wheel.scrollTop / 50);
-  const items = wheel.querySelectorAll(".wheel-item");
-  items.forEach((item, i) => {
-    const selected = i === index;
-    item.classList.toggle("selected", selected);
-    if (selected) animateSelection(item);
-  });
-  wheel.scrollTo({ top: index * 50, behavior: "smooth" });
 }
 
 
