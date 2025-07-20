@@ -625,29 +625,46 @@ const blackoutForm = document.getElementById('blackout-form');
 
     
     const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const workingContainer = document.getElementById("working-days-container");
+const workingContainer = document.getElementById("working-days-container");
 
-    weekdays.forEach(day => {
-      const row = document.createElement("div");
-      row.className = "day-row";
-      row.innerHTML = `
-        <label class="day-name">${day}</label>
-        <input type="checkbox" class="day-enable" data-day="${day}" />
-        <select class="shift-type-select" data-day="${day}">
-          <option value="single">Single Shift</option>
-          <option value="double">Double Shift</option>
-        </select>
-        <div class="shift-1" data-day="${day}">
-          <input type="time" class="time-input start-1" data-day="${day}" />
-          <input type="time" class="time-input end-1" data-day="${day}" />
-        </div>
-        <div class="shift-2" data-day="${day}">
-          <input type="time" class="time-input start-2" data-day="${day}" />
-          <input type="time" class="time-input end-2" data-day="${day}" />
-        </div>
-      `;
-      workingContainer.appendChild(row);
-    });
+weekdays.forEach(day => {
+  const row = document.createElement("div");
+  row.className = "day-row";
+  row.innerHTML = `
+    <label class="day-name">${day}</label>
+    <input type="checkbox" class="day-enable" data-day="${day}" />
+    <select class="shift-type-select" data-day="${day}">
+      <option value="single">Single Shift</option>
+      <option value="double">Double Shift</option>
+    </select>
+    <div class="shift-1" data-day="${day}">
+      <input type="time" class="time-input start-1" data-day="${day}" />
+      <input type="time" class="time-input end-1" data-day="${day}" />
+    </div>
+    <div class="shift-2" data-day="${day}">
+      <input type="time" class="time-input start-2" data-day="${day}" />
+      <input type="time" class="time-input end-2" data-day="${day}" />
+    </div>
+  `;
+
+  workingContainer.appendChild(row);
+
+  // ✅ Add toggle behavior right here
+  const toggle = row.querySelector('.day-enable');
+  const shiftType = row.querySelector(`.shift-type-select[data-day="${day}"]`);
+  const shift1 = row.querySelector(`.shift-1[data-day="${day}"]`);
+  const shift2 = row.querySelector(`.shift-2[data-day="${day}"]`);
+
+  toggle.addEventListener('change', () => {
+    const visible = toggle.checked;
+    shiftType.style.display = visible ? 'inline-block' : 'none';
+    shift1.style.display = visible ? 'flex' : 'none';
+    shift2.style.display = visible ? 'flex' : 'none';
+  });
+
+  // Trigger initial state
+  toggle.dispatchEvent(new Event('change'));
+});
 
     document.addEventListener("change", e => {
       if (e.target.classList.contains("shift-type-select")) {
