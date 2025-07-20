@@ -632,7 +632,7 @@ weekdays.forEach(day => {
   row.className = "day-row";
   row.innerHTML = `
     <label class="day-name">${day}</label>
-    <input type="checkbox" class="day-enable" data-day="${day}" />
+    <input type="checkbox" class="day-enable" data-day="${day}" checked />
     <select class="shift-type-select" data-day="${day}">
       <option value="single">Single Shift</option>
       <option value="double">Double Shift</option>
@@ -649,21 +649,29 @@ weekdays.forEach(day => {
 
   workingContainer.appendChild(row);
 
-  // ✅ Add toggle behavior right here
   const toggle = row.querySelector('.day-enable');
-  const shiftType = row.querySelector(`.shift-type-select[data-day="${day}"]`);
-  const shift1 = row.querySelector(`.shift-1[data-day="${day}"]`);
-  const shift2 = row.querySelector(`.shift-2[data-day="${day}"]`);
+  const shiftType = row.querySelector('.shift-type-select');
+  const shift1 = row.querySelector('.shift-1');
+  const shift2 = row.querySelector('.shift-2');
 
-  toggle.addEventListener('change', () => {
-    const visible = toggle.checked;
-    shiftType.style.display = visible ? 'inline-block' : 'none';
-    shift1.style.display = visible ? 'flex' : 'none';
-    shift2.style.display = visible ? 'flex' : 'none';
-  });
+  // ✅ Hide/Show logic
+  const updateVisibility = () => {
+    if (toggle.checked) {
+      shiftType.style.display = "inline-block";
+      shift1.style.display = "flex";
+      shift2.style.display = shiftType.value === "double" ? "flex" : "none";
+    } else {
+      shiftType.style.display = "none";
+      shift1.style.display = "none";
+      shift2.style.display = "none";
+    }
+  };
 
-  // Trigger initial state
-  toggle.dispatchEvent(new Event('change'));
+  toggle.addEventListener('change', updateVisibility);
+  shiftType.addEventListener('change', updateVisibility);
+
+  // Trigger default state (open by default)
+  updateVisibility();
 });
 
     document.addEventListener("change", e => {
