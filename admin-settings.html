@@ -201,6 +201,7 @@ label.day-name {
   text-align: center;
   flex: 0 0 auto;
   transform-style: preserve-3d;
+  scroll-behavior: smooth;
 }
 
 .time-wheel::-webkit-scrollbar {
@@ -213,7 +214,7 @@ label.day-name {
   font-size: 1rem;
   color: #666;
   scroll-snap-align: center;
-  transition: all 0.2s ease;
+  transition: transform 0.15s ease, color 0.15s ease, opacity 0.15s ease;
   transform: rotateX(25deg);
   opacity: 0.4;
   transform-origin: center;
@@ -226,8 +227,15 @@ label.day-name {
   font-weight: bold;
   font-size: 1.2rem;
   opacity: 1;
-  transform: rotateX(0deg) scale(1.1);
+  transform: rotateX(0deg) scale(1.15);
   z-index: 2;
+  animation: pop 0.15s ease;
+}
+
+@keyframes pop {
+  0% { transform: rotateX(0deg) scale(1); }
+  50% { transform: rotateX(0deg) scale(1.25); }
+  100% { transform: rotateX(0deg) scale(1.15); }
 }
 
 .time-wheel .spacer {
@@ -256,6 +264,24 @@ label.day-name {
   bottom: 0;
   background: linear-gradient(to top, #fff 0%, transparent 100%);
 }
+
+/* Glossy highlight bar */
+.highlight-bar {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 50px;
+  margin-top: -25px;
+  background: linear-gradient(to bottom, #e0f0ff, #ffffff 60%, #e0f0ff);
+  border-top: 1px solid #b0d4f1;
+  border-bottom: 1px solid #b0d4f1;
+  box-shadow: inset 0 0 8px rgba(0, 123, 255, 0.2);
+  z-index: 2;
+  pointer-events: none;
+  border-radius: 6px;
+}
+
 
 
 .shift-type-select {
@@ -1001,6 +1027,10 @@ function createTimePicker(input) {
     const wheel = document.createElement("div");
     wheel.className = `time-wheel ${className}`;
     wheel.appendChild(document.createElement("div")).className = "spacer";
+
+const highlight = document.createElement("div");
+highlight.className = "highlight-bar";
+wheel.appendChild(highlight);
 
     values.forEach(val => {
       const item = document.createElement("div");
