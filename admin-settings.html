@@ -116,7 +116,40 @@ label.day-name {
   font-size: 1.3rem;
   color: #003366;
 }
+/* Hide native checkbox */
+.day-enable {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  background-color: #eaf6ff;
+  position: relative;
+  cursor: pointer;
+  margin: 0 10px;
+  vertical-align: middle;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
 
+/* Checkmark when checked */
+.day-enable:checked::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 5px;
+  height: 10px;
+  border: solid #007bff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Hover effect */
+.day-enable:hover {
+  background-color: #d3edff;
+  border-color: #005dc0;
+}
 /* Inputs: time, number, text */
 input[type="time"],
 input[type="number"],
@@ -143,7 +176,7 @@ input[type="text"]:focus {
   box-shadow: 0 0 0 2px rgba(0, 191, 255, 0.2);
 }
 .shift-type-select {
-  padding: 0.35rem 1.5rem 0.35rem 0.6rem; /* more right padding */
+  padding: 0.35rem 1.3rem 0.35rem 0.6rem; /* more right padding */
   font-size: 0.8rem;
   border: 1.5px solid #007bff;
   border-radius: 5px;
