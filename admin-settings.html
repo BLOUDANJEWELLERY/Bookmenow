@@ -116,39 +116,42 @@ label.day-name {
   font-size: 1.3rem;
   color: #003366;
 }
-/* Hide native checkbox */
 .day-enable {
   appearance: none;
   -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #007bff;
-  border-radius: 5px;
-  background-color: #eaf6ff;
+  width: 70px;
+  height: 32px;
+  background-color: #ff4d4d; /* red for 'Closed' */
+  border-radius: 50px;
   position: relative;
   cursor: pointer;
-  margin: 0 10px;
-  vertical-align: middle;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  outline: none;
+  transition: background-color 0.4s ease;
+  font-weight: bold;
+  font-size: 0.75rem;
+  color: white;
+  text-align: center;
+  padding-left: 0;
 }
 
-/* Checkmark when checked */
-.day-enable:checked::after {
-  content: '';
+/* "Closed" default text */
+.day-enable::before {
+  content: 'Closed';
   position: absolute;
-  top: 3px;
-  left: 6px;
-  width: 5px;
-  height: 10px;
-  border: solid #007bff;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  transition: 0.3s ease;
 }
 
-/* Hover effect */
-.day-enable:hover {
-  background-color: #d3edff;
-  border-color: #005dc0;
+/* "Open" text and color when checked */
+.day-enable:checked {
+  background-color: #28a745; /* green for 'Open' */
+}
+
+.day-enable:checked::before {
+  content: 'Open';
+  left: 35px;
 }
 /* Inputs: time, number, text */
 input[type="time"],
