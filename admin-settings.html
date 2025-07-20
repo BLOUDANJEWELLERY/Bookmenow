@@ -1038,7 +1038,6 @@ function createTimePicker(input) {
   const wheelsContainer = document.createElement("div");
   wheelsContainer.className = "wheels-container";
 
-  // Append highlight bar only ONCE
   const highlight = document.createElement("div");
   highlight.className = "highlight-bar";
 
@@ -1070,41 +1069,38 @@ function createTimePicker(input) {
   const minuteWheel = createWheel([...Array(12).keys()].map(i => (i * 5).toString().padStart(2, "0")), "minute");
   const ampmWheel = createWheel(["AM", "PM"], "ampm");
 
-// Parse the current input value if it exists
-if (input.value) {
-  const match = input.value.match(/(\d{1,2}):(\d{2})\s?(AM|PM)/i);
-  if (match) {
-    const [_, hourStr, minuteStr, ampmStr] = match;
-    const hour = parseInt(hourStr, 10);
-        const minuteRounded = roundToNearestFive(parseInt(minuteStr, 10)).toString().padStart(2, '0');
-    const ampm = ampmStr.toUpperCase();
+  const scrollToValue = (wheel, target) => {
+    const items = wheel.querySelectorAll(".wheel-item");
 
-    scrollToValue(hourWheel, hour);
-    scrollToValue(minuteWheel, minuteRounded);  // ✅ correct usage
-    scrollToValue(ampmWheel, ampm);
-    
-const scrollToValue = (wheel, target) => {
-  const items = wheel.querySelectorAll(".wheel-item");
+    const isAMPM = target.toString().toUpperCase() === "AM" || target.toString().toUpperCase() === "PM";
+    const normalizedTarget = isAMPM
+      ? target.toString().trim().toUpperCase()
+      : target.toString().padStart(2, "0").trim().toUpperCase();
 
-  const isAMPM = target.toString().toUpperCase() === "AM" || target.toString().toUpperCase() === "PM";
-  const normalizedTarget = isAMPM
-    ? target.toString().trim().toUpperCase()
-    : target.toString().padStart(2, "0").trim().toUpperCase();
+    items.forEach((item, i) => {
+      let itemText = item.textContent.trim().toUpperCase();
+      if (!isAMPM) itemText = itemText.padStart(2, "0");
 
-  items.forEach((item, i) => {
-    let itemText = item.textContent.trim().toUpperCase();
-    if (!isAMPM) itemText = itemText.padStart(2, "0");
+      if (itemText === normalizedTarget) {
+        wheel.scrollTo({ top: i * 50, behavior: "smooth" });
+      }
+    });
+  };
 
-    if (itemText === normalizedTarget) {
-      wheel.scrollTo({ top: i * 50, behavior: "smooth" });
+  // Parse input value and scroll to its time
+  if (input.value) {
+    const match = input.value.match(/(\d{1,2}):(\d{2})\s?(AM|PM)/i);
+    if (match) {
+      const [_, hourStr, minuteStr, ampmStr] = match;
+      const hour = parseInt(hourStr, 10);
+      const minuteRounded = roundToNearestFive(parseInt(minuteStr, 10)).toString().padStart(2, '0');
+      const ampm = ampmStr.toUpperCase();
+
+      scrollToValue(hourWheel, hour);
+      scrollToValue(minuteWheel, minuteRounded);
+      scrollToValue(ampmWheel, ampm);
     }
-  });
-};
-    scrollToValue(hourWheel, hour);
-    scrollToValue(minuteWheel, minuteStr);
-    scrollToValue(ampmWheel, ampm);
   }
-}
 
   wheelsContainer.append(hourWheel, minuteWheel, ampmWheel);
   document.body.append(popup, overlay);
