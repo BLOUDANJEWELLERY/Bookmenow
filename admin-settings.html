@@ -1079,19 +1079,23 @@ if (input.value) {
     const minute = roundToNearestFive(parseInt(minuteStr, 10)).toString().padStart(2, '0');
     const ampm = ampmStr.toUpperCase();
 
-    const scrollToValue = (wheel, target) => {
+const scrollToValue = (wheel, target) => {
   const items = wheel.querySelectorAll(".wheel-item");
-  const paddedTarget = target.toString().padStart(2, "0");
+
+  const isAMPM = target.toString().toUpperCase() === "AM" || target.toString().toUpperCase() === "PM";
+  const normalizedTarget = isAMPM
+    ? target.toString().trim().toUpperCase()
+    : target.toString().padStart(2, "0").trim().toUpperCase();
+
   items.forEach((item, i) => {
-    if (
-  item.textContent.trim() === paddedTarget ||
-  item.textContent.trim().toUpperCase() === target.toString().toUpperCase()
-) {
-    wheel.scrollTo({ top: i * 50, behavior: "smooth" });
+    let itemText = item.textContent.trim().toUpperCase();
+    if (!isAMPM) itemText = itemText.padStart(2, "0");
+
+    if (itemText === normalizedTarget) {
+      wheel.scrollTo({ top: i * 50, behavior: "smooth" });
     }
   });
 };
-
     scrollToValue(hourWheel, hour);
     scrollToValue(minuteWheel, minuteStr);
     scrollToValue(ampmWheel, ampm);
