@@ -658,7 +658,7 @@ weekdays.forEach(day => {
 
   const updateVisibility = () => {
     if (toggle.checked) {
-      shiftType.style.display = "inline-block";
+      shiftType.style.display = "flex";
       shift1.style.display = "flex";
       shift2.style.display = shiftType.value === "double" ? "flex" : "none";
     } else {
