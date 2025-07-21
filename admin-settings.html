@@ -176,7 +176,20 @@ label.day-name {
   box-sizing: border-box;
   cursor: pointer;
 }
-
+input[type="text"],
+input[type="time"],
+input[type="number"],
+input[type="date"] {
+  padding: 0.6rem 0.8rem;
+  font-size: 1rem;
+  border: 1.5px solid #007bff;
+  border-radius: 8px;
+  background: #f0faff;
+  color: #002244;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+}
 
 /* Time Picker Overlay and Popup */
 .time-picker-overlay {
@@ -659,10 +672,10 @@ ul {
 </div>
 
     <div id="holiday-tab" class="tab-content">
+      <div id="waleedcalendar" class="calendarwaleed" style="display:none"></div>
       <form id="holiday-form">
           <label for="date-input">Date</label>
         <input type="text" id="holiday-date" class="date-input" name="date" readonly placeholder="Select a date" required />
-        <div id="waleedcalendar" class="calendarwaleed" style="display:none"></div>
         <button type="submit">Add Holiday</button>
       </form>
       <ul id="holiday-list"></ul>
