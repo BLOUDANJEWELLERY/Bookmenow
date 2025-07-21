@@ -1,43 +1,43 @@
-    /* Custom calendar styles */
-    .calendar-wrapper {
-      position: relative;
-      width: 100%;
-    }
+/* Custom calendar styles */
+.calendar-wrapper {
+  position: relative;
+  width: 100%;
+}
 
 .calendar-input:focus {
   box-shadow: none;
   outline: none;
-  border-color: #007bff; /* Optional: Keep the blue border */
+  border-color: #007bff;
 }
 
-    .calendar-input {
-      cursor: pointer;
-      background-color: #fdfdfd;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 0.75rem;
-      font-size: 1rem;
-      color: #333;
-      width: 100%;
-    }
+.calendar-input {
+  cursor: pointer;
+  background-color: #fdfdfd;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: #333;
+  width: 100%;
+}
 
-/* This rule styles the main popup container and acts as the "stage" for the animation. */
-.calendar-popup {
+/* Renamed main popup container to calendarwaleed */
+.calendarwaleed {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-  height:300px;
+  height: 300px;
   background: white;
   border-radius: 8px;
   z-index: 1000;
   box-sizing: border-box;
   width: 270px;
-  padding: 1rem 1rem 1.2rem; /* or just padding: 1rem; */
+  padding: 1rem 1rem 1.2rem;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0, 123, 255, 0.15);
 }
 
-.calendar-popup::before {
+.calendarwaleed::before {
   content: "";
   display: block;
   width: 100%;
@@ -50,16 +50,13 @@
   border-top-right-radius: 8px;
 }
 
-/* This rule styles the inner month-view divs so they can animate properly. */
-.calendar-popup .calendar-content {
+.calendarwaleed .calendar-content {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: white; /* Ensures the incoming month is not transparent */
+  background-color: white;
   box-sizing: border-box;
 }
-
-
 
 #calendar::before,
 #calendar::after {
@@ -67,68 +64,62 @@
 }
 
 @media (max-width: 600px) {
-  .calendar-popup {
+  .calendarwaleed {
     padding: 8px;
     font-size: 0.95rem;
   }
 }
-
-    .calendar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      color: #007bff;
-      font-weight: bold;
-      font-size: 1.1rem;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .calendar-nav-btn {
-      background: none;
-      border: none;
-      color: #007bff;
-      font-size: 1.3rem;
-      cursor: pointer;
-      user-select: none;
-      transition: color 0.2s ease;
-    }
-    .calendar-nav-btn:hover {
-      color: #0056b3;
-    }
-
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .calendar-day-name {
-      font-weight: 600;
-      color: #007bff;
-      text-align: center;
-      font-size: 0.85rem;
-      user-select: none;
-    }
-
-    .calendar-day {
-      width: 26px;
-      height: 36px;
-      line-height: 36px;
-      text-align: center;
-      border-radius: 6px;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.2s, color 0.2s;
-      font-size: 0.9rem;
-    }
 
 .calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+  margin-bottom: 10px;
+  color: #007bff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.calendar-nav-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+.calendar-nav-btn:hover {
+  color: #0056b3;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.calendar-day-name {
+  font-weight: 600;
+  color: #007bff;
+  text-align: center;
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+.calendar-day {
+  width: 26px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, color 0.2s;
+  font-size: 0.9rem;
 }
 
 .calendar-today-btn {
@@ -145,37 +136,29 @@
   background-color: #cce5ff;
 }
 
+/* Slide animations */
 @keyframes slideInFromTop {
-  0% {
+  from {
     transform: translateY(-15px);
     opacity: 0;
   }
-  100% {
+  to {
     transform: translateY(0px);
     opacity: 1;
   }
 }
 
 @keyframes slideOutToTop {
-  0% {
+  from {
     transform: translateY(0px);
     opacity: 1;
   }
-  100% {
+  to {
     transform: translateY(-15px);
     opacity: 0;
   }
 }
 
-.slide-in {
-  animation: slideInFromTop 0.3s ease forwards;
-}
-
-.slide-out {
-  animation: slideOutToTop 0.25s ease forwards;
-}
-
-/* Slide Left/Right Animations */
 @keyframes slideLeftIn {
   from {
     transform: translateX(100%);
@@ -217,6 +200,12 @@
   }
 }
 
+.slide-in {
+  animation: slideInFromTop 0.3s ease forwards;
+}
+.slide-out {
+  animation: slideOutToTop 0.25s ease forwards;
+}
 .slide-left-in {
   animation: slideLeftIn 0.3s ease forwards;
 }
@@ -230,52 +219,22 @@
   animation: slideRightOut 0.3s ease forwards;
 }
 
-/* Reuse existing slide in/out for open/close */
-@keyframes slideInFromTop {
-  from {
-    transform: translateY(-15px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0px);
-    opacity: 1;
-  }
-}
-@keyframes slideOutToTop {
-  from {
-    transform: translateY(0px);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-15px);
-    opacity: 0;
-  }
-}
-.slide-in {
-  animation: slideInFromTop 0.3s ease forwards;
-}
-.slide-out {
-  animation: slideOutToTop 0.25s ease forwards;
+/* Past, today, selected */
+.calendar-day.disabled {
+  color: #bbb;
+  cursor: default;
+  pointer-events: none;
+  background-color: transparent !important;
 }
 
-    /* Disabled past days */
-    .calendar-day.disabled {
-      color: #bbb;
-      cursor: default;
-      pointer-events: none;
-      background-color: transparent !important;
-    }
+.calendar-day.today {
+  border: 2px solid #007bff;
+  font-weight: 700;
+  color: #0056b3;
+}
 
-    /* Highlight today's date */
-    .calendar-day.today {
-      border: 2px solid #007bff;
-      font-weight: 700;
-      color: #0056b3;
-    }
-
-    /* Highlight selected date */
-    .calendar-day.selected {
-      background: #007bff;
-      color: white;
-      font-weight: 700;
-    }
+.calendar-day.selected {
+  background: #007bff;
+  color: white;
+  font-weight: 700;
+}
