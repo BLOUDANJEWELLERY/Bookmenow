@@ -58,8 +58,8 @@
   box-sizing: border-box;
 }
 
-#calendar::before,
-#calendar::after {
+#waleedcalendar::before,
+#waleedcalendar::after {
   display: none !important;
 }
 
