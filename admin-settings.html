@@ -632,6 +632,18 @@ ul {
   opacity: 0.85;
 }
 
+.calendar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+#waleedcalendar {
+  position: absolute;
+  top: 100%; /* just below the input */
+  left: 0;
+  z-index: 9999;
+}
+
   </style>
 </head>
 <body>
@@ -679,9 +691,11 @@ ul {
     <div id="holiday-tab" class="tab-content">
       <form id="holiday-form" class="form-group">
           <label for="date-input">Date</label>
-        <input type="text" id="holiday-date" class="date-input" name="date" readonly placeholder="Select a date" required />
-        <div id="waleedcalendar" class="calendarwaleed" style="display:none"></div>
-        <button type="submit">Add Holiday</button>
+       <div class="calendar-wrapper">
+  <input type="text" id="holiday-date" class="date-input" readonly placeholder="Select a date" required />
+  <div id="waleedcalendar" class="calendarwaleed" style="display:none"></div>
+</div>
+      <button type="submit">Add Holiday</button>
       </form>
       <ul id="holiday-list"></ul>
     </div>
