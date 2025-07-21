@@ -7,8 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let isAnimating = false;
   let activeInput = null; // Tracks the input currently in use
 
-  const calendar = document.getElementById("calendar");
-
+  const calendar = document.getElementById("waleedcalendar");
   // Format date as YYYY-MM-DD
   function formatDate(date) {
     const year = date.getFullYear();
