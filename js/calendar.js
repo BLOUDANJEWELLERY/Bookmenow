@@ -21,8 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isAnimating) return;
 
     const newCalendar = document.createElement("div");
-    newCalendar.className = "calendar-popup calendar-content";
-
+    newCalendar.className = "calendarwaleed calendar-content";
     // --- Header ---
     const header = document.createElement("div");
     header.className = "calendar-header";
