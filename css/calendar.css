@@ -83,19 +83,6 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.calendar-nav-btn {
-  background: none;
-  border: none;
-  color: #007bff;
-  font-size: 1.3rem;
-  cursor: pointer;
-  user-select: none;
-  transition: color 0.2s ease;
-}
-.calendar-nav-btn:hover {
-  color: #0056b3;
-}
-
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -123,19 +110,42 @@
   font-size: 0.9rem;
 }
 
-.calendar-today-btn {
-  background-color: #e6f2ff;
-  color: #007bff;
-  border: 1px solid #007bff;
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 0.8rem;
+#waleedcalendar button.calendar-nav-btn,
+#waleedcalendar button.calendar-today-btn {
+  all: unset; /* Reset all inherited styles */
   cursor: pointer;
-  transition: background-color 0.2s;
+  padding: 4px 10px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #007bff;
+  background-color: transparent;
+  border-radius: 6px;
+  user-select: none;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  text-align: center;
+  display: inline-block;
+  line-height: normal;
 }
-.calendar-today-btn:hover {
+
+#waleedcalendar button.calendar-nav-btn:hover,
+#waleedcalendar button.calendar-today-btn:hover {
+  color: #0056b3;
+  background-color: #e6f2ff;
+}
+
+#waleedcalendar button.calendar-today-btn {
+  font-size: 0.8rem;
+  border: 1px solid #007bff;
+  padding: 4px 12px;
+  background-color: #e6f2ff;
+  font-weight: 700;
+}
+
+#waleedcalendar button.calendar-today-btn:hover {
   background-color: #cce5ff;
 }
+
+
 
 /* Slide animations */
 @keyframes slideInFromTop {
