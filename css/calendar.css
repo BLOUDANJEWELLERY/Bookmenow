@@ -1,16 +1,17 @@
-/* Custom calendar styles */
-.calendar-wrapper {
+/* Scoped to your unique calendar container */
+#waleedcalendar {
   position: relative;
-  width: 100%;
+  width: 270px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.calendar-input:focus {
+#waleedcalendar .calendar-input:focus {
   box-shadow: none;
   outline: none;
   border-color: #007bff;
 }
 
-.calendar-input {
+#waleedcalendar .calendar-input {
   cursor: pointer;
   background-color: #fdfdfd;
   border: 1px solid #ccc;
@@ -21,8 +22,8 @@
   width: 100%;
 }
 
-/* Renamed main popup container to calendarwaleed */
-.calendarwaleed {
+/* Main popup container */
+#waleedcalendar .calendarwaleed {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
@@ -37,7 +38,7 @@
   box-shadow: 0 4px 16px rgba(0, 123, 255, 0.15);
 }
 
-.calendarwaleed::before {
+#waleedcalendar .calendarwaleed::before {
   content: "";
   display: block;
   width: 100%;
@@ -50,7 +51,7 @@
   border-top-right-radius: 8px;
 }
 
-.calendarwaleed .calendar-content {
+#waleedcalendar .calendarwaleed .calendar-content {
   top: 0;
   left: 0;
   width: 100%;
@@ -63,14 +64,8 @@
   display: none !important;
 }
 
-@media (max-width: 600px) {
-  .calendarwaleed {
-    padding: 8px;
-    font-size: 0.95rem;
-  }
-}
-
-.calendar-header {
+/* Header */
+#waleedcalendar .calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -79,30 +74,52 @@
   color: #007bff;
   font-weight: bold;
   font-size: 1.1rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.calendar-nav-btn {
-  background: none;
-  border: none;
-  color: #007bff;
-  font-size: 1.3rem;
+/* Nav Buttons & Today Button: Reset and style */
+#waleedcalendar button.calendar-nav-btn,
+#waleedcalendar button.calendar-today-btn {
+  all: unset; /* Reset all inherited styles */
   cursor: pointer;
+  padding: 4px 10px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #007bff;
+  background-color: transparent;
+  border-radius: 6px;
   user-select: none;
-  transition: color 0.2s ease;
-}
-.calendar-nav-btn:hover {
-  color: #0056b3;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  text-align: center;
+  display: inline-block;
+  line-height: normal;
 }
 
-.calendar-grid {
+#waleedcalendar button.calendar-nav-btn:hover,
+#waleedcalendar button.calendar-today-btn:hover {
+  color: #0056b3;
+  background-color: #e6f2ff;
+}
+
+#waleedcalendar button.calendar-today-btn {
+  font-size: 0.8rem;
+  border: 1px solid #007bff;
+  padding: 4px 12px;
+  background-color: #e6f2ff;
+  font-weight: 700;
+}
+
+#waleedcalendar button.calendar-today-btn:hover {
+  background-color: #cce5ff;
+}
+
+/* Grid */
+#waleedcalendar .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 6px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.calendar-day-name {
+#waleedcalendar .calendar-day-name {
   font-weight: 600;
   color: #007bff;
   text-align: center;
@@ -110,7 +127,7 @@
   user-select: none;
 }
 
-.calendar-day {
+#waleedcalendar .calendar-day {
   width: 26px;
   height: 36px;
   line-height: 36px;
@@ -122,21 +139,27 @@
   font-size: 0.9rem;
 }
 
-.calendar-today-btn {
-  background-color: #e6f2ff;
-  color: #007bff;
-  border: 1px solid #007bff;
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.calendar-today-btn:hover {
-  background-color: #cce5ff;
+/* States */
+#waleedcalendar .calendar-day.disabled {
+  color: #bbb;
+  cursor: default;
+  pointer-events: none;
+  background-color: transparent !important;
 }
 
-/* Slide animations */
+#waleedcalendar .calendar-day.today {
+  border: 2px solid #007bff;
+  font-weight: 700;
+  color: #0056b3;
+}
+
+#waleedcalendar .calendar-day.selected {
+  background: #007bff;
+  color: white;
+  font-weight: 700;
+}
+
+/* Slide animations scoped */
 @keyframes slideInFromTop {
   from {
     transform: translateY(-15px);
@@ -169,6 +192,7 @@
     opacity: 1;
   }
 }
+
 @keyframes slideLeftOut {
   from {
     transform: translateX(0);
@@ -179,6 +203,7 @@
     opacity: 0;
   }
 }
+
 @keyframes slideRightIn {
   from {
     transform: translateX(-100%);
@@ -189,6 +214,7 @@
     opacity: 1;
   }
 }
+
 @keyframes slideRightOut {
   from {
     transform: translateX(0);
@@ -200,41 +226,34 @@
   }
 }
 
-.slide-in {
+#waleedcalendar .slide-in {
   animation: slideInFromTop 0.3s ease forwards;
 }
-.slide-out {
+
+#waleedcalendar .slide-out {
   animation: slideOutToTop 0.25s ease forwards;
 }
-.slide-left-in {
+
+#waleedcalendar .slide-left-in {
   animation: slideLeftIn 0.3s ease forwards;
 }
-.slide-left-out {
+
+#waleedcalendar .slide-left-out {
   animation: slideLeftOut 0.3s ease forwards;
 }
-.slide-right-in {
+
+#waleedcalendar .slide-right-in {
   animation: slideRightIn 0.3s ease forwards;
 }
-.slide-right-out {
+
+#waleedcalendar .slide-right-out {
   animation: slideRightOut 0.3s ease forwards;
 }
 
-/* Past, today, selected */
-.calendar-day.disabled {
-  color: #bbb;
-  cursor: default;
-  pointer-events: none;
-  background-color: transparent !important;
-}
-
-.calendar-day.today {
-  border: 2px solid #007bff;
-  font-weight: 700;
-  color: #0056b3;
-}
-
-.calendar-day.selected {
-  background: #007bff;
-  color: white;
-  font-weight: 700;
+/* Responsive */
+@media (max-width: 600px) {
+  #waleedcalendar .calendarwaleed {
+    padding: 8px;
+    font-size: 0.95rem;
+  }
 }
