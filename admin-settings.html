@@ -682,7 +682,9 @@ ul {
 
     <div id="holiday-tab" class="tab-content">
       <form id="holiday-form">
-        <input type="date" id="holiday-date" />
+          <label for="date-input">Date</label>
+        <input type="text" id="holiday-date" class="date-input" name="date" readonly placeholder="Select a date" required />
+        <div id="calendar" class="calendar-popup" style="display:none"></div>
         <button type="submit">Add Holiday</button>
       </form>
       <ul id="holiday-list"></ul>
