@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentDate = new Date(); // today initially
   let selectedDate = null;
   let isAnimating = false;
+  let activeInput = null; // Tracks the input currently in use
 
-  const dateInput = document.getElementById("date-input");
   const calendar = document.getElementById("calendar");
 
   // Format date as YYYY-MM-DD
@@ -117,10 +117,12 @@ document.addEventListener("DOMContentLoaded", () => {
           );
           dayEl.classList.add("selected");
           selectedDate = formatDate(dateObj);
-          dateInput.value = selectedDate;
+          if (activeInput) activeInput.value = selectedDate;
+
           if (typeof updateTimeSlotsForDate === "function") {
             updateTimeSlotsForDate(selectedDate);
           }
+
           hideCalendar();
         };
       }
@@ -186,19 +188,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { once: true });
   }
 
-  dateInput.addEventListener("click", () => {
-    if (calendar.style.display === "block") hideCalendar();
-    else showCalendar();
+  // Attach to all date input fields with class "date-input"
+  document.querySelectorAll(".date-input").forEach((input) => {
+    input.addEventListener("click", (e) => {
+      activeInput = e.target;
+      showCalendar();
+    });
+
+    input.addEventListener("keydown", (e) => {
+      e.preventDefault(); // prevent manual typing
+    });
   });
 
   document.addEventListener("mousedown", (e) => {
-    if (!calendar.contains(e.target) && e.target !== dateInput) {
+    if (!calendar.contains(e.target) && !e.target.classList.contains("date-input")) {
       hideCalendar();
     }
-  });
-
-  dateInput.addEventListener("keydown", (e) => {
-    e.preventDefault();
   });
 
   const now = new Date();
