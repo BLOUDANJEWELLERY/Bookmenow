@@ -1,30 +1,91 @@
-// --- Custom Calendar Logic ---
+// — Custom Calendar Logic —
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+const firebaseConfig = {
+  apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
+  authDomain: "sampleportfolio-9450c.firebaseapp.com",
+  projectId: "sampleportfolio-9450c",
+  storageBucket: "sampleportfolio-9450c.appspot.com",
+  messagingSenderId: "725347523572",
+  appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+document.addEventListener("DOMContentLoaded", async () => {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  let currentDate = new Date(); // today initially
+  let currentDate = new Date();
   let selectedDate = null;
   let isAnimating = false;
-  let activeInput = null; // Tracks the input currently in use
+  let activeInput = null;
+  let workingSchedule = {};
 
   const calendar = document.getElementById("waleedcalendar");
+
+  // Fetch working schedule from Firestore
+  async function fetchWorkingSchedule() {
+    try {
+      const docRef = doc(db, "adminSettings", "workingSchedule");
+      const docSnap = await getDoc(docRef);
+      workingSchedule = docSnap.exists() ? docSnap.data() : {};
+      return true;
+    } catch (error) {
+      console.error("Error fetching working schedule:", error);
+      workingSchedule = {};
+      return false;
+    }
+  }
+
   // Format date as YYYY-MM-DD
   function formatDate(date) {
     const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
 
-  function renderCalendar(year, month, direction = null) {
+  // Get day name (Sun, Mon, etc.) from date
+  function getDayName(date) {
+    return weekdays[date.getDay()];
+  }
+
+  // Handle day selection
+  function handleDayClick(dayEl, dateObj) {
+    calendar.querySelectorAll(".calendar-day.selected").forEach(el => {
+      el.classList.remove("selected");
+    });
+    
+    dayEl.classList.add("selected");
+    selectedDate = formatDate(dateObj);
+    
+    if (activeInput) {
+      activeInput.value = selectedDate;
+    }
+
+    if (typeof updateTimeSlotsForDate === "function") {
+      updateTimeSlotsForDate(selectedDate);
+    }
+
+    hideCalendar();
+  }
+
+  async function renderCalendar(year, month, direction = null) {
     if (isAnimating) return;
+
+    // Refresh the working schedule before rendering
+    await fetchWorkingSchedule();
 
     const newCalendar = document.createElement("div");
     newCalendar.className = "calendarwaleed calendar-content";
+    
     // --- Header ---
     const header = document.createElement("div");
     header.className = "calendar-header";
 
+    // Previous Month Button
     const prevBtn = document.createElement("button");
     prevBtn.type = "button";
     prevBtn.className = "calendar-nav-btn";
@@ -38,6 +99,13 @@ document.addEventListener("DOMContentLoaded", () => {
       renderCalendar(newYear, newMonth, "left");
     };
 
+    // Month/Year Display
+    const monthYear = document.createElement("div");
+    monthYear.textContent = `${new Date(year, month).toLocaleString("default", {
+      month: "long",
+    })} ${year}`;
+
+    // Next Month Button
     const nextBtn = document.createElement("button");
     nextBtn.type = "button";
     nextBtn.className = "calendar-nav-btn";
@@ -50,11 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderCalendar(newYear, newMonth, "right");
     };
 
-    const monthYear = document.createElement("div");
-    monthYear.textContent = `${new Date(year, month).toLocaleString("default", {
-      month: "long",
-    })} ${year}`;
-
+    // Today Button
     const todayBtn = document.createElement("button");
     todayBtn.type = "button";
     todayBtn.className = "calendar-today-btn";
@@ -73,16 +137,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const grid = document.createElement("div");
     grid.className = "calendar-grid";
 
-    weekdays.forEach((d) => {
+    // Weekday Headers
+    weekdays.forEach((day) => {
       const wd = document.createElement("div");
       wd.className = "calendar-day-name";
-      wd.textContent = d;
+      wd.textContent = day;
       grid.appendChild(wd);
     });
 
+    // Calculate days in month and starting day
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDayIndex = new Date(year, month, 1).getDay();
 
+    // Blank days for previous month
     for (let i = 0; i < firstDayIndex; i++) {
       const blank = document.createElement("div");
       blank.className = "calendar-day disabled";
@@ -92,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
+    // Create day elements
     for (let day = 1; day <= daysInMonth; day++) {
       const dateObj = new Date(year, month, day);
       dateObj.setHours(0, 0, 0, 0);
@@ -103,26 +171,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const isToday = dateObj.getTime() === today.getTime();
       const isInPast = dateObj < today;
       const isSelected = selectedDate === formatDate(dateObj);
+      const dayName = getDayName(dateObj);
+      const isDayEnabled = workingSchedule[dayName]?.enabled !== false;
 
-      if (isInPast) {
+      if (isInPast || !isDayEnabled) {
         dayEl.classList.add("disabled");
+        if (!isInPast && !isDayEnabled) {
+          dayEl.title = "Not available for booking";
+        }
       } else {
         if (isToday) dayEl.classList.add("today");
         if (isSelected) dayEl.classList.add("selected");
-        dayEl.onclick = () => {
-          calendar.querySelectorAll(".calendar-day.selected").forEach((el) =>
-            el.classList.remove("selected")
-          );
-          dayEl.classList.add("selected");
-          selectedDate = formatDate(dateObj);
-          if (activeInput) activeInput.value = selectedDate;
-
-          if (typeof updateTimeSlotsForDate === "function") {
-            updateTimeSlotsForDate(selectedDate);
-          }
-
-          hideCalendar();
-        };
+        dayEl.onclick = () => handleDayClick(dayEl, dateObj);
       }
 
       grid.appendChild(dayEl);
@@ -186,24 +246,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { once: true });
   }
 
-  // Attach to all date input fields with class "date-input"
-  document.querySelectorAll(".date-input").forEach((input) => {
-    input.addEventListener("click", (e) => {
-      activeInput = e.target;
-      showCalendar();
+  // Initialize calendar
+  function initCalendar() {
+    // Attach to all date input fields with class "date-input"
+    document.querySelectorAll(".date-input").forEach((input) => {
+      input.addEventListener("click", (e) => {
+        activeInput = e.target;
+        showCalendar();
+      });
+
+      input.addEventListener("keydown", (e) => {
+        e.preventDefault(); // prevent manual typing
+      });
     });
 
-    input.addEventListener("keydown", (e) => {
-      e.preventDefault(); // prevent manual typing
+    // Close calendar when clicking outside
+    document.addEventListener("mousedown", (e) => {
+      if (!calendar.contains(e.target) && !e.target.classList.contains("date-input")) {
+        hideCalendar();
+      }
     });
-  });
 
-  document.addEventListener("mousedown", (e) => {
-    if (!calendar.contains(e.target) && !e.target.classList.contains("date-input")) {
-      hideCalendar();
-    }
-  });
+    // Initial render
+    const now = new Date();
+    renderCalendar(now.getFullYear(), now.getMonth());
+  }
 
-  const now = new Date();
-  renderCalendar(now.getFullYear(), now.getMonth());
+  // Start the calendar
+  initCalendar();
 });
