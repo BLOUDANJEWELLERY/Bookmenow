@@ -17,8 +17,8 @@ const db = getFirestore(app);
 
 document.addEventListener("DOMContentLoaded", async () => {
   const weekdaysFull = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-   let currentDate = new Date();
+  const weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  let currentDate = new Date();
   let selectedDate = null;
   let isAnimating = false;
   let activeInput = null;
@@ -34,8 +34,8 @@ const weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const docSnap = await getDoc(docRef);
       workingSchedule = docSnap.exists() ? docSnap.data() : {};
       
-      console.log("Fetched schedule data:", workingSchedule); // Debug log
-      console.log("Friday availability:", workingSchedule["Fri"]?.enabled); // Specific debug
+      console.log("Fetched schedule data:", workingSchedule);
+      console.log("Friday availability:", workingSchedule["Fri"]?.enabled);
       
       return true;
     } catch (error) {
@@ -44,21 +44,25 @@ const weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       return false;
     }
   }
-async function fetchHolidays() {
-  const docRef = doc(db, "adminSettings", "holidays");
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    return docSnap.data().dates || []; // array of strings like "2025-07-25"
+
+  async function fetchHolidays() {
+    const docRef = doc(db, "adminSettings", "holidays");
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data().dates || []; // array of strings like "2025-07-25"
+    }
+    return [];
   }
-  return [];
-}
-  // Format date as YYYY-MM-DD
+
+  // Format date as YYYY-MM-DD (UTC date to avoid timezone issues)
   function formatDate(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const year = utcDate.getUTCFullYear();
+    const month = String(utcDate.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(utcDate.getUTCDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
+
   // Get day name (Sun, Mon, etc.) from date
   function getDayName(date) {
     return weekdaysFull[date.getDay()];
@@ -71,7 +75,9 @@ async function fetchHolidays() {
     });
     
     dayEl.classList.add("selected");
-    selectedDate = formatDate(dateObj);
+    // Use UTC date to avoid timezone shifting
+    const utcDate = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()));
+    selectedDate = formatDate(utcDate);
     
     if (activeInput) {
       activeInput.value = selectedDate;
@@ -148,12 +154,12 @@ async function fetchHolidays() {
     grid.className = "calendar-grid";
 
     // Weekday Headers
-   weekdaysShort.forEach((shortDay) => {
-  const wd = document.createElement("div");
-  wd.className = "calendar-day-name";
-  wd.textContent = shortDay;
-  grid.appendChild(wd);
-});
+    weekdaysShort.forEach((shortDay) => {
+      const wd = document.createElement("div");
+      wd.className = "calendar-day-name";
+      wd.textContent = shortDay;
+      grid.appendChild(wd);
+    });
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDayIndex = new Date(year, month, 1).getDay();
@@ -177,34 +183,37 @@ async function fetchHolidays() {
       dayEl.className = "calendar-day";
       dayEl.textContent = day;
 
-      const isToday = dateObj.getTime() === today.getTime();
-      const isInPast = dateObj < today;
-      const isSelected = selectedDate === formatDate(dateObj);
-      const dayName = getDayName(dateObj);
-      const dateStr = formatDate(dateObj);
-const isHoliday = holidayDates.includes(dateStr);
+      // Use UTC date for comparisons to avoid timezone issues
+      const utcDate = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()));
+      const utcToday = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
       
+      const isToday = utcDate.getTime() === utcToday.getTime();
+      const isInPast = utcDate < utcToday;
+      const dateStr = formatDate(utcDate);
+      const isSelected = selectedDate === dateStr;
+      const dayName = getDayName(dateObj);
+      const isHoliday = holidayDates.includes(dateStr);
       
       // STRICT AVAILABILITY CHECK - Only enabled if explicitly true
       const dayData = workingSchedule[dayName] || {};
       const isDayEnabled = dayData.enabled === true;
       
-      console.log(`Day: ${dayName}, Enabled: ${isDayEnabled}, Data:`, dayData); // Debug log
+      console.log(`Day: ${dayName}, Date: ${dateStr}, Enabled: ${isDayEnabled}, Holiday: ${isHoliday}`);
 
-       if (isInPast || !isDayEnabled || isHoliday) {
-  dayEl.classList.add("disabled");
-  if (!isInPast) {
-    if (isHoliday) {
-      dayEl.title = "Holiday – Not bookable";
-    } else if (!isDayEnabled) {
-      dayEl.title = "Not available for booking";
-    }
-  }
-} else {
-  if (isToday) dayEl.classList.add("today");
-  if (isSelected) dayEl.classList.add("selected");
-  dayEl.onclick = () => handleDayClick(dayEl, dateObj);
-}
+      if (isInPast || !isDayEnabled || isHoliday) {
+        dayEl.classList.add("disabled");
+        if (!isInPast) {
+          if (isHoliday) {
+            dayEl.title = "Holiday – Not bookable";
+          } else if (!isDayEnabled) {
+            dayEl.title = "Not available for booking";
+          }
+        }
+      } else {
+        if (isToday) dayEl.classList.add("today");
+        if (isSelected) dayEl.classList.add("selected");
+        dayEl.onclick = () => handleDayClick(dayEl, dateObj);
+      }
       grid.appendChild(dayEl);
     }
 
@@ -250,6 +259,7 @@ const isHoliday = holidayDates.includes(dateStr);
     }
   }
 
+  // Rest of your code remains the same...
   function showCalendar() {
     calendar.style.display = "block";
     calendar.classList.remove("slide-out");
