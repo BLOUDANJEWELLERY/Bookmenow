@@ -6,6 +6,7 @@
   <title>Admin Settings</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/timepicker-ui/dist/timepicker-ui.min.css">
 <script src="https://cdn.jsdelivr.net/npm/timepicker-ui/dist/timepicker-ui.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
    <link rel="stylesheet" href="css/style.css" />
    <link rel="stylesheet" href="css/calendar.css" />
   <link rel="stylesheet" href="css/timepicker.css" />
@@ -304,7 +305,7 @@ input[type="date"] {
   gap: 1.2rem;
 }
 
-/* Each holiday list item as a stylish card */
+/* Each list item styled as a card */
 .list li {
   display: flex;
   justify-content: space-between;
@@ -327,7 +328,7 @@ input[type="date"] {
   box-shadow: 0 6px 20px rgba(0, 123, 255, 0.15);
 }
 
-/* Holiday date text */
+/* Date text */
 .list li span {
   font-size: 1.1rem;
   font-weight: 600;
@@ -336,33 +337,29 @@ input[type="date"] {
 }
 
 /* Delete button */
-.list li .btn-delete {
+.btn-delete {
   background: linear-gradient(to right, #dc3545, #ff6b6b);
-  color: white;
   border: none;
   border-radius: 8px;
-  padding: 0.4rem 0.8rem;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 0.4rem 0.65rem;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(220, 53, 69, 0.3);
+  box-shadow: 0 2px 10px rgba(220, 53, 69, 0.25);
+  transition: background 0.3s ease, transform 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.list li .btn-delete:hover {
-  background: linear-gradient(to right, #c82333, #ff5252);
+.btn-delete:hover {
+  background: linear-gradient(to right, #c82333, #ff4d4d);
   transform: scale(1.05);
 }
 
-/* White cross icon inside button */
-.list li .btn-delete::before {
-  content: "✖";
-  font-size: 1rem;
-  display: inline-block;
-  line-height: 1;
+/* Material Icon inside button */
+.btn-delete .material-icons {
+  font-size: 1.3rem;
+  color: white;
+  pointer-events: none;
 }
   </style>
 </head>
@@ -662,8 +659,10 @@ weekdays.forEach(day => {
       dates.sort().forEach(date => {
         const li = document.createElement("li");
         li.innerHTML = `<span>${date}</span>
-          <button onclick="deleteHoliday('${date}')">❌</button>`;
-        holidayList.appendChild(li);
+           <button class="btn-delete" onclick="deleteHoliday('${date}')">
+        <span class="material-icons">delete_forever</span>
+      </button>`;
+          holidayList.appendChild(li);
       });
     }
 
