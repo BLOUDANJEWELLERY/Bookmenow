@@ -23,6 +23,7 @@ const weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   let isAnimating = false;
   let activeInput = null;
   let workingSchedule = {};
+  let holidayDates = [];
 
   const calendar = document.getElementById("waleedcalendar");
 
@@ -43,7 +44,14 @@ const weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       return false;
     }
   }
-
+async function fetchHolidays() {
+  const docRef = doc(db, "adminSettings", "holidays");
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return docSnap.data().dates || []; // array of strings like "2025-07-25"
+  }
+  return [];
+}
   // Format date as YYYY-MM-DD
   function formatDate(date) {
     const year = date.getFullYear();
@@ -51,7 +59,9 @@ const weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
-
+function formatDate(date) {
+  return date.toISOString().split("T")[0]; // → "YYYY-MM-DD"
+}
   // Get day name (Sun, Mon, etc.) from date
   function getDayName(date) {
     return weekdaysFull[date.getDay()];
@@ -82,6 +92,7 @@ const weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
     // Refresh the working schedule before rendering
     await fetchWorkingSchedule();
+    holidayDates = await fetchHolidays();
 
     const newCalendar = document.createElement("div");
     newCalendar.className = "calendarwaleed calendar-content";
@@ -173,6 +184,9 @@ const weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const isInPast = dateObj < today;
       const isSelected = selectedDate === formatDate(dateObj);
       const dayName = getDayName(dateObj);
+      const dateStr = formatDate(dateObj);
+const isHoliday = holidayDates.includes(dateStr);
+      
       
       // STRICT AVAILABILITY CHECK - Only enabled if explicitly true
       const dayData = workingSchedule[dayName] || {};
@@ -180,12 +194,13 @@ const weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       
       console.log(`Day: ${dayName}, Enabled: ${isDayEnabled}, Data:`, dayData); // Debug log
 
-      if (isInPast || !isDayEnabled) {
-        dayEl.classList.add("disabled");
-        if (!isInPast && !isDayEnabled) {
-          dayEl.title = "Not available for booking";
-        }
-      } else {
+       if (!isInPast) {
+  if (!isDayEnabled) {
+    dayEl.title = "Not available for booking";
+  } else if (isHoliday) {
+    dayEl.title = "Holiday – Not bookable";
+  }
+} else {
         if (isToday) dayEl.classList.add("today");
         if (isSelected) dayEl.classList.add("selected");
         dayEl.onclick = () => handleDayClick(dayEl, dateObj);
