@@ -1,11 +1,40 @@
 // --- Custom Calendar Logic ---
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  const firebaseConfig = {
+  apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
+  authDomain: "sampleportfolio-9450c.firebaseapp.com",
+  projectId: "sampleportfolio-9450c",
+  storageBucket: "sampleportfolio-9450c.appspot.com",
+  messagingSenderId: "725347523572",
+  appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   let currentDate = new Date(); // today initially
   let selectedDate = null;
   let isAnimating = false;
   let activeInput = null; // Tracks the input currently in use
+
+let workingSchedule = {};
+
+async function loadWorkingSchedule() {
+  try {
+    const docSnap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
+    if (docSnap.exists()) {
+      workingSchedule = docSnap.data();
+    } else {
+      console.warn("No working schedule found.");
+    }
+  } catch (err) {
+    console.error("Error fetching working schedule:", err);
+  }
+}
 
   const calendar = document.getElementById("waleedcalendar");
   // Format date as YYYY-MM-DD
@@ -101,12 +130,18 @@ document.addEventListener("DOMContentLoaded", () => {
       dayEl.textContent = day;
 
       const isToday = dateObj.getTime() === today.getTime();
+      
       const isInPast = dateObj < today;
+
+// Map weekday index to "Sunday", "Monday", etc.
+const weekdayName = dateObj.toLocaleDateString("en-US", { weekday: "long" });
+const isDisabledBySchedule = workingSchedule?.[weekdayName]?.enabled === false;
+      
       const isSelected = selectedDate === formatDate(dateObj);
 
-      if (isInPast) {
-        dayEl.classList.add("disabled");
-      } else {
+      if (isInPast || isDisabledBySchedule) {
+  dayEl.classList.add("disabled");
+} else {
         if (isToday) dayEl.classList.add("today");
         if (isSelected) dayEl.classList.add("selected");
         dayEl.onclick = () => {
@@ -204,6 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const now = new Date();
-  renderCalendar(now.getFullYear(), now.getMonth());
+const now = new Date();
+await loadWorkingSchedule();
+renderCalendar(now.getFullYear(), now.getMonth());
 });
