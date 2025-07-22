@@ -300,13 +300,15 @@ input[type="date"] {
 }
 
 
-label {
+.holiday-label {
   display: block;
+  font-size: 1.05rem;
   font-weight: 600;
-  color: #003366;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
+  color: #004080;
+  margin-bottom: 0.6rem;
   padding-left: 2px;
+  letter-spacing: 0.2px;
+  text-shadow: 0.2px 0.2px 0 rgba(0, 64, 128, 0.1);
 }
 /* Holiday list container */
 .list {
@@ -503,8 +505,8 @@ label {
     <div id="holiday-tab" class="tab-content">
       <h2 class="section-title">Holidays</h2>
       <form id="holiday-form">
-          <label for="date-input">Date</label>
-       <div class="calendar-wrapper">
+          <label for="holiday-date" class="holiday-label">Enter date for holiday:</label>
+          <div class="calendar-wrapper">
   <input type="text" id="holiday-date" class="date-input" readonly placeholder="Select a date" required />
   <div id="waleedcalendar" class="calendarwaleed" style="display:none"></div>
 </div>
