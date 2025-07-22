@@ -301,54 +301,68 @@ input[type="date"] {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
-/* Each holiday list item as a soft card */
+/* Each holiday list item as a stylish card */
 .list li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(to right, #f2fbff, #eaf6ff);
-  border: 1.8px solid #007bff30;
-  border-left: 6px solid #007bff;
-  border-radius: 12px;
+  background: #ffffff;
   padding: 1rem 1.2rem;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
-  transition: box-shadow 0.2s ease, transform 0.1s ease;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(#f2fbff, #f2fbff),
+    linear-gradient(135deg, #007bff, #00c6ff);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 4px 16px rgba(0, 51, 102, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .list li:hover {
-  box-shadow: 0 6px 18px rgba(0, 123, 255, 0.15);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.15);
 }
 
 /* Holiday date text */
 .list li span {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #003366;
   letter-spacing: 0.3px;
-  flex-grow: 1;
 }
 
 /* Delete button */
-.list li button {
-  background: #ff4d4d;
+.list li .btn-delete {
+  background: linear-gradient(to right, #dc3545, #ff6b6b);
   color: white;
   border: none;
   border-radius: 8px;
   padding: 0.4rem 0.8rem;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.25s ease, transform 0.15s ease;
-  box-shadow: 0 2px 8px rgba(255, 77, 77, 0.25);
+  box-shadow: 0 2px 10px rgba(220, 53, 69, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.list li button:hover {
-  background: #cc0000;
+.list li .btn-delete:hover {
+  background: linear-gradient(to right, #c82333, #ff5252);
   transform: scale(1.05);
+}
+
+/* White cross icon inside button */
+.list li .btn-delete::before {
+  content: "✖";
+  font-size: 1rem;
+  display: inline-block;
+  line-height: 1;
 }
   </style>
 </head>
