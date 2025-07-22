@@ -144,7 +144,7 @@ label.day-name {
   content: 'Closed';
   position: absolute;
   top: 50%;
-  left: 0px;
+  right: 10px;
   transform: translateY(-50%);
   transition: 0.3s ease;
 }
@@ -393,33 +393,31 @@ input[type="date"] {
 
 #custom-toast {
   position: fixed;
-  bottom: 2rem;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-  color: white;
-  padding: 1rem 2rem;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #7fbfff, #a3d1ff);
+  color: #003366;
+  padding: 1rem 2.5rem;
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 123, 255, 0.4);
+  box-shadow: 0 6px 18px rgba(127, 191, 255, 0.6);
   font-weight: 600;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 1.1rem;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease, bottom 0.4s ease;
+  transition: opacity 0.4s ease;
   z-index: 9999;
 }
 
 #custom-toast.toast-show {
   opacity: 1;
   pointer-events: auto;
-  bottom: 3.5rem;
 }
 
 #custom-toast.toast-hide {
   opacity: 0;
   pointer-events: none;
-  bottom: 2rem;
 }
   </style>
 </head>
@@ -671,7 +669,7 @@ weekdays.forEach(day => {
         };
       });
       await setDoc(doc(db, "adminSettings", "workingSchedule"), data);
-      showToast("Schedule.");
+      showToast("Schedule Saved.");
     });
 
     async function loadSchedule() {
