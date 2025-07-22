@@ -59,9 +59,6 @@ async function fetchHolidays() {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
-function formatDate(date) {
-  return date.toISOString().split("T")[0]; // → "YYYY-MM-DD"
-}
   // Get day name (Sun, Mon, etc.) from date
   function getDayName(date) {
     return weekdaysFull[date.getDay()];
