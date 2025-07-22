@@ -390,34 +390,37 @@ input[type="date"] {
   animation: slideOutLeftHoliday 0.4s ease forwards;
 }
 
-
 #custom-toast {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  background: linear-gradient(135deg, #7fbfff, #a3d1ff);
-  color: #003366;
-  padding: 1rem 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(127, 191, 255, 0.6);
+  transform: translate(-50%, -50%) scale(1);
+  padding: 1.2rem 2.2rem;
+  border-radius: 16px;
+  font-size: 1.05rem;
   font-weight: 600;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 1.1rem;
+  color: #003366;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(0, 123, 255, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 123, 255, 0.15);
+  text-align: center;
+  z-index: 9999;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease;
-  z-index: 9999;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 #custom-toast.toast-show {
   opacity: 1;
   pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 #custom-toast.toast-hide {
   opacity: 0;
   pointer-events: none;
+  transform: translate(-50%, -48%) scale(0.95);
 }
   </style>
 </head>
