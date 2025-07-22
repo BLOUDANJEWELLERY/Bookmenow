@@ -364,36 +364,32 @@ input[type="date"] {
   pointer-events: none;
 }
 
-/* Slide in from left */
+/* Slide in from left (no fade) */
 @keyframes slideInLeft {
   0% {
-    opacity: 0;
-    transform: translateX(-30px);
+    transform: translateX(-40px);
   }
   100% {
-    opacity: 1;
     transform: translateX(0);
   }
 }
 
 .slide-in-left {
-  animation: slideInLeft 0.4s ease forwards;
+  animation: slideInLeft 0.35s ease-out forwards;
 }
 
-/* Slide out (fade + shift left) */
+/* Slide out to left (no fade) */
 @keyframes slideOutLeft {
   0% {
-    opacity: 1;
     transform: translateX(0);
   }
   100% {
-    opacity: 0;
-    transform: translateX(-30px);
+    transform: translateX(-40px);
   }
 }
 
 .slide-out {
-  animation: slideOutLeft 0.3s ease forwards;
+  animation: slideOutLeft 0.3s ease-in forwards;
 }
   </style>
 </head>
@@ -685,8 +681,8 @@ weekdays.forEach(day => {
       holidays.push(newDate);
       await setDoc(docRef, { dates: holidays });
       holidayInput.value = "";
-      renderHolidays(holidays);
-    });
+      addHolidayToList(newDate); // 👈 Only add the new item with animation
+       });
 
     function renderHolidays(dates) {
   holidayList.innerHTML = "";
@@ -729,6 +725,22 @@ window.deleteHoliday = async (date, btn) => {
       const docSnap = await getDoc(doc(db, "adminSettings", "holidays"));
       if (docSnap.exists()) renderHolidays(docSnap.data().dates || []);
     }
+    function addHolidayToList(date) {
+  const li = document.createElement("li");
+  li.classList.add("slide-in-left");
+  li.innerHTML = `
+    <span>${date}</span>
+    <button class="btn-cancel" title="Cancel" onclick="deleteHoliday('${date}', this)">
+      <svg xmlns="http://www.w3.org/2000/svg" 
+           width="22" height="22" viewBox="0 0 24 24" 
+           fill="none" stroke="#ffffff" stroke-width="2.5" 
+           stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>`;
+  holidayList.appendChild(li);
+}
 
     document.getElementById("advanced-form").addEventListener("submit", async e => {
       e.preventDefault();
