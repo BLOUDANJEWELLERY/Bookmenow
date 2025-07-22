@@ -363,6 +363,38 @@ input[type="date"] {
   height: 22px;
   pointer-events: none;
 }
+
+/* Slide in from left */
+@keyframes slideInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.4s ease forwards;
+}
+
+/* Slide out (fade + shift left) */
+@keyframes slideOutLeft {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+}
+
+.slide-out {
+  animation: slideOutLeft 0.3s ease forwards;
+}
   </style>
 </head>
 <body>
@@ -657,11 +689,13 @@ weekdays.forEach(day => {
     });
 
     function renderHolidays(dates) {
-      holidayList.innerHTML = "";
-      dates.sort().forEach(date => {
-        const li = document.createElement("li");
-        li.innerHTML = `<span>${date}</span>
-            <button class="btn-cancel" title="Cancel" onclick="deleteHoliday('${date}')">
+  holidayList.innerHTML = "";
+  dates.sort().forEach((date, index) => {
+    const li = document.createElement("li");
+    li.classList.add("slide-in-left");
+    li.innerHTML = `
+      <span>${date}</span>
+      <button class="btn-cancel" title="Cancel" onclick="deleteHoliday('${date}', this)">
         <svg xmlns="http://www.w3.org/2000/svg" 
              width="22" height="22" viewBox="0 0 24 24" 
              fill="none" stroke="#ffffff" stroke-width="2.5" 
@@ -670,18 +704,26 @@ weekdays.forEach(day => {
           <line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
       </button>`;
-          holidayList.appendChild(li);
-      });
-    }
+    holidayList.appendChild(li);
+  });
+}
 
-    window.deleteHoliday = async (date) => {
-      const docRef = doc(db, "adminSettings", "holidays");
-      const docSnap = await getDoc(docRef);
-      let holidays = docSnap.exists() ? docSnap.data().dates || [] : [];
-      holidays = holidays.filter(d => d !== date);
-      await setDoc(docRef, { dates: holidays });
-      renderHolidays(holidays);
-    };
+window.deleteHoliday = async (date, btn) => {
+  const li = btn.closest("li");
+  li.classList.remove("slide-in-left");
+  li.classList.add("slide-out");
+
+  // Remove the list item after animation completes
+  li.addEventListener("animationend", async () => {
+    li.remove();
+
+    const docRef = doc(db, "adminSettings", "holidays");
+    const docSnap = await getDoc(docRef);
+    let holidays = docSnap.exists() ? docSnap.data().dates || [] : [];
+    holidays = holidays.filter(d => d !== date);
+    await setDoc(docRef, { dates: holidays });
+  });
+};
 
     async function loadHolidays() {
       const docSnap = await getDoc(doc(db, "adminSettings", "holidays"));
