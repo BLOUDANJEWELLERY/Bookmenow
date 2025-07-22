@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const firebaseConfig = {
   apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
   authDomain: "sampleportfolio-9450c.firebaseapp.com",
