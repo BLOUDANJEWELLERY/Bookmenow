@@ -194,18 +194,20 @@ const isHoliday = holidayDates.includes(dateStr);
       
       console.log(`Day: ${dayName}, Enabled: ${isDayEnabled}, Data:`, dayData); // Debug log
 
-       if (!isInPast) {
-  if (!isDayEnabled) {
-    dayEl.title = "Not available for booking";
-  } else if (isHoliday) {
-    dayEl.title = "Holiday – Not bookable";
+       if (isInPast || !isDayEnabled || isHoliday) {
+  dayEl.classList.add("disabled");
+  if (!isInPast) {
+    if (isHoliday) {
+      dayEl.title = "Holiday – Not bookable";
+    } else if (!isDayEnabled) {
+      dayEl.title = "Not available for booking";
+    }
   }
 } else {
-        if (isToday) dayEl.classList.add("today");
-        if (isSelected) dayEl.classList.add("selected");
-        dayEl.onclick = () => handleDayClick(dayEl, dateObj);
-      }
-
+  if (isToday) dayEl.classList.add("today");
+  if (isSelected) dayEl.classList.add("selected");
+  dayEl.onclick = () => handleDayClick(dayEl, dateObj);
+}
       grid.appendChild(dayEl);
     }
 
