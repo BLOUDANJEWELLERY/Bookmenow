@@ -733,7 +733,7 @@ weekdays.forEach(day => {
     holidayForm.addEventListener("submit", async e => {
       e.preventDefault();
       const newDate = holidayInput.value;
-      if (!newDate) return ("Select a date.");
+      if (!newDate) return alert("Select a date.");
       const docRef = doc(db, "adminSettings", "holidays");
       const docSnap = await getDoc(docRef);
       let holidays = docSnap.exists() ? docSnap.data().dates || [] : [];
