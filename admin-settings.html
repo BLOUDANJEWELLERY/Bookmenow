@@ -364,31 +364,30 @@ input[type="date"] {
   pointer-events: none;
 }
 
+/* Only animate NEWLY added holiday */
 @keyframes slideInLeft {
   from {
     transform: translateX(-100%);
-    opacity: 0;
   }
   to {
     transform: translateX(0%);
-    opacity: 1;
   }
 }
-
-/* Slide out to left */
-.holiday-list li.slide-out {
-  animation: slideOutLeft 0.4s ease forwards;
+.slide-in-left {
+  animation: slideInLeft 0.4s ease;
 }
 
+/* Animate when removing */
 @keyframes slideOutLeft {
   from {
     transform: translateX(0%);
-    opacity: 1;
   }
   to {
     transform: translateX(-120%);
-    opacity: 0;
   }
+}
+.slide-out {
+  animation: slideOutLeft 0.4s ease forwards;
 }
   </style>
 </head>
@@ -682,19 +681,14 @@ weekdays.forEach(day => {
       holidayInput.value = "";
       addHolidayToList(newDate); // 👈 Only add the new item with animation
        });
-
-    function renderHolidays(dates) {
+function renderHolidays(dates) {
   holidayList.innerHTML = "";
-  dates.sort().forEach((date, index) => {
-    const li = document.createElement("li");
-    li.classList.add("slide-in-left");
+  dates.sort().forEach((date) => {
+    const li = document.createElement("li"); // no slide class here
     li.innerHTML = `
       <span>${date}</span>
       <button class="btn-cancel" title="Cancel" onclick="deleteHoliday('${date}', this)">
-        <svg xmlns="http://www.w3.org/2000/svg" 
-             width="22" height="22" viewBox="0 0 24 24" 
-             fill="none" stroke="#ffffff" stroke-width="2.5" 
-             stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"/>
           <line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
@@ -730,15 +724,20 @@ window.deleteHoliday = async (date, btn) => {
   li.innerHTML = `
     <span>${date}</span>
     <button class="btn-cancel" title="Cancel" onclick="deleteHoliday('${date}', this)">
-      <svg xmlns="http://www.w3.org/2000/svg" 
-           width="22" height="22" viewBox="0 0 24 24" 
-           fill="none" stroke="#ffffff" stroke-width="2.5" 
-           stroke-linecap="round" stroke-linejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"/>
         <line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
     </button>`;
-  holidayList.appendChild(li);
+
+  // Insert at correct ascending spot
+  const lis = Array.from(holidayList.children);
+  const index = lis.findIndex(item => item.querySelector("span").textContent > date);
+  if (index === -1) {
+    holidayList.appendChild(li);
+  } else {
+    holidayList.insertBefore(li, lis[index]);
+  }
 }
 
     document.getElementById("advanced-form").addEventListener("submit", async e => {
