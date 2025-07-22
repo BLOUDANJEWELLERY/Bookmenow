@@ -391,37 +391,59 @@ input[type="date"] {
   animation: slideOutLeftHoliday 0.4s ease forwards;
 }
 
-#custom-toast {
+/* Dimmed overlay */
+.toast-overlay {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  padding: 1.2rem 2.2rem;
-  border-radius: 16px;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #003366;
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid rgba(0, 123, 255, 0.25);
-  box-shadow: 0 8px 24px rgba(0, 123, 255, 0.15);
-  text-align: center;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 9999;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.35s ease;
 }
 
-#custom-toast.toast-show {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
+/* Toast box */
+.custom-toast-box {
+  background: linear-gradient(to bottom right, #f2fbff, #e9f5ff);
+  padding: 1.6rem 2.4rem;
+  border-radius: 14px;
+  max-width: 360px;
+  text-align: center;
+  border: 3px solid transparent;
+  background-image:
+    linear-gradient(#f2fbff, #f2fbff),
+    linear-gradient(135deg, #007bff, #00c6ff);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
 }
 
-#custom-toast.toast-hide {
+#toast-message {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #003366;
+}
+
+/* Show state */
+.toast-show {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.toast-show .custom-toast-box {
+  transform: scale(1);
+}
+
+/* Hide state */
+.toast-hide {
   opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, -48%) scale(0.95);
 }
   </style>
 </head>
@@ -525,8 +547,12 @@ input[type="date"] {
     <ul id="blackout-list"></ul>
   </div>
   </main>
-<div id="custom-toast" class="toast-hidden">Schedule saved.</div>
-  <script type="module">
+<div id="toast-overlay" class="toast-overlay toast-hide">
+  <div id="custom-toast" class="custom-toast-box">
+    <span id="toast-message">Schedule Saved.</span>
+  </div>
+</div>
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { 
   getAuth, onAuthStateChanged, signOut, deleteUser 
@@ -869,14 +895,17 @@ blackoutForm.addEventListener('submit', async e => {
     });
     
 function showToast(message = "Schedule saved.", duration = 2500) {
+  const overlay = document.getElementById("toast-overlay");
   const toast = document.getElementById("custom-toast");
-  toast.textContent = message;
-  toast.classList.remove("toast-hide");
-  toast.classList.add("toast-show");
+  const messageSpan = document.getElementById("toast-message");
+
+  messageSpan.textContent = message;
+  overlay.classList.remove("toast-hide");
+  overlay.classList.add("toast-show");
 
   setTimeout(() => {
-    toast.classList.remove("toast-show");
-    toast.classList.add("toast-hide");
+    overlay.classList.remove("toast-show");
+    overlay.classList.add("toast-hide");
   }, duration);
 }
 
