@@ -25,12 +25,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const calendar = document.getElementById("waleedcalendar");
 
-  // Fetch working schedule from Firestore
+  // Fetch working schedule from Firestore with debugging
   async function fetchWorkingSchedule() {
     try {
       const docRef = doc(db, "adminSettings", "workingSchedule");
       const docSnap = await getDoc(docRef);
       workingSchedule = docSnap.exists() ? docSnap.data() : {};
+      
+      console.log("Fetched schedule data:", workingSchedule); // Debug log
+      console.log("Friday availability:", workingSchedule["Fri"]?.enabled); // Specific debug
+      
       return true;
     } catch (error) {
       console.error("Error fetching working schedule:", error);
@@ -81,11 +85,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const newCalendar = document.createElement("div");
     newCalendar.className = "calendarwaleed calendar-content";
     
-    // --- Header ---
+    // Calendar Header
     const header = document.createElement("div");
     header.className = "calendar-header";
 
-    // Previous Month Button
+    // Navigation Buttons
     const prevBtn = document.createElement("button");
     prevBtn.type = "button";
     prevBtn.className = "calendar-nav-btn";
@@ -99,13 +103,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderCalendar(newYear, newMonth, "left");
     };
 
-    // Month/Year Display
     const monthYear = document.createElement("div");
     monthYear.textContent = `${new Date(year, month).toLocaleString("default", {
       month: "long",
     })} ${year}`;
 
-    // Next Month Button
     const nextBtn = document.createElement("button");
     nextBtn.type = "button";
     nextBtn.className = "calendar-nav-btn";
@@ -118,7 +120,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderCalendar(newYear, newMonth, "right");
     };
 
-    // Today Button
     const todayBtn = document.createElement("button");
     todayBtn.type = "button";
     todayBtn.className = "calendar-today-btn";
@@ -133,7 +134,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     header.append(prevBtn, monthYear, nextBtn, todayBtn);
     newCalendar.appendChild(header);
 
-    // --- Grid ---
+    // Calendar Grid
     const grid = document.createElement("div");
     grid.className = "calendar-grid";
 
@@ -145,7 +146,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       grid.appendChild(wd);
     });
 
-    // Calculate days in month and starting day
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDayIndex = new Date(year, month, 1).getDay();
 
@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Create day elements
+    // Create day elements with strict availability checks
     for (let day = 1; day <= daysInMonth; day++) {
       const dateObj = new Date(year, month, day);
       dateObj.setHours(0, 0, 0, 0);
@@ -172,7 +172,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       const isInPast = dateObj < today;
       const isSelected = selectedDate === formatDate(dateObj);
       const dayName = getDayName(dateObj);
-      const isDayEnabled = workingSchedule[dayName]?.enabled !== false;
+      
+      // STRICT AVAILABILITY CHECK - Only enabled if explicitly true
+      const dayData = workingSchedule[dayName] || {};
+      const isDayEnabled = dayData.enabled === true;
+      
+      console.log(`Day: ${dayName}, Enabled: ${isDayEnabled}, Data:`, dayData); // Debug log
 
       if (isInPast || !isDayEnabled) {
         dayEl.classList.add("disabled");
@@ -190,7 +195,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     newCalendar.appendChild(grid);
 
-    // --- Animation Handling ---
+    // Animation Handling
     const oldCalendar = calendar.querySelector(".calendar-content");
 
     if (oldCalendar && direction) {
@@ -248,7 +253,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Initialize calendar
   function initCalendar() {
-    // Attach to all date input fields with class "date-input"
     document.querySelectorAll(".date-input").forEach((input) => {
       input.addEventListener("click", (e) => {
         activeInput = e.target;
@@ -256,11 +260,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       input.addEventListener("keydown", (e) => {
-        e.preventDefault(); // prevent manual typing
+        e.preventDefault();
       });
     });
 
-    // Close calendar when clicking outside
     document.addEventListener("mousedown", (e) => {
       if (!calendar.contains(e.target) && !e.target.classList.contains("date-input")) {
         hideCalendar();
