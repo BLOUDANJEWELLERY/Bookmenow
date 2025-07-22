@@ -127,7 +127,7 @@ label.day-name {
   -webkit-appearance: none;
   width: 70px;
   height: 32px;
-  margin:2px;
+  margin-left:4px;
   background-color: #ff4d4d; /* red for 'Closed' */
   border-radius: 50px;
   position: relative;
@@ -185,6 +185,7 @@ input[type="date"] {
   background: #eaf6ff;
   color: #003366;
   font-weight: 600;
+  margin-left: 1px;
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='10' height='6' viewBox='0 0 14 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 8L13 1' stroke='%230073CC' stroke-width='2'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -732,11 +733,11 @@ weekdays.forEach(day => {
     holidayForm.addEventListener("submit", async e => {
       e.preventDefault();
       const newDate = holidayInput.value;
-      if (!newDate) return alert("Select a date.");
+      if (!newDate) return ("Select a date.");
       const docRef = doc(db, "adminSettings", "holidays");
       const docSnap = await getDoc(docRef);
       let holidays = docSnap.exists() ? docSnap.data().dates || [] : [];
-      if (holidays.includes(newDate)) return alert("Date already added.");
+      if (holidays.includes(newDate)) return showToast("Date already added.");
       holidays.push(newDate);
       await setDoc(docRef, { dates: holidays });
       holidayInput.value = "";
@@ -809,7 +810,7 @@ window.deleteHoliday = async (date, btn) => {
         cutoffHours: parseInt(document.getElementById("hours-before").value)
       };
       await setDoc(doc(db, "adminSettings", "advancedSettings"), data);
-      alert("Advanced settings saved.");
+      showToast("Advanced settings saved.");
     });
 
     async function loadAdvancedSettings() {
