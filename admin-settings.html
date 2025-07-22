@@ -789,9 +789,30 @@ window.deleteHoliday = async (date, btn) => {
 };
 
     async function loadHolidays() {
-      const docSnap = await getDoc(doc(db, "adminSettings", "holidays"));
-      if (docSnap.exists()) renderHolidays(docSnap.data().dates || []);
-    }
+  const docRef = doc(db, "adminSettings", "holidays");
+  const docSnap = await getDoc(docRef);
+  
+  if (!docSnap.exists()) return;
+
+  let holidays = docSnap.data().dates || [];
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Midnight — strip time
+
+  // Filter out past holidays
+  const upcomingHolidays = holidays.filter(dateStr => {
+    const holidayDate = new Date(dateStr);
+    return holidayDate >= today;
+  });
+
+  // If any old dates were removed, update Firestore
+  if (upcomingHolidays.length !== holidays.length) {
+    await setDoc(docRef, { dates: upcomingHolidays });
+  }
+
+  renderHolidays(upcomingHolidays);
+}
+    
     function addHolidayToList(date) {
   const li = document.createElement("li");
   li.classList.add("slide-in-left-holiday");
