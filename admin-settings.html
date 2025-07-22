@@ -305,7 +305,7 @@ input[type="date"] {
   gap: 1.2rem;
 }
 
-/* Each list item styled as a card */
+/* Each item styled like a card */
 .list li {
   display: flex;
   justify-content: space-between;
@@ -328,7 +328,7 @@ input[type="date"] {
   box-shadow: 0 6px 20px rgba(0, 123, 255, 0.15);
 }
 
-/* Date text */
+/* Holiday date text */
 .list li span {
   font-size: 1.1rem;
   font-weight: 600;
@@ -336,29 +336,31 @@ input[type="date"] {
   letter-spacing: 0.3px;
 }
 
-/* Delete button */
-.btn-delete {
+/* Cancel (delete) button */
+.btn-cancel {
   background: linear-gradient(to right, #dc3545, #ff6b6b);
   border: none;
-  border-radius: 8px;
-  padding: 0.4rem 0.65rem;
+  border-radius: 10px;
+  padding: 0.45rem 0.6rem;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(220, 53, 69, 0.25);
-  transition: background 0.3s ease, transform 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 10px rgba(220, 53, 69, 0.25);
+  transition: background 0.25s ease, transform 0.2s ease;
 }
 
-.btn-delete:hover {
+.btn-cancel:hover {
   background: linear-gradient(to right, #c82333, #ff4d4d);
   transform: scale(1.05);
 }
 
-/* Material Icon inside button */
-.btn-delete .material-icons {
-  font-size: 1.3rem;
-  color: white;
+/* SVG cross icon (slightly bigger and bold) */
+.btn-cancel svg {
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  width: 22px;
+  height: 22px;
   pointer-events: none;
 }
   </style>
@@ -659,8 +661,14 @@ weekdays.forEach(day => {
       dates.sort().forEach(date => {
         const li = document.createElement("li");
         li.innerHTML = `<span>${date}</span>
-           <button class="btn-delete" onclick="deleteHoliday('${date}')">
-        <span class="material-icons">delete_forever</span>
+            <button class="btn-cancel" title="Cancel" onclick="deleteHoliday('${date}')">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+             width="22" height="22" viewBox="0 0 24 24" 
+             fill="none" stroke="#ffffff" stroke-width="2.5" 
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
       </button>`;
           holidayList.appendChild(li);
       });
