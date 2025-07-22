@@ -898,16 +898,32 @@ blackoutForm.addEventListener('submit', async e => {
     
 function showToast(message = "Schedule saved.", duration = 2500) {
   const overlay = document.getElementById("toast-overlay");
-  const toast = document.getElementById("custom-toast");
+  const toastBox = document.getElementById("custom-toast");
   const messageSpan = document.getElementById("toast-message");
 
   messageSpan.textContent = message;
   overlay.classList.remove("toast-hide");
   overlay.classList.add("toast-show");
 
+  // Click outside to hide
+  const dismissOnClick = (e) => {
+    if (!toastBox.contains(e.target)) {
+      overlay.classList.remove("toast-show");
+      overlay.classList.add("toast-hide");
+      document.removeEventListener("click", dismissOnClick);
+    }
+  };
+
+  // Delay binding the click to avoid immediate trigger from same event
+  setTimeout(() => {
+    document.addEventListener("click", dismissOnClick);
+  }, 50);
+
+  // Auto-hide after duration
   setTimeout(() => {
     overlay.classList.remove("toast-show");
     overlay.classList.add("toast-hide");
+    document.removeEventListener("click", dismissOnClick);
   }, duration);
 }
 
