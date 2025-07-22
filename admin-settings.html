@@ -365,7 +365,7 @@ input[type="date"] {
 }
 
 /* Only animate NEWLY added holiday */
-@keyframes slideInLeft {
+@keyframes slideInLeftHoliday {
   from {
     transform: translateX(-100%);
   }
@@ -373,12 +373,12 @@ input[type="date"] {
     transform: translateX(0%);
   }
 }
-.slide-in-left {
-  animation: slideInLeft 0.4s ease;
+.list li.slide-in-left-holiday {
+  animation: slideInLeftHoliday 0.4s ease;
 }
 
 /* Animate when removing */
-@keyframes slideOutLeft {
+@keyframes slideOutLeftHoliday {
   from {
     transform: translateX(0%);
   }
@@ -386,8 +386,8 @@ input[type="date"] {
     transform: translateX(-120%);
   }
 }
-.slide-out {
-  animation: slideOutLeft 0.4s ease forwards;
+.list li.slide-out-holiday {
+  animation: slideOutLeftHoliday 0.4s ease forwards;
 }
   </style>
 </head>
@@ -699,8 +699,8 @@ function renderHolidays(dates) {
 
 window.deleteHoliday = async (date, btn) => {
   const li = btn.closest("li");
-  li.classList.remove("slide-in-left");
-  li.classList.add("slide-out");
+  li.classList.remove("slide-in-left-holiday");
+  li.classList.add("slide-out-holiday");
 
   // Wait for animation to end before removing
   li.addEventListener("animationend", async () => {
@@ -720,7 +720,7 @@ window.deleteHoliday = async (date, btn) => {
     }
     function addHolidayToList(date) {
   const li = document.createElement("li");
-  li.classList.add("slide-in-left");
+  li.classList.add("slide-in-left-holiday");
   li.innerHTML = `
     <span>${date}</span>
     <button class="btn-cancel" title="Cancel" onclick="deleteHoliday('${date}', this)">
