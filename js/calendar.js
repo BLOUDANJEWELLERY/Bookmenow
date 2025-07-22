@@ -2,8 +2,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const firebaseConfig = {
+// Firebase config
+const firebaseConfig = {
   apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
   authDomain: "sampleportfolio-9450c.firebaseapp.com",
   projectId: "sampleportfolio-9450c",
@@ -14,12 +14,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  let currentDate = new Date(); // today initially
-  let selectedDate = null;
-  let isAnimating = false;
-  let activeInput = null; // Tracks the input currently in use
 
 let workingSchedule = {};
 
@@ -35,6 +29,16 @@ async function loadWorkingSchedule() {
     console.error("Error fetching working schedule:", err);
   }
 }
+
+(async () => {
+  await loadWorkingSchedule(); // ✅ load schedule BEFORE anything renders
+
+  document.addEventListener("DOMContentLoaded", () => {
+  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  let currentDate = new Date(); // today initially
+  let selectedDate = null;
+  let isAnimating = false;
+  let activeInput = null; // Tracks the input currently in use
 
   const calendar = document.getElementById("waleedcalendar");
   // Format date as YYYY-MM-DD
@@ -240,6 +244,6 @@ const isDisabledBySchedule = workingSchedule?.[weekdayName]?.enabled === false;
   });
 
 const now = new Date();
-await loadWorkingSchedule();
-renderCalendar(now.getFullYear(), now.getMonth());
-});
+renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
+  });
+})();
