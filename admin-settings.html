@@ -295,101 +295,79 @@ input[type="date"] {
   left: 0;
   z-index: 9999;
 }
-/* Holiday list container */
-.list {
-  margin-top: 2rem;
-  padding: 0;
+/* Holiday List Styling */
+.holiday-list {
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
+  padding: 0;
+  margin-top: 1rem;
 }
 
-/* Each item styled like a card */
-.list li {
+.holiday-list li {
+  background: #f9f9f9;
+  margin-bottom: 0.7rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #ffffff;
-  padding: 1rem 1.2rem;
-  border-radius: 14px;
-  border: 2px solid transparent;
-  background-image:
-    linear-gradient(#f2fbff, #f2fbff),
-    linear-gradient(135deg, #007bff, #00c6ff);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  box-shadow: 0 4px 16px rgba(0, 51, 102, 0.08);
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.list li:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.15);
+/* Slide in from left */
+.holiday-list li.slide-in-left {
+  animation: slideInLeft 0.4s ease forwards;
 }
 
-/* Holiday date text */
-.list li span {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #003366;
-  letter-spacing: 0.3px;
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
 }
 
-/* Cancel (delete) button */
+/* Slide out to left */
+.holiday-list li.slide-out {
+  animation: slideOutLeft 0.4s ease forwards;
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+}
+
+/* Delete Button */
 .btn-cancel {
   background: linear-gradient(to right, #dc3545, #ff6b6b);
+  color: white;
   border: none;
-  border-radius: 10px;
-  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  padding: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 10px rgba(220, 53, 69, 0.25);
-  transition: background 0.25s ease, transform 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
 .btn-cancel:hover {
-  background: linear-gradient(to right, #c82333, #ff4d4d);
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
-/* SVG cross icon (slightly bigger and bold) */
 .btn-cancel svg {
-  stroke: #ffffff;
-  stroke-width: 2.5;
-  width: 22px;
-  height: 22px;
   pointer-events: none;
-}
-
-/* Slide in from left (no fade) */
-@keyframes slideInLeft {
-  0% {
-    transform: translateX(-40px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.slide-in-left {
-  animation: slideInLeft 0.35s ease-out forwards;
-}
-
-/* Slide out to left (no fade) */
-@keyframes slideOutLeft {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-40px);
-  }
-}
-
-.slide-out {
-  animation: slideOutLeft 0.3s ease-in forwards;
 }
   </style>
 </head>
@@ -709,7 +687,7 @@ window.deleteHoliday = async (date, btn) => {
   li.classList.remove("slide-in-left");
   li.classList.add("slide-out");
 
-  // Remove the list item after animation completes
+  // Wait for animation to end before removing
   li.addEventListener("animationend", async () => {
     li.remove();
 
@@ -718,7 +696,7 @@ window.deleteHoliday = async (date, btn) => {
     let holidays = docSnap.exists() ? docSnap.data().dates || [] : [];
     holidays = holidays.filter(d => d !== date);
     await setDoc(docRef, { dates: holidays });
-  });
+  }, { once: true });
 };
 
     async function loadHolidays() {
