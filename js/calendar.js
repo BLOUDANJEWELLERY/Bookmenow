@@ -16,8 +16,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  let currentDate = new Date();
+  const weekdaysFull = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const weekdaysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+   let currentDate = new Date();
   let selectedDate = null;
   let isAnimating = false;
   let activeInput = null;
@@ -53,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Get day name (Sun, Mon, etc.) from date
   function getDayName(date) {
-    return weekdays[date.getDay()];
+    return weekdaysFull[date.getDay()];
   }
 
   // Handle day selection
@@ -139,12 +140,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     grid.className = "calendar-grid";
 
     // Weekday Headers
-    weekdays.forEach((day) => {
-      const wd = document.createElement("div");
-      wd.className = "calendar-day-name";
-      wd.textContent = day;
-      grid.appendChild(wd);
-    });
+   weekdaysShort.forEach((shortDay) => {
+  const wd = document.createElement("div");
+  wd.className = "calendar-day-name";
+  wd.textContent = shortDay;
+  grid.appendChild(wd);
+});
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDayIndex = new Date(year, month, 1).getDay();
