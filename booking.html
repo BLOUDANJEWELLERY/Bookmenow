@@ -258,39 +258,56 @@ async function updateTimeSlotsForDate(selectedDate) {
   timeSelect.innerHTML = `<option value="">Loading...</option>`;
 
   const weekday = new Date(selectedDate).toLocaleDateString("en-US", { weekday: "long" });
+  console.log("Selected Date:", selectedDate);
+  console.log("Weekday:", weekday);
 
   try {
     // Fetch working schedule
     const scheduleSnap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
     if (!scheduleSnap.exists()) {
+      console.log("No workingSchedule doc found");
       timeSelect.innerHTML = `<option value="">No schedule found</option>`;
       return;
     }
     const schedule = scheduleSnap.data();
-    const dayData = schedule[weekday];
+    console.log("Working schedule data:", schedule);
 
-    if (!dayData || !dayData.enabled) {
+    const dayData = schedule[weekday];
+    if (!dayData) {
+      console.log(`No schedule data for ${weekday}`);
+      timeSelect.innerHTML = `<option value="">Not available on ${weekday}</option>`;
+      return;
+    }
+    console.log(`${weekday} schedule:`, dayData);
+
+    if (!dayData.enabled) {
+      console.log(`${weekday} is not enabled for booking`);
       timeSelect.innerHTML = `<option value="">Not available on ${weekday}</option>`;
       return;
     }
 
     // Fetch bufferTime from advancedSettings
-    let bufferTime = 30; // Default fallback
     const advancedSnap = await getDoc(doc(db, "adminSettings", "advancedSettings"));
+    let bufferTime = 30;
     if (advancedSnap.exists()) {
       const advanced = advancedSnap.data();
+      console.log("Advanced settings:", advanced);
       if (advanced.bufferTime) bufferTime = parseInt(advanced.bufferTime);
+    } else {
+      console.log("No advancedSettings doc found");
     }
 
     const isDoubleShift = dayData.singleOrDouble === "double";
+    console.log("Shift type:", dayData.singleOrDouble, "Double shift?", isDoubleShift);
+
     const shifts = [
       { start: dayData.start_1, end: dayData.end_1 },
       ...(isDoubleShift ? [{ start: dayData.start_2, end: dayData.end_2 }] : [])
     ];
 
-    // Generate time slots with buffer spacing
     let allSlots = [];
     for (const shift of shifts) {
+      if (!shift.start || !shift.end) continue;
       let current = timeToDate(shift.start);
       const end = timeToDate(shift.end);
       while (current < end) {
@@ -300,8 +317,9 @@ async function updateTimeSlotsForDate(selectedDate) {
         current.setMinutes(current.getMinutes() + bufferTime);
       }
     }
+    console.log("Generated slots:", allSlots);
 
-    // Get booked times for that date
+    // Fetch bookings for date
     const bookingsQuery = query(collection(db, "bookings"), where("date", "==", selectedDate));
     const bookingsSnap = await getDocs(bookingsQuery);
     const takenTimes = [];
@@ -309,11 +327,11 @@ async function updateTimeSlotsForDate(selectedDate) {
       const data = doc.data();
       takenTimes.push(data.time);
     });
+    console.log("Taken times:", takenTimes);
 
     const now = new Date();
     const todayStr = new Date().toISOString().split("T")[0];
 
-    // Filter booked and past slots
     const availableSlots = allSlots.filter(slot => {
       if (takenTimes.includes(slot)) return false;
       if (selectedDate === todayStr) {
@@ -325,7 +343,8 @@ async function updateTimeSlotsForDate(selectedDate) {
       return true;
     });
 
-    // Render the dropdown
+    console.log("Available slots:", availableSlots);
+
     if (availableSlots.length === 0) {
       timeSelect.innerHTML = `<option value="">All slots booked</option>`;
     } else {
@@ -337,12 +356,12 @@ async function updateTimeSlotsForDate(selectedDate) {
         timeSelect.appendChild(opt);
       });
     }
-
   } catch (err) {
-    console.error("❌ Slot generation failed:", err);
+    console.error("Error in slot generation:", err);
     timeSelect.innerHTML = `<option value="">Error loading slots</option>`;
   }
 }
+
 
 
     // Booking time slots update on selectedDate change
