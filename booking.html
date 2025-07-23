@@ -237,37 +237,40 @@
     });
 
 
-let bufferTime = 30; // 🔸 Default value
+let bufferTime = 30; // Default bufferTime
 
-// 🔹 Fetch bufferTime once on page load
+// 🔸 This will display the status in your debug div
+const debug = (msg) => {
+  const el = document.getElementById("debug-buffer-time");
+  if (el) el.textContent = msg;
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const snap = await getDoc(doc(db, "adminSettings", "advancedSettings"));
-    if (snap.exists()) {
-      const data = snap.data();
-      if (typeof data.bufferTime === "number" && !isNaN(data.bufferTime)) {
-        bufferTime = data.bufferTime;
+    const settingsDoc = await getDoc(doc(db, "adminSettings", "advancedSettings"));
+    if (settingsDoc.exists()) {
+      const settingsData = settingsDoc.data();
+
+      if (typeof settingsData.bufferTime === "number" && !isNaN(settingsData.bufferTime)) {
+        bufferTime = settingsData.bufferTime;
+        debug(`✅ Buffer Time loaded from Firestore: ${bufferTime} minutes`);
+      } else {
+        debug("⚠️ Buffer Time missing or invalid in Firestore. Using default (30 mins)");
       }
+    } else {
+      debug("❌ Settings doc not found. Using default (30 mins)");
     }
   } catch (err) {
-    // Silent fail: keep default 30
-  }
-
-  // 🔸 Show bufferTime visually for testing (hidden otherwise)
-  const debugDiv = document.getElementById("debug-buffer-time");
-  if (debugDiv) {
-    debugDiv.textContent = `Buffer time: ${bufferTime} minutes`;
-    debugDiv.style.display = "block";
+    debug("🚫 Error fetching buffer time. Using default (30 mins)");
   }
 });
 
-// 🔹 Date selection triggers slot refresh
 document.addEventListener("dateSelected", (e) => {
   const selectedDate = e.detail.selectedDate;
   updateTimeSlotsForDate(selectedDate);
 });
 
-// 🔸 Dynamic slot generation using bufferTime
+// 🔹 Generate time slots using dynamic bufferTime
 function generateTimeSlots() {
   const slots = [];
 
@@ -286,18 +289,17 @@ function generateTimeSlots() {
     const hh = h.toString().padStart(2, "0");
 
     slots.push({
-      value: `${hh}:${mm}`,              // For internal matching
-      label: `${labelHour}:${mm} ${ampm}` // User display
+      value: `${hh}:${mm}`,
+      label: `${labelHour}:${mm} ${ampm}`
     });
 
-    // 🔸 Increment using dynamic bufferTime
-    slot = new Date(slot.getTime() + bufferTime * 60000);
+    slot = new Date(slot.getTime() + bufferTime * 60000); // 🔸 Use bufferTime here
   }
 
   return slots;
 }
 
-// 🔹 Updates time slots dropdown for a selected date
+// 🔸 Update time slots dropdown for selected date
 async function updateTimeSlotsForDate(selectedDate) {
   const timeSelect = document.getElementById("time");
   timeSelect.innerHTML = `<option value="">-- Choose --</option>`;
@@ -339,8 +341,8 @@ async function updateTimeSlotsForDate(selectedDate) {
     });
 
   } catch (err) {
-    // Silent fail - fallback message
     timeSelect.innerHTML = `<option value="">Error loading slots</option>`;
+    debug("🚫 Error loading bookings or slots.");
   }
 }
 
