@@ -70,31 +70,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Handle day selection
   function handleDayClick(dayEl, dateObj) {
-    calendar.querySelectorAll(".calendar-day.selected").forEach(el => {
-      el.classList.remove("selected");
-    });
-    
-    dayEl.classList.add("selected");
-    // Use UTC date to avoid timezone shifting
-    const utcDate = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()));
-    selectedDate = formatDate(utcDate);
-    
-    if (activeInput) {
-      activeInput.value = selectedDate;
-    }
+  calendar.querySelectorAll(".calendar-day.selected").forEach(el => {
+    el.classList.remove("selected");
+  });
 
-    if (typeof updateTimeSlotsForDate === "function") {
-      updateTimeSlotsForDate(selectedDate);
-    }
+  dayEl.classList.add("selected");
 
-    hideCalendar();
+  // Use UTC date to avoid timezone shifting
+  const utcDate = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()));
+  const selectedDate = formatDate(utcDate); // Make sure this is declared with `const`
+
+  if (activeInput) {
+    activeInput.value = selectedDate;
   }
-  
-const event = new CustomEvent("dateSelected", {
-  detail: { selectedDate }
-});
-document.dispatchEvent(event);
 
+  // 🔥 Dispatch the custom event here
+  const event = new CustomEvent("dateSelected", {
+    detail: { selectedDate }
+  });
+  document.dispatchEvent(event);
+
+  hideCalendar();
+}
   async function renderCalendar(year, month, direction = null) {
     if (isAnimating) return;
 
