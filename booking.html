@@ -232,6 +232,12 @@
       signOut(auth).then(() => window.location.href = "login.html").catch(console.error);
     });
 
+
+  document.addEventListener("dateSelected", (e) => {
+    const selectedDate = e.detail.selectedDate;
+    updateTimeSlotsForDate(selectedDate);
+  });
+  
     // Time slots generation (same as before)
     const generateTimeSlots = () => {
       const slots = [];
