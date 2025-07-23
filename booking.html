@@ -238,60 +238,111 @@
     updateTimeSlotsForDate(selectedDate);
   });
   
-    // Time slots generation (same as before)
-    const generateTimeSlots = () => {
-      const slots = [];
-      for (let h = 8; h <= 23; h++) {
-        for (let m = 0; m < 60; m += 30) {
-          if (h === 23 && m > 30) continue;
-          const hour = h % 12 === 0 ? 12 : h % 12;
-          const ampm = h < 12 ? "AM" : "PM";
-          const mm = m.toString().padStart(2, "0");
-          slots.push({
-            value: `${h.toString().padStart(2, "0")}:${mm}`,
-            label: `${hour}:${mm} ${ampm}`
-          });
-        }
+
+
+  import { doc, getDoc, query, where, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+// Utilities
+function pad(n) {
+  return n.toString().padStart(2, "0");
+}
+function timeToDate(timeStr) {
+  const [hours, minutes] = timeStr.split(":").map(Number);
+  const d = new Date();
+  d.setHours(hours, minutes, 0, 0);
+  return d;
+}
+
+async function updateTimeSlotsForDate(selectedDate) {
+  const timeSelect = document.getElementById("time");
+  timeSelect.innerHTML = `<option value="">Loading...</option>`;
+
+  const weekday = new Date(selectedDate).toLocaleDateString("en-US", { weekday: "long" });
+
+  try {
+    // Fetch working schedule
+    const scheduleSnap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
+    if (!scheduleSnap.exists()) {
+      timeSelect.innerHTML = `<option value="">No schedule found</option>`;
+      return;
+    }
+    const schedule = scheduleSnap.data();
+    const dayData = schedule[weekday];
+
+    if (!dayData || !dayData.enabled) {
+      timeSelect.innerHTML = `<option value="">Not available on ${weekday}</option>`;
+      return;
+    }
+
+    // Fetch bufferTime from advancedSettings
+    let bufferTime = 30; // Default fallback
+    const advancedSnap = await getDoc(doc(db, "adminSettings", "advancedSettings"));
+    if (advancedSnap.exists()) {
+      const advanced = advancedSnap.data();
+      if (advanced.bufferTime) bufferTime = parseInt(advanced.bufferTime);
+    }
+
+    const isDoubleShift = dayData.singleOrDouble === "double";
+    const shifts = [
+      { start: dayData.start_1, end: dayData.end_1 },
+      ...(isDoubleShift ? [{ start: dayData.start_2, end: dayData.end_2 }] : [])
+    ];
+
+    // Generate time slots with buffer spacing
+    let allSlots = [];
+    for (const shift of shifts) {
+      let current = timeToDate(shift.start);
+      const end = timeToDate(shift.end);
+      while (current < end) {
+        const h = pad(current.getHours());
+        const m = pad(current.getMinutes());
+        allSlots.push(`${h}:${m}`);
+        current.setMinutes(current.getMinutes() + bufferTime);
       }
-      return slots;
-    };
+    }
 
-    const allSlots = generateTimeSlots();
+    // Get booked times for that date
+    const bookingsQuery = query(collection(db, "bookings"), where("date", "==", selectedDate));
+    const bookingsSnap = await getDocs(bookingsQuery);
+    const takenTimes = [];
+    bookingsSnap.forEach(doc => {
+      const data = doc.data();
+      takenTimes.push(data.time);
+    });
 
-    async function updateTimeSlotsForDate(selectedDate) {
+    const now = new Date();
+    const todayStr = new Date().toISOString().split("T")[0];
+
+    // Filter booked and past slots
+    const availableSlots = allSlots.filter(slot => {
+      if (takenTimes.includes(slot)) return false;
+      if (selectedDate === todayStr) {
+        const [h, m] = slot.split(":").map(Number);
+        const slotDate = new Date();
+        slotDate.setHours(h, m, 0, 0);
+        if (slotDate <= now) return false;
+      }
+      return true;
+    });
+
+    // Render the dropdown
+    if (availableSlots.length === 0) {
+      timeSelect.innerHTML = `<option value="">All slots booked</option>`;
+    } else {
       timeSelect.innerHTML = `<option value="">-- Choose --</option>`;
-      if (!selectedDate) return;
-
-      const now = new Date();
-      const isToday = selectedDate === now.toISOString().split("T")[0];
-
-      const q = query(collection(db, "bookings"), where("date", "==", selectedDate));
-      const snapshot = await getDocs(q);
-      const bookedTimes = snapshot.docs.map(doc => doc.data().time);
-
-      const filteredSlots = allSlots.filter(slot => {
-        if (bookedTimes.includes(slot.value)) return false;
-        if (isToday) {
-          const [hh, mm] = slot.value.split(":").map(Number);
-          const slotTime = new Date();
-          slotTime.setHours(hh, mm, 0, 0);
-          if (slotTime <= now) return false;
-        }
-        return true;
-      });
-
-      if (filteredSlots.length === 0) {
-        timeSelect.innerHTML = `<option value="">No available slots</option>`;
-        return;
-      }
-
-      filteredSlots.forEach(slot => {
+      availableSlots.forEach(slot => {
         const opt = document.createElement("option");
-        opt.value = slot.value;
-        opt.textContent = slot.label;
+        opt.value = slot;
+        opt.textContent = slot;
         timeSelect.appendChild(opt);
       });
     }
+
+  } catch (err) {
+    console.error("❌ Slot generation failed:", err);
+    timeSelect.innerHTML = `<option value="">Error loading slots</option>`;
+  }
+}
 
 
     // Booking time slots update on selectedDate change
