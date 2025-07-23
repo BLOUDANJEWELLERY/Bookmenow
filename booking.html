@@ -237,32 +237,37 @@
     });
 
 
-let bufferTime = 30; // Default bufferTime
+let bufferTime = 30; // Default fallback
 
-// 🔸 This will display the status in your debug div
 const debug = (msg) => {
   const el = document.getElementById("debug-buffer-time");
   if (el) el.textContent = msg;
 };
 
-document.addEventListener("DOMContentLoaded", async () => {
+// ✅ Force check Firestore path and response
+async function loadBufferTime() {
+  debug("📡 Fetching buffer time...");
   try {
-    const settingsDoc = await getDoc(doc(db, "adminSettings", "advancedSettings"));
-    if (settingsDoc.exists()) {
-      const settingsData = settingsDoc.data();
-
-      if (typeof settingsData.bufferTime === "number" && !isNaN(settingsData.bufferTime)) {
-        bufferTime = settingsData.bufferTime;
-        debug(`✅ Buffer Time loaded from Firestore: ${bufferTime} minutes`);
+    const settingsRef = doc(db, "adminSettings", "advancedSettings");
+    const docSnap = await getDoc(settingsRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      if (typeof data.bufferTime === "number") {
+        bufferTime = data.bufferTime;
+        debug(`✅ Buffer Time fetched: ${bufferTime} minutes`);
       } else {
-        debug("⚠️ Buffer Time missing or invalid in Firestore. Using default (30 mins)");
+        debug("⚠️ 'bufferTime' is missing or not a number in Firestore.");
       }
     } else {
-      debug("❌ Settings doc not found. Using default (30 mins)");
+      debug("❌ Document 'advancedSettings' does not exist.");
     }
-  } catch (err) {
-    debug("🚫 Error fetching buffer time. Using default (30 mins)");
+  } catch (error) {
+    debug("🚫 Failed to fetch bufferTime: " + error.message);
   }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadBufferTime(); // 🔁 Fetch before user selects date
 });
 
 document.addEventListener("dateSelected", (e) => {
@@ -270,21 +275,18 @@ document.addEventListener("dateSelected", (e) => {
   updateTimeSlotsForDate(selectedDate);
 });
 
-// 🔹 Generate time slots using dynamic bufferTime
 function generateTimeSlots() {
   const slots = [];
-
   let slot = new Date();
-  slot.setHours(8, 0, 0, 0); // Start at 8:00 AM
-
+  slot.setHours(8, 0, 0, 0); // Start: 08:00
   const end = new Date();
-  end.setHours(23, 30, 0, 0); // End at 11:30 PM
+  end.setHours(23, 30, 0, 0); // End: 23:30
 
   while (slot <= end) {
     const h = slot.getHours();
     const m = slot.getMinutes();
-    const labelHour = h % 12 === 0 ? 12 : h % 12;
     const ampm = h < 12 ? "AM" : "PM";
+    const labelHour = h % 12 === 0 ? 12 : h % 12;
     const mm = m.toString().padStart(2, "0");
     const hh = h.toString().padStart(2, "0");
 
@@ -293,13 +295,12 @@ function generateTimeSlots() {
       label: `${labelHour}:${mm} ${ampm}`
     });
 
-    slot = new Date(slot.getTime() + bufferTime * 60000); // 🔸 Use bufferTime here
+    slot = new Date(slot.getTime() + bufferTime * 60000);
   }
 
   return slots;
 }
 
-// 🔸 Update time slots dropdown for selected date
 async function updateTimeSlotsForDate(selectedDate) {
   const timeSelect = document.getElementById("time");
   timeSelect.innerHTML = `<option value="">-- Choose --</option>`;
@@ -330,6 +331,7 @@ async function updateTimeSlotsForDate(selectedDate) {
 
     if (filteredSlots.length === 0) {
       timeSelect.innerHTML = `<option value="">No available slots</option>`;
+      debug("🕓 All slots blocked or booked.");
       return;
     }
 
@@ -340,9 +342,11 @@ async function updateTimeSlotsForDate(selectedDate) {
       timeSelect.appendChild(opt);
     });
 
+    debug(`✅ ${filteredSlots.length} slot(s) shown`);
+
   } catch (err) {
     timeSelect.innerHTML = `<option value="">Error loading slots</option>`;
-    debug("🚫 Error loading bookings or slots.");
+    debug("🚫 Firestore fetch failed: " + err.message);
   }
 }
 
