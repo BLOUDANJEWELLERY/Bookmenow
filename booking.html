@@ -238,9 +238,25 @@ document.addEventListener("dateSelected", (e) => {
   updateTimeSlotsForDate(selectedDate);
 });
 
-// === Utilities ===
+// === Utility Functions ===
 function pad(n) {
   return n.toString().padStart(2, "0");
+}
+
+function convertTo24H(time12h) {
+  if (!time12h) return "00:00";
+  const [time, modifier] = time12h.trim().split(" ");
+  let [h, m] = time.split(":").map(Number);
+  if (modifier === "PM" && h !== 12) h += 12;
+  if (modifier === "AM" && h === 12) h = 0;
+  return `${pad(h)}:${pad(m)}`;
+}
+
+function convertTo12H(time24) {
+  let [h, m] = time24.split(":").map(Number);
+  const ampm = h >= 12 ? "PM" : "AM";
+  h = h % 12 || 12;
+  return `${pad(h)}:${pad(m)} ${ampm}`;
 }
 
 function timeToDate(timeStr) {
@@ -250,63 +266,44 @@ function timeToDate(timeStr) {
   return d;
 }
 
-function convertTo12H(time24) {
-  let [h, m] = time24.split(":").map(Number);
-  const ampm = h >= 12 ? "PM" : "AM";
-  h = h % 12;
-  h = h ? h : 12;
-  return `${pad(h)}:${pad(m)} ${ampm}`;
-}
-
-function convertTo24H(time12h) {
-  const [time, modifier] = time12h.split(' ');
-  let [h, m] = time.split(':').map(Number);
-  if (modifier === 'PM' && h !== 12) h += 12;
-  if (modifier === 'AM' && h === 12) h = 0;
-  return `${pad(h)}:${pad(m)}`;
-}
-
-// === Main Function ===
+// === Main Logic ===
 async function updateTimeSlotsForDate(selectedDate) {
   const timeSelect = document.getElementById("time");
   timeSelect.innerHTML = `<option value="">Loading...</option>`;
 
-  const weekday = new Date(selectedDate).toLocaleDateString("en-US", { weekday: "long" });
-  const todayStr = new Date().toISOString().split("T")[0];
+  const selectedWeekday = new Date(selectedDate).toLocaleDateString("en-US", { weekday: "long" });
+  const todayDateStr = new Date().toISOString().split("T")[0];
   const now = new Date();
 
   try {
-    // Get working schedule
-    const scheduleSnap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
-    if (!scheduleSnap.exists()) {
-      console.log("No workingSchedule doc found");
+    // Fetch working schedule
+    const scheduleDoc = await getDoc(doc(db, "adminSettings", "workingSchedule"));
+    if (!scheduleDoc.exists()) {
       timeSelect.innerHTML = `<option value="">No schedule found</option>`;
       return;
     }
 
-    const schedule = scheduleSnap.data();
-    const dayData = schedule[weekday];
-    if (!dayData || !dayData.enabled) {
-      timeSelect.innerHTML = `<option value="">Not available on ${weekday}</option>`;
+    const schedule = scheduleDoc.data();
+    const dayConfig = schedule[selectedWeekday];
+    if (!dayConfig || !dayConfig.enabled) {
+      timeSelect.innerHTML = `<option value="">Not available on ${selectedWeekday}</option>`;
       return;
     }
 
-    // Get buffer time
-    const advancedSnap = await getDoc(doc(db, "adminSettings", "advancedSettings"));
-    let bufferTime = 30;
-    if (advancedSnap.exists()) {
-      const adv = advancedSnap.data();
-      if (adv.bufferTime) bufferTime = parseInt(adv.bufferTime);
-    }
+    // Fetch buffer time
+    const advancedDoc = await getDoc(doc(db, "adminSettings", "advancedSettings"));
+    const bufferTime = advancedDoc.exists() && advancedDoc.data().bufferTime
+      ? parseInt(advancedDoc.data().bufferTime)
+      : 30;
 
-    const isDoubleShift = dayData.singleOrDouble === "double";
+    const isDoubleShift = dayConfig.singleOrDouble === "double";
     const shifts = [
-      { start: dayData.start_1, end: dayData.end_1 },
-      ...(isDoubleShift ? [{ start: dayData.start_2, end: dayData.end_2 }] : [])
+      { start: dayConfig.start_1, end: dayConfig.end_1 },
+      ...(isDoubleShift ? [{ start: dayConfig.start_2, end: dayConfig.end_2 }] : [])
     ];
 
-    // Generate all slots in 12H format
-    let allSlots = [];
+    // Generate slots
+    const allSlots = [];
     for (const shift of shifts) {
       if (!shift.start || !shift.end) continue;
       let current = timeToDate(shift.start);
@@ -319,30 +316,27 @@ async function updateTimeSlotsForDate(selectedDate) {
       }
     }
 
-    // Get taken times for this date
-    const bookingsSnap = await getDocs(query(collection(db, "bookings"), where("date", "==", selectedDate)));
-    const takenTimes = [];
-    bookingsSnap.forEach(doc => {
-      const t = doc.data().time;
-      if (t) takenTimes.push(t.trim());
-    });
+    // Fetch existing bookings
+    const bookingsSnapshot = await getDocs(
+      query(collection(db, "bookings"), where("date", "==", selectedDate))
+    );
+    const takenTimes = bookingsSnapshot.docs
+      .map(doc => doc.data().time?.trim())
+      .filter(Boolean);
 
-    // Filter available slots
+    // Filter available
     const availableSlots = allSlots.filter(slot => {
       if (takenTimes.includes(slot)) return false;
-
-      // Skip past times if today
-      if (selectedDate === todayStr) {
+      if (selectedDate === todayDateStr) {
         const [h, m] = convertTo24H(slot).split(":").map(Number);
-        const slotDate = new Date();
-        slotDate.setHours(h, m, 0, 0);
-        if (slotDate <= now) return false;
+        const slotTime = new Date();
+        slotTime.setHours(h, m, 0, 0);
+        if (slotTime <= now) return false;
       }
-
       return true;
     });
 
-    // Display results
+    // Populate dropdown
     if (availableSlots.length === 0) {
       timeSelect.innerHTML = `<option value="">All slots booked</option>`;
     } else {
@@ -354,9 +348,8 @@ async function updateTimeSlotsForDate(selectedDate) {
         timeSelect.appendChild(opt);
       });
     }
-
-  } catch (err) {
-    console.error("Error in slot generation:", err);
+  } catch (error) {
+    console.error("Error updating slots:", error);
     timeSelect.innerHTML = `<option value="">Error loading slots</option>`;
   }
 }
