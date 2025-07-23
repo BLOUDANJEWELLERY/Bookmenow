@@ -258,7 +258,7 @@ function convertTo24H(time12h) {
   return `${pad(h)}:${pad(m)}`;
 }
 
-function timeToDate(timeStr) {
+function timeToDate12H(timeStr) {
   const [h, m] = convertTo24H(timeStr).split(":").map(Number);
   const d = new Date();
   d.setHours(h, m, 0, 0);
@@ -298,55 +298,54 @@ async function updateTimeSlotsForDate(selectedDate) {
       if (adv.bufferTime) bufferTime = parseInt(adv.bufferTime);
     }
 
-    // Build shift ranges
+    // Build shifts
     const isDoubleShift = dayData.singleOrDouble === "double";
     const shifts = [
       { start: dayData.start_1, end: dayData.end_1 },
       ...(isDoubleShift ? [{ start: dayData.start_2, end: dayData.end_2 }] : [])
     ];
 
-    // Generate all slots
+    // Generate all slots in 12H
     const allSlots = [];
     for (const shift of shifts) {
       if (!shift.start || !shift.end) continue;
-      let current = timeToDate(shift.start);
-      const end = timeToDate(shift.end);
+      let current = timeToDate12H(shift.start);
+      const end = timeToDate12H(shift.end);
       while (current < end) {
         const h = pad(current.getHours());
         const m = pad(current.getMinutes());
-        const value = `${h}:${m}`;
-        const label = convertTo12H(value);
-        allSlots.push({ value, label });
+        const label = convertTo12H(`${h}:${m}`);
+        allSlots.push(label);
         current.setMinutes(current.getMinutes() + bufferTime);
       }
     }
 
-    // Fetch booked times from Firestore
+    // Fetch booked times (in 12H format)
     const q = query(collection(db, "bookings"), where("date", "==", selectedDate));
     const snapshot = await getDocs(q);
-    const bookedTimes = snapshot.docs.map(doc => convertTo24H(doc.data().time?.trim()));
+    const bookedTimes = snapshot.docs.map(doc => doc.data().time?.trim());
 
-    // Filter out taken and past slots
-    const filteredSlots = allSlots.filter(slot => {
-      if (bookedTimes.includes(slot.value)) return false;
+    // Filter available slots
+    const filteredSlots = allSlots.filter(label => {
+      if (bookedTimes.includes(label)) return false;
+
       if (isToday) {
-        const [hh, mm] = slot.value.split(":").map(Number);
-        const slotTime = new Date();
-        slotTime.setHours(hh, mm, 0, 0);
+        const slotTime = timeToDate12H(label);
         if (slotTime <= now) return false;
       }
+
       return true;
     });
 
-    // Render available slots
+    // Render
     if (filteredSlots.length === 0) {
       timeSelect.innerHTML = `<option value="">All slots booked</option>`;
     } else {
       timeSelect.innerHTML = `<option value="">-- Choose --</option>`;
-      filteredSlots.forEach(slot => {
+      filteredSlots.forEach(label => {
         const opt = document.createElement("option");
-        opt.value = slot.label; // send in 12H format to store nicely
-        opt.textContent = slot.label;
+        opt.value = label;
+        opt.textContent = label;
         timeSelect.appendChild(opt);
       });
     }
