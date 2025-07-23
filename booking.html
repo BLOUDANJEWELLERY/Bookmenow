@@ -281,18 +281,27 @@ async function loadWorkingSchedule() {
   }
 }
 
-// 🔄 Fetch both configs on load
+// 🔄 Fetch both configs on page load
 document.addEventListener("DOMContentLoaded", async () => {
   await Promise.all([loadBufferTime(), loadWorkingSchedule()]);
 });
 
-// 📅 React to calendar date selection
+// 📅 Handle calendar date selection
 document.addEventListener("dateSelected", (e) => {
   const selectedDate = e.detail.selectedDate;
   updateTimeSlotsForDate(selectedDate);
 });
 
-// ⏱️ Generate slots only from schedule
+// ⏱️ Parse "03:00 PM" into { hours: 15, minutes: 0 }
+const parseTime = (timeStr) => {
+  const [time, modifier] = timeStr.split(" ");
+  let [hours, minutes] = time.split(":").map(Number);
+  if (modifier === "PM" && hours < 12) hours += 12;
+  if (modifier === "AM" && hours === 12) hours = 0;
+  return { hours, minutes };
+};
+
+// ⏱️ Generate slots for a specific day of the week
 function generateTimeSlotsForDay(dayName) {
   const conf = workingSchedule[dayName];
   if (!conf || !conf.enabled) return [];
@@ -300,14 +309,15 @@ function generateTimeSlotsForDay(dayName) {
   const slots = [];
 
   const addRange = (startStr, endStr) => {
-    const [sh, sm] = startStr.split(":").map(Number);
-    const [eh, em] = endStr.split(":").map(Number);
-    let slot = new Date();
-    slot.setHours(sh, sm, 0, 0);
-    const end = new Date();
-    end.setHours(eh, em, 0, 0);
+    const start = parseTime(startStr);
+    const end = parseTime(endStr);
 
-    while (slot <= end) {
+    let slot = new Date();
+    slot.setHours(start.hours, start.minutes, 0, 0);
+    const endTime = new Date();
+    endTime.setHours(end.hours, end.minutes, 0, 0);
+
+    while (slot <= endTime) {
       const h = slot.getHours();
       const m = slot.getMinutes();
       const ampm = h < 12 ? "AM" : "PM";
