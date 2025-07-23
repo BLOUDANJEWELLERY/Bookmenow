@@ -190,6 +190,9 @@
           <option value="">-- Choose --</option>
         </select>
       </div>
+      
+<!-- Optional: Add this to your HTML for debugging -->
+<div id="debug-buffer-time" style="font-size:12px;color:gray;display:none;"></div>
 
       <button type="submit" class="btn" id="submit-btn">Confirm Booking</button>
     </form>
@@ -234,48 +237,37 @@
     });
 
 
-let bufferTime = 30;
-let bufferReady = false;
+let bufferTime = 30; // 🔸 Default value
 
-// 🔸 Fetch bufferTime on load
+// 🔹 Fetch bufferTime once on page load
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const snap = await getDoc(doc(db, "adminSettings", "advancedSettings"));
     if (snap.exists()) {
       const data = snap.data();
-      if (data.bufferTime) {
-        bufferTime = parseInt(data.bufferTime);
+      if (typeof data.bufferTime === "number" && !isNaN(data.bufferTime)) {
+        bufferTime = data.bufferTime;
       }
     }
   } catch (err) {
-    console.warn("Buffer time load failed, using default (30 mins)", err);
-  } finally {
-    bufferReady = true;
+    // Silent fail: keep default 30
+  }
+
+  // 🔸 Show bufferTime visually for testing (hidden otherwise)
+  const debugDiv = document.getElementById("debug-buffer-time");
+  if (debugDiv) {
+    debugDiv.textContent = `Buffer time: ${bufferTime} minutes`;
+    debugDiv.style.display = "block";
   }
 });
 
-document.addEventListener("dateSelected", async (e) => {
+// 🔹 Date selection triggers slot refresh
+document.addEventListener("dateSelected", (e) => {
   const selectedDate = e.detail.selectedDate;
-
-  // 🔸 Wait until buffer is ready before generating time slots
-  if (!bufferReady) {
-    await waitForBufferReady();
-  }
-
   updateTimeSlotsForDate(selectedDate);
 });
 
-// 🔸 Helper to wait until buffer is ready
-function waitForBufferReady() {
-  return new Promise((resolve) => {
-    const check = () => {
-      if (bufferReady) resolve();
-      else setTimeout(check, 50);
-    };
-    check();
-  });
-}
-
+// 🔸 Dynamic slot generation using bufferTime
 function generateTimeSlots() {
   const slots = [];
 
@@ -294,16 +286,18 @@ function generateTimeSlots() {
     const hh = h.toString().padStart(2, "0");
 
     slots.push({
-      value: `${hh}:${mm}`,
-      label: `${labelHour}:${mm} ${ampm}`
+      value: `${hh}:${mm}`,              // For internal matching
+      label: `${labelHour}:${mm} ${ampm}` // User display
     });
 
-    slot = new Date(slot.getTime() + bufferTime * 60000); // ⏱ uses dynamic buffer
+    // 🔸 Increment using dynamic bufferTime
+    slot = new Date(slot.getTime() + bufferTime * 60000);
   }
 
   return slots;
 }
 
+// 🔹 Updates time slots dropdown for a selected date
 async function updateTimeSlotsForDate(selectedDate) {
   const timeSelect = document.getElementById("time");
   timeSelect.innerHTML = `<option value="">-- Choose --</option>`;
@@ -345,7 +339,7 @@ async function updateTimeSlotsForDate(selectedDate) {
     });
 
   } catch (err) {
-    console.error("Error loading slots:", err);
+    // Silent fail - fallback message
     timeSelect.innerHTML = `<option value="">Error loading slots</option>`;
   }
 }
