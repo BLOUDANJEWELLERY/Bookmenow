@@ -506,10 +506,7 @@ input[type="date"] {
       <h2 class="section-title">Holidays</h2>
       <form id="holiday-form">
           <label for="holiday-date" class="holiday-label">Enter date for holiday:</label>
-          <div class="calendar-wrapper">
-  <input type="text" id="holiday-date" class="date-input" readonly placeholder="Select a date" required />
-  <div id="waleedcalendar" class="calendarwaleed" style="display:none"></div>
-</div>
+          <input type="text" id="holiday-date" class="date-input" readonly placeholder="Select a date" required />
 <div class="save-button-wrapper">
       <button type="submit" class="save-button">Add Holiday</button>
       </div>
@@ -520,10 +517,8 @@ input[type="date"] {
   <div id="blackouts" class="tab-content">
     <h3>Add Blackout Slot</h3>
     <form id="blackout-form">
-      <div class="calendar-wrapper">
-  <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
-  <div id="waleedcalendar" class="calendarwaleed" style="display:none"></div>
-</div>
+      <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
+ 
       <input type="time" id="blackout-start" required />
       <input type="time" id="blackout-end" required />
       <button type="submit">Add Slot</button>
@@ -570,6 +565,9 @@ input[type="date"] {
     <span id="toast-message">Schedule Saved.</span>
   </div>
 </div>
+
+ <div id="waleedcalendar" class="calendarwaleed" style="display:none"></div>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { 
