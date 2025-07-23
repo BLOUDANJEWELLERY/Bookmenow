@@ -237,69 +237,104 @@
 
 
 let bufferTime = 30; // Default fallback
+let workingSchedule = {}; // Populated on load
 
 const debug = (msg) => {
   const el = document.getElementById("debug-buffer-time");
   if (el) el.textContent = msg;
 };
 
-// ✅ Force check Firestore path and response
+// 🔁 Load bufferTime from Firestore
 async function loadBufferTime() {
   debug("📡 Fetching buffer time...");
   try {
-    const settingsRef = doc(db, "adminSettings", "advancedSettings");
-    const docSnap = await getDoc(settingsRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
+    const snap = await getDoc(doc(db, "adminSettings", "advancedSettings"));
+    if (snap.exists()) {
+      const data = snap.data();
       if (typeof data.bufferTime === "number") {
         bufferTime = data.bufferTime;
         debug(`✅ Buffer Time fetched: ${bufferTime} minutes`);
       } else {
-        debug("⚠️ 'bufferTime' is missing or not a number in Firestore.");
+        debug("⚠️ 'bufferTime' missing or invalid.");
       }
     } else {
-      debug("❌ Document 'advancedSettings' does not exist.");
+      debug("❌ 'advancedSettings' not found.");
     }
-  } catch (error) {
-    debug("🚫 Failed to fetch bufferTime: " + error.message);
+  } catch (err) {
+    debug("🚫 Failed to fetch bufferTime: " + err.message);
   }
 }
 
+// 🔁 Load workingSchedule from Firestore
+async function loadWorkingSchedule() {
+  debug("📡 Fetching working schedule...");
+  try {
+    const snap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
+    if (snap.exists()) {
+      workingSchedule = snap.data();
+      debug("✅ Working schedule loaded.");
+    } else {
+      debug("❌ 'workingSchedule' not found.");
+    }
+  } catch (err) {
+    debug("🚫 Failed to fetch working schedule: " + err.message);
+  }
+}
+
+// 🔄 Fetch both configs on load
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadBufferTime(); // 🔁 Fetch before user selects date
+  await Promise.all([loadBufferTime(), loadWorkingSchedule()]);
 });
 
+// 📅 React to calendar date selection
 document.addEventListener("dateSelected", (e) => {
   const selectedDate = e.detail.selectedDate;
   updateTimeSlotsForDate(selectedDate);
 });
 
-function generateTimeSlots() {
+// ⏱️ Generate slots only from schedule
+function generateTimeSlotsForDay(dayName) {
+  const conf = workingSchedule[dayName];
+  if (!conf || !conf.enabled) return [];
+
   const slots = [];
-  let slot = new Date();
-  slot.setHours(8, 0, 0, 0); // Start: 08:00
-  const end = new Date();
-  end.setHours(23, 30, 0, 0); // End: 23:30
 
-  while (slot <= end) {
-    const h = slot.getHours();
-    const m = slot.getMinutes();
-    const ampm = h < 12 ? "AM" : "PM";
-    const labelHour = h % 12 === 0 ? 12 : h % 12;
-    const mm = m.toString().padStart(2, "0");
-    const hh = h.toString().padStart(2, "0");
+  const addRange = (startStr, endStr) => {
+    const [sh, sm] = startStr.split(":").map(Number);
+    const [eh, em] = endStr.split(":").map(Number);
+    let slot = new Date();
+    slot.setHours(sh, sm, 0, 0);
+    const end = new Date();
+    end.setHours(eh, em, 0, 0);
 
-    slots.push({
-      value: `${hh}:${mm}`,
-      label: `${labelHour}:${mm} ${ampm}`
-    });
+    while (slot <= end) {
+      const h = slot.getHours();
+      const m = slot.getMinutes();
+      const ampm = h < 12 ? "AM" : "PM";
+      const labelHour = h % 12 === 0 ? 12 : h % 12;
+      const mm = m.toString().padStart(2, "0");
+      const hh = h.toString().padStart(2, "0");
 
-    slot = new Date(slot.getTime() + bufferTime * 60000);
+      slots.push({
+        value: `${hh}:${mm}`,
+        label: `${labelHour}:${mm} ${ampm}`
+      });
+
+      slot = new Date(slot.getTime() + bufferTime * 60000);
+    }
+  };
+
+  if (conf.shift1?.start && conf.shift1?.end) {
+    addRange(conf.shift1.start, conf.shift1.end);
+  }
+  if (conf.shiftType === "double" && conf.shift2?.start && conf.shift2?.end) {
+    addRange(conf.shift2.start, conf.shift2.end);
   }
 
   return slots;
 }
 
+// 🔄 Update dropdown based on selected date
 async function updateTimeSlotsForDate(selectedDate) {
   const timeSelect = document.getElementById("time");
   timeSelect.innerHTML = `<option value="">-- Choose --</option>`;
@@ -307,47 +342,52 @@ async function updateTimeSlotsForDate(selectedDate) {
 
   const now = new Date();
   const isToday = selectedDate === now.toISOString().split("T")[0];
+  const weekdayName = new Date(selectedDate).toLocaleDateString("en-US", { weekday: "long" });
+
+  const allSlots = generateTimeSlotsForDay(weekdayName);
+  if (allSlots.length === 0) {
+    timeSelect.innerHTML = `<option value="">No available slots</option>`;
+    debug("🛑 No shifts enabled for " + weekdayName);
+    return;
+  }
 
   try {
     const q = query(collection(db, "bookings"), where("date", "==", selectedDate));
-    const snapshot = await getDocs(q);
-    const bookedTimes = snapshot.docs.map(doc => doc.data().time?.trim());
+    const snap = await getDocs(q);
+    const bookedTimes = snap.docs.map(doc => doc.data().time?.trim());
 
-    const allSlots = generateTimeSlots();
-
-    const filteredSlots = allSlots.filter(slot => {
+    const filtered = allSlots.filter(slot => {
       if (bookedTimes.includes(slot.value)) return false;
-
       if (isToday) {
         const [hh, mm] = slot.value.split(":").map(Number);
-        const slotTime = new Date();
-        slotTime.setHours(hh, mm, 0, 0);
-        if (slotTime <= now) return false;
+        const s = new Date();
+        s.setHours(hh, mm, 0, 0);
+        if (s <= now) return false;
       }
-
       return true;
     });
 
-    if (filteredSlots.length === 0) {
+    if (filtered.length === 0) {
       timeSelect.innerHTML = `<option value="">No available slots</option>`;
       debug("🕓 All slots blocked or booked.");
       return;
     }
 
-    filteredSlots.forEach(slot => {
+    filtered.forEach(slot => {
       const opt = document.createElement("option");
       opt.value = slot.value;
       opt.textContent = slot.label;
       timeSelect.appendChild(opt);
     });
 
-    debug(`✅ ${filteredSlots.length} slot(s) shown`);
+    debug(`✅ ${filtered.length} slot(s) available`);
 
   } catch (err) {
     timeSelect.innerHTML = `<option value="">Error loading slots</option>`;
     debug("🚫 Firestore fetch failed: " + err.message);
   }
 }
+
 
     // Booking time slots update on selectedDate change
     // Initially handled during calendar render for today
