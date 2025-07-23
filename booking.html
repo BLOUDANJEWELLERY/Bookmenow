@@ -234,38 +234,47 @@
     });
 
 
-  document.addEventListener("dateSelected", (e) => {
+document.addEventListener("dateSelected", (e) => {
   const selectedDate = e.detail.selectedDate;
   updateTimeSlotsForDate(selectedDate);
 });
 
-// Time slots generation based on selectedDate
-const generateTimeSlots = (selectedDate) => {
+// Updated to accept dynamic buffer time
+const generateTimeSlots = (selectedDate, bufferTime) => {
   const slots = [];
 
   const now = new Date();
   const selected = new Date(selectedDate);
   const isToday = selected.toDateString() === now.toDateString();
 
-  for (let h = 8; h <= 23; h++) {
-    for (let m = 0; m < 60; m += 30) {
-      if (h === 23 && m > 30) continue;
+  const startHour = 8;
+  const endHour = 23;
 
-      if (isToday) {
-        const slotTime = new Date();
-        slotTime.setHours(h, m, 0, 0);
-        if (slotTime <= now) continue; // skip past times
-      }
+  let slotTime = new Date();
+  slotTime.setHours(startHour, 0, 0, 0);
 
+  while (
+    slotTime.getHours() < endHour ||
+    (slotTime.getHours() === endHour && slotTime.getMinutes() <= 30)
+  ) {
+    if (!isToday || slotTime > now) {
+      const h = slotTime.getHours();
+      const m = slotTime.getMinutes();
       const hour = h % 12 === 0 ? 12 : h % 12;
       const ampm = h < 12 ? "AM" : "PM";
       const mm = m.toString().padStart(2, "0");
+      const hh = h.toString().padStart(2, "0");
+
       slots.push({
-        value: `${h.toString().padStart(2, "0")}:${mm}`,
+        value: `${hh}:${mm}`,
         label: `${hour}:${mm} ${ampm}`
       });
     }
+
+    // 🔻 Add buffer time instead of fixed 30 minutes
+    slotTime = new Date(slotTime.getTime() + bufferTime * 60000);
   }
+
   return slots;
 };
 
@@ -273,7 +282,18 @@ async function updateTimeSlotsForDate(selectedDate) {
   timeSelect.innerHTML = `<option value="">-- Choose --</option>`;
   if (!selectedDate) return;
 
-  const allSlots = generateTimeSlots(selectedDate);
+  // 🔻 Fetch buffer time from Firestore
+  let bufferTime = 30; // fallback default
+  try {
+    const docSnap = await getDoc(doc(db, "adminSettings", "advancedSettings"));
+    if (docSnap.exists()) {
+      bufferTime = parseInt(docSnap.data().bufferTime || 30); // buffer time in minutes
+    }
+  } catch (err) {
+    console.warn("Buffer time fetch failed:", err);
+  }
+
+  const allSlots = generateTimeSlots(selectedDate, bufferTime);
 
   const now = new Date();
   const isToday = selectedDate === now.toISOString().split("T")[0];
@@ -282,14 +302,29 @@ async function updateTimeSlotsForDate(selectedDate) {
   const snapshot = await getDocs(q);
   const bookedTimes = snapshot.docs.map(doc => doc.data().time);
 
+  // 🔻 Convert label (e.g., "10:00 AM") to Date for comparison
+  const timeToDate = (label) => {
+    const [rawTime, ampm] = label.split(" ");
+    let [hh, mm] = rawTime.split(":").map(Number);
+    if (ampm === "PM" && hh !== 12) hh += 12;
+    if (ampm === "AM" && hh === 12) hh = 0;
+    const date = new Date();
+    date.setHours(hh, mm, 0, 0);
+    return date;
+  };
+
   const filteredSlots = allSlots.filter(slot => {
-    if (bookedTimes.includes(slot.value)) return false;
-    if (isToday) {
-      const [hh, mm] = slot.value.split(":").map(Number);
-      const slotTime = new Date();
-      slotTime.setHours(hh, mm, 0, 0);
-      if (slotTime <= now) return false;
+    const slotTime = timeToDate(slot.label);
+
+    // 🔻 Block any slot that is already booked
+    for (const booked of bookedTimes) {
+      const bookedTime = timeToDate(booked);
+      if (slotTime.getTime() === bookedTime.getTime()) return false;
     }
+
+    // 🔻 If today, block past times
+    if (isToday && slotTime <= now) return false;
+
     return true;
   });
 
