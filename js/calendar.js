@@ -263,10 +263,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Rest of your code remains the same...
   function showCalendar() {
-    calendar.style.display = "block";
-    calendar.classList.remove("slide-out");
-    calendar.classList.add("slide-in");
-  }
+  if (!activeInput) return;
+
+  const rect = activeInput.getBoundingClientRect();
+  calendar.style.position = "absolute";
+  calendar.style.left = `${rect.left + window.scrollX}px`;
+  calendar.style.top = `${rect.bottom + window.scrollY}px`;
+  calendar.style.zIndex = 9999;
+  calendar.style.display = "block";
+  calendar.classList.remove("slide-out");
+  calendar.classList.add("slide-in");
+}
 
   function hideCalendar() {
     calendar.classList.remove("slide-in");
