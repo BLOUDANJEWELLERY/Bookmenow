@@ -89,6 +89,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     hideCalendar();
   }
+  
+const event = new CustomEvent("dateSelected", {
+  detail: { selectedDate }
+});
+document.dispatchEvent(event);
 
   async function renderCalendar(year, month, direction = null) {
     if (isAnimating) return;
