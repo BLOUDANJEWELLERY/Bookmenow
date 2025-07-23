@@ -238,18 +238,9 @@ document.addEventListener("dateSelected", (e) => {
   updateTimeSlotsForDate(selectedDate);
 });
 
-// === Utility Functions ===
+// === Utilities ===
 function pad(n) {
   return n.toString().padStart(2, "0");
-}
-
-function convertTo24H(time12h) {
-  if (!time12h) return "00:00";
-  const [time, modifier] = time12h.trim().split(" ");
-  let [h, m] = time.split(":").map(Number);
-  if (modifier === "PM" && h !== 12) h += 12;
-  if (modifier === "AM" && h === 12) h = 0;
-  return `${pad(h)}:${pad(m)}`;
 }
 
 function convertTo12H(time24) {
@@ -259,6 +250,14 @@ function convertTo12H(time24) {
   return `${pad(h)}:${pad(m)} ${ampm}`;
 }
 
+function convertTo24H(time12h) {
+  const [time, modifier] = time12h.trim().split(" ");
+  let [h, m] = time.split(":").map(Number);
+  if (modifier === "PM" && h !== 12) h += 12;
+  if (modifier === "AM" && h === 12) h = 0;
+  return `${pad(h)}:${pad(m)}`;
+}
+
 function timeToDate(timeStr) {
   const [h, m] = convertTo24H(timeStr).split(":").map(Number);
   const d = new Date();
@@ -266,43 +265,47 @@ function timeToDate(timeStr) {
   return d;
 }
 
-// === Main Logic ===
+// === Main Function ===
 async function updateTimeSlotsForDate(selectedDate) {
   const timeSelect = document.getElementById("time");
   timeSelect.innerHTML = `<option value="">Loading...</option>`;
 
-  const selectedWeekday = new Date(selectedDate).toLocaleDateString("en-US", { weekday: "long" });
-  const todayDateStr = new Date().toISOString().split("T")[0];
+  const weekday = new Date(selectedDate).toLocaleDateString("en-US", { weekday: "long" });
+  const todayStr = new Date().toISOString().split("T")[0];
   const now = new Date();
+  const isToday = selectedDate === todayStr;
 
   try {
     // Fetch working schedule
-    const scheduleDoc = await getDoc(doc(db, "adminSettings", "workingSchedule"));
-    if (!scheduleDoc.exists()) {
+    const scheduleSnap = await getDoc(doc(db, "adminSettings", "workingSchedule"));
+    if (!scheduleSnap.exists()) {
       timeSelect.innerHTML = `<option value="">No schedule found</option>`;
       return;
     }
 
-    const schedule = scheduleDoc.data();
-    const dayConfig = schedule[selectedWeekday];
-    if (!dayConfig || !dayConfig.enabled) {
-      timeSelect.innerHTML = `<option value="">Not available on ${selectedWeekday}</option>`;
+    const schedule = scheduleSnap.data();
+    const dayData = schedule[weekday];
+    if (!dayData || !dayData.enabled) {
+      timeSelect.innerHTML = `<option value="">Not available on ${weekday}</option>`;
       return;
     }
 
     // Fetch buffer time
-    const advancedDoc = await getDoc(doc(db, "adminSettings", "advancedSettings"));
-    const bufferTime = advancedDoc.exists() && advancedDoc.data().bufferTime
-      ? parseInt(advancedDoc.data().bufferTime)
-      : 30;
+    let bufferTime = 30;
+    const advancedSnap = await getDoc(doc(db, "adminSettings", "advancedSettings"));
+    if (advancedSnap.exists()) {
+      const adv = advancedSnap.data();
+      if (adv.bufferTime) bufferTime = parseInt(adv.bufferTime);
+    }
 
-    const isDoubleShift = dayConfig.singleOrDouble === "double";
+    // Build shift ranges
+    const isDoubleShift = dayData.singleOrDouble === "double";
     const shifts = [
-      { start: dayConfig.start_1, end: dayConfig.end_1 },
-      ...(isDoubleShift ? [{ start: dayConfig.start_2, end: dayConfig.end_2 }] : [])
+      { start: dayData.start_1, end: dayData.end_1 },
+      ...(isDoubleShift ? [{ start: dayData.start_2, end: dayData.end_2 }] : [])
     ];
 
-    // Generate slots
+    // Generate all slots
     const allSlots = [];
     for (const shift of shifts) {
       if (!shift.start || !shift.end) continue;
@@ -311,45 +314,45 @@ async function updateTimeSlotsForDate(selectedDate) {
       while (current < end) {
         const h = pad(current.getHours());
         const m = pad(current.getMinutes());
-        allSlots.push(convertTo12H(`${h}:${m}`));
+        const value = `${h}:${m}`;
+        const label = convertTo12H(value);
+        allSlots.push({ value, label });
         current.setMinutes(current.getMinutes() + bufferTime);
       }
     }
 
-    // Fetch existing bookings
-    const bookingsSnapshot = await getDocs(
-      query(collection(db, "bookings"), where("date", "==", selectedDate))
-    );
-    const takenTimes = bookingsSnapshot.docs
-      .map(doc => doc.data().time?.trim())
-      .filter(Boolean);
+    // Fetch booked times from Firestore
+    const q = query(collection(db, "bookings"), where("date", "==", selectedDate));
+    const snapshot = await getDocs(q);
+    const bookedTimes = snapshot.docs.map(doc => convertTo24H(doc.data().time?.trim()));
 
-    // Filter available
-    const availableSlots = allSlots.filter(slot => {
-      if (takenTimes.includes(slot)) return false;
-      if (selectedDate === todayDateStr) {
-        const [h, m] = convertTo24H(slot).split(":").map(Number);
+    // Filter out taken and past slots
+    const filteredSlots = allSlots.filter(slot => {
+      if (bookedTimes.includes(slot.value)) return false;
+      if (isToday) {
+        const [hh, mm] = slot.value.split(":").map(Number);
         const slotTime = new Date();
-        slotTime.setHours(h, m, 0, 0);
+        slotTime.setHours(hh, mm, 0, 0);
         if (slotTime <= now) return false;
       }
       return true;
     });
 
-    // Populate dropdown
-    if (availableSlots.length === 0) {
+    // Render available slots
+    if (filteredSlots.length === 0) {
       timeSelect.innerHTML = `<option value="">All slots booked</option>`;
     } else {
       timeSelect.innerHTML = `<option value="">-- Choose --</option>`;
-      availableSlots.forEach(slot => {
+      filteredSlots.forEach(slot => {
         const opt = document.createElement("option");
-        opt.value = slot;
-        opt.textContent = slot;
+        opt.value = slot.label; // send in 12H format to store nicely
+        opt.textContent = slot.label;
         timeSelect.appendChild(opt);
       });
     }
-  } catch (error) {
-    console.error("Error updating slots:", error);
+
+  } catch (err) {
+    console.error("Slot generation error:", err);
     timeSelect.innerHTML = `<option value="">Error loading slots</option>`;
   }
 }
