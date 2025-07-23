@@ -517,6 +517,21 @@ input[type="date"] {
       <ul id="holiday-list" class="list"></ul>
     </div>
 
+  <div id="blackouts" class="tab-content">
+    <h3>Add Blackout Slot</h3>
+    <form id="blackout-form">
+      <div class="calendar-wrapper">
+  <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
+  <div id="waleedcalendar" class="calendarwaleed" style="display:none"></div>
+</div>
+      <input type="time" id="blackout-start" required />
+      <input type="time" id="blackout-end" required />
+      <button type="submit">Add Slot</button>
+    </form>
+    <h4>Existing Blackouts</h4>
+    <ul id="blackout-list"></ul>
+  </div>
+
     <div id="advanced-tab" class="tab-content">
       <form id="advanced-form">
         <div>
@@ -549,20 +564,6 @@ input[type="date"] {
       </form>
     </div>
     
-    <div id="blackouts" class="tab-content">
-    <h3>Add Blackout Slot</h3>
-    <form id="blackout-form">
-      <div class="calendar-wrapper">
-  <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
-  <div id="waleedcalendar" class="calendarwaleed" style="display:none"></div>
-</div>
-      <input type="time" id="blackout-start" required />
-      <input type="time" id="blackout-end" required />
-      <button type="submit">Add Slot</button>
-    </form>
-    <h4>Existing Blackouts</h4>
-    <ul id="blackout-list"></ul>
-  </div>
   </main>
 <div id="toast-overlay" class="toast-overlay toast-hide">
   <div id="custom-toast" class="custom-toast-box">
