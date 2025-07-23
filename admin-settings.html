@@ -552,7 +552,10 @@ input[type="date"] {
     <div id="blackouts" class="tab-content">
     <h3>Add Blackout Slot</h3>
     <form id="blackout-form">
-      <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
+      <div class="calendar-wrapper">
+  <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
+  <div id="waleedcalendar" class="calendarwaleed" style="display:none"></div>
+</div>
       <input type="time" id="blackout-start" required />
       <input type="time" id="blackout-end" required />
       <button type="submit">Add Slot</button>
