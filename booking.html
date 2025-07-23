@@ -128,7 +128,7 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-}
+
   </style>
 </head>
 <body>
@@ -238,10 +238,6 @@
     updateTimeSlotsForDate(selectedDate);
   });
   
-
-
-  import { doc, getDoc, query, where, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
 // Utilities
 function pad(n) {
   return n.toString().padStart(2, "0");
