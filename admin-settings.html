@@ -521,7 +521,9 @@ input[type="date"] {
  
       <input type="text" class="custom-time-picker blackoutstart-1" id="blackout-start" data-day="${day}" readonly placeholder="Start Time"required/>
       <input type="text" class="custom-time-picker blackoutend-1" id="blackout-end" data-day="${day}" readonly placeholder="End Time"required/>
+      <div class="save-button-wrapper">
       <button type="submit" class="save-button">Add Slot</button>
+      </div>
     </form>
     <h4>Existing Blackouts</h4>
     <ul id="blackout-list" class="list"></ul>
@@ -905,7 +907,7 @@ blackoutForm.addEventListener('submit', async e => {
         li.className = 'blackout-row';
         li.innerHTML = `
           <div>${b.date} ${b.start} - ${b.end}</div>
-          <button class="action-btn delete-btn" onclick="deleteBlackout(${i})">Delete</button>
+          <button class="btn-cancel" onclick="deleteBlackout(${i})">Delete</button>
         `;
         blackoutList.appendChild(li);
       });
