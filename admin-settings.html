@@ -519,8 +519,8 @@ input[type="date"] {
     <form id="blackout-form">
       <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
  
-      <input type="text" class="custom-time-picker blackoutstart-1" id="blackout-start" data-day="${day}" required/>
-      <input type="time" id="blackout-end" required />
+      <input type="text" class="custom-time-picker blackoutstart-1" id="blackout-start" data-day="${day}" readonly placeholder="Start Time"required/>
+      <input type="text" class="custom-time-picker blackoutend-1" id="blackout-end" data-day="${day}" readonly placeholder="End Time"required/>
       <button type="submit">Add Slot</button>
     </form>
     <h4>Existing Blackouts</h4>
