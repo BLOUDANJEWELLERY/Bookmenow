@@ -54,7 +54,6 @@ main {
   background: white;
   padding: 1.6rem;
   border-radius: 12px;
-  align-items: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
@@ -539,7 +538,9 @@ input[type="date"] {
       <button type="submit" class="save-button">Add Slot</button>
     </div>
   </form>
+  <div class="save-button-wrapper">
   <h4 class="section-subtitle">Existing Blackouts</h4>
+  <div class="save-button-wrapper">
   <ul id="blackout-list" class="list"></ul>
 </div>
 
@@ -572,7 +573,7 @@ input[type="date"] {
           <input type="checkbox" id="banner-enabled" />
         </div>
         <div>
-          <label class="holiday-label">Banner Message:</label><br/>
+          <label class="holiday-label">Banner Message:</label>
           <input type="text" id="banner-message" />
         </div>
         <div class="save-button-wrapper">
