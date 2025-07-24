@@ -459,6 +459,76 @@ input[type="date"] {
   opacity: 0;
   pointer-events: none;
 }
+
+
+/* Blackout list container */
+.blist {
+  margin-top: 2rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Each blackout item styled like a card */
+.blist li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 1rem 1.2rem;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(#fdfdfd, #f9f9f9),
+    linear-gradient(135deg, #343a40, #6c757d); /* Darker gradient for "blackout" theme */
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 4px 16px rgba(52, 58, 64, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.blist li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 58, 64, 0.15);
+}
+
+/* Blackout time text */
+.blist li span {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #212529;
+  letter-spacing: 0.3px;
+}
+
+/* Cancel (delete) button */
+.blist .btn-cancel {
+  background: linear-gradient(to right, #6c757d, #495057); /* Darker delete button */
+  border: none;
+  border-radius: 10px;
+  padding: 0.45rem 0.6rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(108, 117, 125, 0.25);
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.blist .btn-cancel:hover {
+  background: linear-gradient(to right, #495057, #343a40);
+  transform: scale(1.05);
+}
+
+/* SVG cross icon */
+.blist .btn-cancel svg {
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+}
   </style>
 </head>
 <body>
@@ -529,7 +599,7 @@ input[type="date"] {
       </div>
     </form>
     <h4>Existing Blackouts</h4>
-    <ul id="blackout-list" class="list"></ul>
+    <ul id="blackout-list" class="blist"></ul>
   </div>
 
     <div id="advanced-tab" class="tab-content">
