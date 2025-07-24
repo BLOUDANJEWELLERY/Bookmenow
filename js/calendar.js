@@ -266,7 +266,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!activeInput) return;
 
   const rect = activeInput.getBoundingClientRect();
-  const offset = 1; // space between input and calendar
+  const offset = 2; // space between input and calendar
 
   calendar.style.position = "absolute";
   calendar.style.left = `${rect.left + window.scrollX}px`;
