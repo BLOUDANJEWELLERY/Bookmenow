@@ -326,7 +326,7 @@ input[type="date"] {
   justify-content: space-between;
   align-items: center;
   background: #ffffff;
-  padding: 1rem 1.2rem;
+  padding: 0.8rem 1.0rem;
   border-radius: 14px;
   border: 2px solid transparent;
   background-image:
@@ -345,10 +345,10 @@ input[type="date"] {
 
 /* Holiday date text */
 .list li span {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: #003366;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
 }
 
 /* Cancel (delete) button */
@@ -518,7 +518,6 @@ input[type="date"] {
   <div id="blackouts" class="tab-content">
     <h2 class="section-title">Blackouts</h2>
     <form id="blackout-form">
-      <label for="holiday-date" class="holiday-label">Enter date for Blackout:</label>
       <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
       <input type="text" class="custom-time-picker blackoutstart-1" id="blackout-start" data-day="${day}" readonly placeholder="Start Time"required/>
       <input type="text" class="custom-time-picker blackoutend-1" id="blackout-end" data-day="${day}" readonly placeholder="End Time"required/>
