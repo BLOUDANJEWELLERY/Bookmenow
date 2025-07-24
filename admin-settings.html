@@ -120,7 +120,7 @@ label.day-name {
   font-weight: 600;
   font-size: 1.3rem;
   margin:2px;
-  color: #007bff;/*#003366;*/
+  color: #0055aa;/*#007bff;#003366;*/
 }
 .day-enable {
   appearance: none;
@@ -528,11 +528,11 @@ input[type="date"] {
 <div id="blackouts" class="tab-content">
   <h2 class="section-title">Blackouts</h2>
   <form id="blackout-form">
-    <label for="blackout-date" class="holiday-label">Select Date</label>
+    <label for="blackout-date" class="holiday-label">Select Date:</label>
     <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
-    <label for="blackout-start" class="holiday-label">Start Time</label>
+    <label for="blackout-start" class="holiday-label">Start Time:</label>
     <input type="text" class="custom-time-picker blackoutstart-1" id="blackout-start" data-day="${day}" readonly placeholder="Start Time" required />
-    <label for="blackout-end" class="holiday-label">End Time</label>
+    <label for="blackout-end" class="holiday-label">End Time:</label>
     <input type="text" class="custom-time-picker blackoutend-1" id="blackout-end" data-day="${day}" readonly placeholder="End Time" required />
     <div class="save-button-wrapper">
       <button type="submit" class="save-button">Add Slot</button>
@@ -570,6 +570,7 @@ input[type="date"] {
       <form id="announcement-form">
         <div>
           <label class="holiday-label">Enable Banner:</label>
+          <input type="checkbox" class="day-enable" id="banner-enabled"/>
           <input type="checkbox" id="banner-enabled" />
         </div>
         <div>
