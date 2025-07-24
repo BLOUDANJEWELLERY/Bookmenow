@@ -515,21 +515,31 @@ input[type="date"] {
       <ul id="holiday-list" class="list"></ul>
     </div>
 
-  <div id="blackouts" class="tab-content">
-    <h2 class="section-title">Blackouts</h2>
-    <form id="blackout-form">
-      <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
-      <input type="text" class="custom-time-picker blackoutstart-1" id="blackout-start" data-day="${day}" readonly placeholder="Start Time"required/>
-      <input type="text" class="custom-time-picker blackoutend-1" id="blackout-end" data-day="${day}" readonly placeholder="End Time"required/>
-      <div class="save-button-wrapper">
-      <button type="submit" class="save-button">Add slot</button>
-      </div>
-    </form>
-    <h4>Existing Blackouts</h4>
-    <ul id="blackout-list" class="list"></ul>
-  </div>
+<div id="blackouts" class="tab-content">
+  <h2 class="section-title">Blackouts</h2>
+
+  <form id="blackout-form">
+    <label for="blackout-date" class="holiday-label">Select Date</label>
+    <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
+
+    <label for="blackout-start" class="holiday-label">Start Time</label>
+    <input type="text" class="custom-time-picker blackoutstart-1" id="blackout-start" data-day="${day}" readonly placeholder="Start Time" required />
+
+    <label for="blackout-end" class="holiday-label">End Time</label>
+    <input type="text" class="custom-time-picker blackoutend-1" id="blackout-end" data-day="${day}" readonly placeholder="End Time" required />
+
+    <div class="save-button-wrapper">
+      <button type="submit" class="save-button">Add Slot</button>
+    </div>
+  </form>
+
+  <h4 class="section-subtitle">Existing Blackouts</h4>
+  <ul id="blackout-list" class="blist"></ul>
+</div>
 
     <div id="advanced-tab" class="tab-content">
+      <h2 class="section-title">Advanced Settings</h2>
+
       <form id="advanced-form">
         <div>
           <label>Buffer Time (mins):</label>
