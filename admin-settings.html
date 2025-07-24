@@ -306,7 +306,6 @@ input[type="date"] {
   font-weight: 600;
   color: #007bff;
   margin-top: 0.5rem;
-  margin-bottom: 0.1rem;
   padding-left: 2px;
   letter-spacing: 0.2px;
   text-shadow: 0.2px 0.2px 0 rgba(0, 64, 128, 0.1);
@@ -555,8 +554,10 @@ input[type="date"] {
           <label>Cutoff Time (hours before):</label>
           <input type="number" id="hours-before" min="0" />
         </div>
-        <button type="submit">Save Advanced Settings</button>
-      </form>
+        <div class="save-button-wrapper">
+      <button type="submit" class="save-button">Save Advanced Settings</button>
+    </div>
+         </form>
     </div>
 
     <div id="announcement-tab" class="tab-content">
@@ -569,8 +570,10 @@ input[type="date"] {
           <label>Banner Message:</label><br/>
           <input type="text" id="banner-message" />
         </div>
-        <button type="submit">Save Banner</button>
-      </form>
+        <div class="save-button-wrapper">
+      <button type="submit" class="save-button">Save banner</button>
+    </div>
+       </form>
     </div>
     
   </main>
