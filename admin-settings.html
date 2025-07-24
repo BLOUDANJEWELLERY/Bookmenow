@@ -516,8 +516,9 @@ input[type="date"] {
     </div>
 
   <div id="blackouts" class="tab-content">
-    <h3>Add Blackout Slot</h3>
+    <h2 class="section-title">Blackouts</h2>
     <form id="blackout-form">
+      <label for="holiday-date" class="holiday-label">Enter date for Blackout:</label>
       <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
       <input type="text" class="custom-time-picker blackoutstart-1" id="blackout-start" data-day="${day}" readonly placeholder="Start Time"required/>
       <input type="text" class="custom-time-picker blackoutend-1" id="blackout-end" data-day="${day}" readonly placeholder="End Time"required/>
