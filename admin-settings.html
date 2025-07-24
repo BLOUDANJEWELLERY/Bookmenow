@@ -907,7 +907,11 @@ blackoutForm.addEventListener('submit', async e => {
         const li = document.createElement('li');
         li.className = 'blackout-row';
         li.innerHTML = `
-          <div>${b.date} ${b.start} - ${b.end}</div>
+         <div>
+    <span><strong>Date:</strong> ${b.date}</span>
+    <span><strong>Start:</strong> ${b.start}</span>
+    <span><strong>End:</strong> ${b.end}</span>
+  </div>
           <button class="btn-cancel" onclick="deleteBlackout(${i})">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"/>
