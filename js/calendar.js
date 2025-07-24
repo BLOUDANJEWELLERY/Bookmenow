@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   calendar.style.position = "absolute";
   calendar.style.left = `${rect.left + window.scrollX}px`;
-  calendar.style.top = `${rect.bottom + window.scrollYpx`;
+  calendar.style.top = `${rect.bottom + window.scrollY}px`;
   calendar.style.zIndex = 9999;
   calendar.style.display = "block";
   calendar.classList.remove("slide-out");
