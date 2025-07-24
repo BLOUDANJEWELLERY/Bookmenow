@@ -25,7 +25,7 @@
 /* Renamed main popup container to calendarwaleed */
 .calendarwaleed {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 0px);
   left: 0;
   height: 300px;
   background: white;
