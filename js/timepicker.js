@@ -84,24 +84,50 @@ function createTimePicker(input) {
   };
 
   if (input.value) {
-    const match = input.value.match(/(\d{1,2}):(\d{2})\s?(AM|PM)/i);
-    if (match) {
-      const [_, hourStr, minuteStr, ampmStr] = match;
-      const hour = parseInt(hourStr, 10);
-      const minuteRounded = roundToNearestFive(parseInt(minuteStr, 10)).toString().padStart(2, '0');
-      const ampm = ampmStr.toUpperCase();
+  const match = input.value.match(/(\d{1,2}):(\d{2})\s?(AM|PM)/i);
+  if (match) {
+    const [_, hourStr, minuteStr, ampmStr] = match;
+    const hour = parseInt(hourStr, 10);
+    const minuteRounded = roundToNearestFive(parseInt(minuteStr, 10)).toString().padStart(2, '0');
+    const ampm = ampmStr.toUpperCase();
 
-      requestAnimationFrame(() => {
-        scrollToValue(hourWheel, hour);
-        scrollToValue(minuteWheel, minuteRounded);
-        scrollToValue(ampmWheel, ampm);
+    requestAnimationFrame(() => {
+      scrollToValue(hourWheel, hour);
+      scrollToValue(minuteWheel, minuteRounded);
+      scrollToValue(ampmWheel, ampm);
 
-        selectItemInWheel(hourWheel, hour);
-        selectItemInWheel(minuteWheel, minuteRounded);
-        selectItemInWheel(ampmWheel, ampm);
-      });
-    }
+      selectItemInWheel(hourWheel, hour);
+      selectItemInWheel(minuteWheel, minuteRounded);
+      selectItemInWheel(ampmWheel, ampm);
+    });
+  } else {
+    applyCurrentTimeDefaults();
   }
+} else {
+  applyCurrentTimeDefaults();
+}
+
+function applyCurrentTimeDefaults() {
+  const now = new Date();
+  let hour = now.getHours();
+  let minute = now.getMinutes();
+  let ampm = hour >= 12 ? "PM" : "AM";
+
+  hour = hour % 12;
+  if (hour === 0) hour = 12;
+
+  const minuteRounded = roundToNearestFive(minute).toString().padStart(2, '0');
+
+  requestAnimationFrame(() => {
+    scrollToValue(hourWheel, hour);
+    scrollToValue(minuteWheel, minuteRounded);
+    scrollToValue(ampmWheel, ampm);
+
+    selectItemInWheel(hourWheel, hour);
+    selectItemInWheel(minuteWheel, minuteRounded);
+    selectItemInWheel(ampmWheel, ampm);
+  });
+}
 
   wheelsContainer.append(hourWheel, minuteWheel, ampmWheel);
   document.body.append(popup, overlay);
