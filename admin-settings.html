@@ -460,6 +460,12 @@ input[type="date"] {
   pointer-events: none;
 }
 
+.section-subtitle {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  c
+
   </style>
 </head>
 <body>
@@ -517,22 +523,17 @@ input[type="date"] {
 
 <div id="blackouts" class="tab-content">
   <h2 class="section-title">Blackouts</h2>
-
   <form id="blackout-form">
     <label for="blackout-date" class="holiday-label">Select Date</label>
     <input type="text" id="blackout-date" class="date-input" readonly placeholder="Select a date" required />
-
     <label for="blackout-start" class="holiday-label">Start Time</label>
     <input type="text" class="custom-time-picker blackoutstart-1" id="blackout-start" data-day="${day}" readonly placeholder="Start Time" required />
-
     <label for="blackout-end" class="holiday-label">End Time</label>
     <input type="text" class="custom-time-picker blackoutend-1" id="blackout-end" data-day="${day}" readonly placeholder="End Time" required />
-
     <div class="save-button-wrapper">
       <button type="submit" class="save-button">Add Slot</button>
     </div>
   </form>
-
   <h4 class="section-subtitle">Existing Blackouts</h4>
   <ul id="blackout-list" class="blist"></ul>
 </div>
