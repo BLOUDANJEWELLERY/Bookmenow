@@ -546,15 +546,15 @@ input[type="date"] {
       <h2 class="section-title">Advanced Settings</h2>
       <form id="advanced-form">
         <div>
-          <label>Buffer Time (mins):</label>
+          <label class="holiday-label">Buffer Time (mins):</label>
           <input type="number" id="buffer-time" min="0" />
         </div>
         <div>
-          <label>Max Advance Booking Days:</label>
+          <label class="holiday-label">Max Advance Booking Days:</label>
           <input type="number" id="max-days" min="0" />
         </div>
         <div>
-          <label>Cutoff Time (hours before):</label>
+          <label class="holiday-label">Cutoff Time (hours before):</label>
           <input type="number" id="hours-before" min="0" />
         </div>
         <div class="save-button-wrapper">
@@ -564,13 +564,14 @@ input[type="date"] {
     </div>
 
     <div id="announcement-tab" class="tab-content">
+      <h2 class="section-title">Blackouts</h2>
       <form id="announcement-form">
         <div>
-          <label>Enable Banner:</label>
+          <label class="holiday-label">Enable Banner:</label>
           <input type="checkbox" id="banner-enabled" />
         </div>
         <div>
-          <label>Banner Message:</label><br/>
+          <label class="holiday-label">Banner Message:</label><br/>
           <input type="text" id="banner-message" />
         </div>
         <div class="save-button-wrapper">
