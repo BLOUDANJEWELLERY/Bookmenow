@@ -266,11 +266,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!activeInput) return;
 
   const rect = activeInput.getBoundingClientRect();
-  const offset = 1.5; // space between input and calendar
+  const offset = 1; // space between input and calendar
 
   calendar.style.position = "absolute";
   calendar.style.left = `${rect.left + window.scrollX}px`;
-  calendar.style.top = `${rect.bottom + window.scrollY}px`;
+  calendar.style.top = `${rect.bottom + window.scrollY + offset}px`;
   calendar.style.zIndex = 9999;
   calendar.style.display = "block";
   calendar.classList.remove("slide-out");
