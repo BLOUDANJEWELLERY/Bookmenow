@@ -469,6 +469,45 @@ input[type="date"] {
   color: #003366;
 }
 
+.banner-enable {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 70px;
+  height: 32px;
+  margin-left: 16px;
+  background-color: #ff4d4d; /* red for 'Closed' */
+  border-radius: 50px;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.4s ease;
+  font-weight: bold;
+  font-size: 0.75rem;
+  color: white;
+  text-align: center;
+  padding-left: 0;
+}
+
+/* "Closed" default text */
+.banner-enable::before {
+  content: 'Disabled';
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  transition: 0.3s ease;
+}
+
+/* "Open" text and color when checked */
+.banner-enable:checked {
+  background-color: #28a745; /* green for 'Open' */
+}
+
+.banner-enable:checked::before {
+  content: 'Enabled';
+  left: 25px;
+}
+
   </style>
 </head>
 <body>
@@ -521,7 +560,9 @@ input[type="date"] {
       <button type="submit" class="save-button">Add Holiday</button>
       </div>
       </form>
+      <div class="save-button-wrapper">
       <h4 class="section-subtitle">Existing Holidays</h4>
+      </div>
       <ul id="holiday-list" class="list"></ul>
     </div>
 
@@ -566,12 +607,10 @@ input[type="date"] {
     </div>
 
     <div id="announcement-tab" class="tab-content">
-      <h2 class="section-title">Blackouts</h2>
+      <h2 class="section-title">Announcement</h2>
       <form id="announcement-form">
         <div>
-          <label class="holiday-label">Enable Banner:</label>
-          <input type="checkbox" class="day-enable" id="banner-enabled"/>
-          <input type="checkbox" id="banner-enabled" />
+          <input type="checkbox" class="banner-enable" id="banner-enabled"/>
         </div>
         <div>
           <label class="holiday-label">Banner Message:</label>
