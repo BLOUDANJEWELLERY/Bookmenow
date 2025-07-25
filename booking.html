@@ -129,7 +129,63 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+
+    .dropdown {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 20px 0;
 }
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #007bff;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background: linear-gradient(145deg, #007bff, #00c6ff);
+  color: white;
+  padding: 12px 40px 12px 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.25);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 198, 255, 0.5);
+}
+
+select:hover {
+  filter: brightness(1.05);
+}
+
+/* Custom arrow */
+select::after {
+  content: '▼';
+  position: absolute;
+  right: 16px;
+  top: calc(50% - 8px);
+  color: white;
+  pointer-events: none;
+}
+
+/* Optional: for better browser support */
+select::-ms-expand {
+  display: none;
+}
+
   </style>
 </head>
 <body>
@@ -166,7 +222,7 @@
         <input type="tel" id="phone" name="phone" required autocomplete="tel" />
       </div>
 
-      <div class="form-group">
+      <div class="dropdown">
         <label for="service">Select Service</label>
         <select id="service" name="service" required>
           <option value="">-- Choose --</option>
