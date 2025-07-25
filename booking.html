@@ -167,11 +167,14 @@
 /* Dropdown box with gradient border */
 .dropdown-box {
   padding: 3px;
-  border-radius: 20px;
-  background: white;
-border: 3px solid;
-  border-image: linear-gradient(to right, #007bff, #00c6ff);
-  border-image-slice: 1;
+    background:  linear-gradient(to bottom, #d6f3ff 0%, #f5fdff 50%, #d6f3ff 100%),
+                linear-gradient(135deg, #007bff, #00c6ff);
+    background-clip: padding-box, border-box;
+    background-origin: border-box;
+    border-radius:20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    line-height: 1.6;
+    border: 2px solid transparent;
   width: 90%;
   max-width: 320px;
   box-shadow: 0 8px 24px rgba(0, 198, 255, 0.3);
