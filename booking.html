@@ -131,8 +131,6 @@
     }
 
 
-
-/* Select box */
 .custom-dropdown .selected {
   padding: 12px 16px;
   border-radius: 12px;
@@ -142,9 +140,7 @@
   max-width: 300px;
   background: white;
   color: #007bff;
-  border: 3px solid;
-  border-image: linear-gradient(to right, #007bff, #00c6ff);
-  border-image-slice: 1;
+  border: 3px solid #ccc;
   transition: all 0.3s ease;
 }
 
@@ -164,73 +160,46 @@
   z-index: 1000;
 }
 
-/* Dropdown box with gradient border */
-.dropdown-box {
+/* Gradient border container */
+.gradient-border-box {
   padding: 3px;
-    background:  linear-gradient(to bottom, #d6f3ff 0%, #f5fdff 50%, #d6f3ff 100%),
-                linear-gradient(135deg, #007bff, #00c6ff);
-    background-clip: padding-box, border-box;
-    background-origin: border-box;
-    border-radius:20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    line-height: 1.6;
-    border: 2px solid transparent;
+  border-radius: 16px;
+  background: linear-gradient(to right, #007bff, #00c6ff);
+  box-shadow: 0 8px 24px rgba(0, 198, 255, 0.3);
   width: 90%;
   max-width: 320px;
-  box-shadow: 0 8px 24px rgba(0, 198, 255, 0.3);
 }
 
+/* Actual options list inside white container */
 .overlay-options {
   list-style: none;
   margin: 0;
-  padding: 12px;
-  border-radius: 17px;
+  padding: 16px;
+  border-radius: 13px;
   background: white;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 10px;
+  text-align: center;
 }
 
-/* Each option as button */
+/* Each option styled like a light button */
 .overlay-options li {
   padding: 12px 20px;
-  width: 100%;
-  text-align: center;
+  cursor: pointer;
+  border-radius: 10px;
   font-weight: 500;
   color: #007bff;
-  cursor: pointer;
-  border-radius: 12px;
-  border: 2px solid transparent;
-  background: white;
-  background-clip: padding-box;
-  transition: all 0.25s ease;
-  position: relative;
-}
-
-/* Gradient border on hover */
-.overlay-options li::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  padding: 2px;
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
-  z-index: -1;
-  pointer-events: none;
+  background: #fff;
+  transition: all 0.2s ease;
 }
 
 .overlay-options li:hover {
+  background: #f1f9ff;
   color: #0056d6;
-  background-color: #f1f9ff;
 }
 
-/* Selected option: fully filled gradient */
+/* Highlight selected option */
 .overlay-options li.selected-option {
   background: linear-gradient(to right, #007bff, #00c6ff);
   color: white;
