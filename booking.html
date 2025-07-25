@@ -227,7 +227,12 @@
 
 <div class="custom-dropdown">
   <div class="selected">-- Choose --</div>
-  <ul class="options-list">
+  <input type="hidden" name="service" required>
+</div>
+
+<!-- Dropdown overlay -->
+<div class="dropdown-overlay" style="display: none;">
+  <ul class="overlay-options">
     <li data-value="Beard Cutting">Beard Cutting</li>
     <li data-value="Haircut">Haircut</li>
     <li data-value="Facial">Facial</li>
@@ -235,8 +240,8 @@
     <li data-value="Shaving">Shaving</li>
     <li data-value="Head Massage">Head Massage</li>
   </ul>
-  <input type="hidden" name="service" required>
 </div>
+
 
 
       <div class="form-group calendar-wrapper">
