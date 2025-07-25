@@ -179,8 +179,6 @@
   flex-direction: column;
   gap: 10px;
   text-align: center;
-
-
    background:  linear-gradient(to bottom, #d6f3ff 0%, #f5fdff 50%, #d6f3ff 100%),
                 linear-gradient(135deg, #007bff, #00c6ff);
     background-clip: padding-box, border-box;
@@ -195,10 +193,19 @@
 .overlay-options li {
   padding: 12px 20px;
   cursor: pointer;
-  border-radius: 10px;
+  
+   background:  linear-gradient(to bottom, #d6f3ff 0%, #f5fdff 50%, #d6f3ff 100%),
+                linear-gradient(135deg, #007bff, #00c6ff);
+    background-clip: padding-box, border-box;
+    background-origin: border-box;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    line-height: 1.6;
+    border: 2px solid transparent;
+
+
   font-weight: 500;
   color: #007bff;
-  background: #fff;
   transition: all 0.2s ease;
 }
 
