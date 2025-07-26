@@ -10,32 +10,35 @@
 <style>
  #announcement-banner {
   display: none;
-  background-color: #007bff; /* your brand blue */
-  color: #ffffff; /* white text */
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.3); /* translucent background */
+  color: #007bff;
   font-weight: 600;
   text-align: center;
-  padding: 6px 12px; /* reduced height */
+  padding: 6px 12px;
   font-family: 'Segoe UI', Tahoma, sans-serif;
   position: relative;
   z-index: 1000;
-  margin-top: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-top: 6px;
+  border-bottom: 1px solid rgba(0, 123, 255, 0.3);
   font-size: 15px;
 }
 
-@keyframes flashText {
+@keyframes glowFlash {
   0%, 100% {
+    text-shadow: 0 0 4px rgba(0, 123, 255, 0.6);
     opacity: 1;
   }
   50% {
-    opacity: 0;
+    text-shadow: 0 0 8px rgba(0, 123, 255, 1);
+    opacity: 0.6;
   }
 }
 
 #announcement-banner .flashing-text {
-  animation: flashText 1s infinite;
+  animation: glowFlash 1.5s infinite ease-in-out;
   display: inline-block;
-  color: #ffffff; /* ensure flashing text stays white */
+  color: #007bff;
 }
 </style>
 
