@@ -296,15 +296,28 @@ async function loadWorkingSchedule() {
 }
 
 let blackoutSlots = [];
+let bufferTime = 15;
+let cutoffMins = 15;
 
 // 🔄 Fetch all configs on page load
 document.addEventListener("DOMContentLoaded", async () => {
   await Promise.all([
-    loadBufferTime(),
+    loadAdvancedSettings(),
     loadWorkingSchedule(),
     loadBlackouts()
   ]);
 });
+
+// 🧠 Load bufferTime and cutoffMins
+async function loadAdvancedSettings() {
+  const ref = doc(db, "adminSettings", "advancedSettings");
+  const snap = await getDoc(ref);
+  if (snap.exists()) {
+    const data = snap.data();
+    bufferTime = data.bufferTime || 15;
+    cutoffMins = data.cutoffmins || 15;
+  }
+}
 
 // 🧭 Load blackout slots
 async function loadBlackouts() {
@@ -376,7 +389,7 @@ async function updateTimeSlotsForDate(selectedDate) {
   const selectedBox = dropdown.querySelector('.selected');
   const optionsList = dropdown.querySelector('.overlay-options');
 
-  optionsList.innerHTML = ''; // clear old options
+  optionsList.innerHTML = '';
   hiddenInput.value = '';
   selectedBox.textContent = '-- Choose --';
 
@@ -404,11 +417,18 @@ async function updateTimeSlotsForDate(selectedDate) {
     const blackoutForDate = blackoutSlots.filter(b => b.date === selectedDate);
 
     const filtered = allSlots.filter(slot => {
+      const slotDate = new Date(`${selectedDate}T${slot.value}:00`);
+
+      // ⛔ Remove if booked
       if (bookedTimes.includes(slot.value)) return false;
 
-      const slotDate = new Date(`${selectedDate}T${slot.value}:00`);
-      if (isToday && slotDate <= now) return false;
+      // ⏳ Remove if cutoff time has passed for today
+      if (isToday) {
+        const cutoffTime = new Date(slotDate.getTime() - cutoffMins * 60000);
+        if (now >= cutoffTime) return false;
+      }
 
+      // 🚫 Remove if inside blackout range
       for (const blk of blackoutForDate) {
         const blkStart = parseTime(blk.start);
         const blkEnd = parseTime(blk.end);
@@ -416,7 +436,7 @@ async function updateTimeSlotsForDate(selectedDate) {
         const blkEndDate = new Date(`${selectedDate}T${String(blkEnd.hours).padStart(2, "0")}:${String(blkEnd.minutes).padStart(2, "0")}:00`);
 
         if (slotDate >= blkStartDate && slotDate < blkEndDate) {
-          return false; // within blackout range
+          return false;
         }
       }
 
