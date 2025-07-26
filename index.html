@@ -100,6 +100,23 @@
     const auth = getAuth(app);
     const authSlot = document.getElementById("auth-button-slot");
 
+async function loadBanner() {
+  try {
+    const ref = doc(db, "adminSettings", "announcement");
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      const data = snap.data();
+      if (data.enabled && data.message) {
+        const banner = document.getElementById("announcement-banner");
+        banner.style.display = "block";
+        banner.textContent = data.message;
+      }
+    }
+  } catch (err) {
+    console.error("❌ Failed to load banner:", err);
+  }
+}document.addEventListener("DOMContentLoaded", loadBanner());
+
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // Show Logout button
