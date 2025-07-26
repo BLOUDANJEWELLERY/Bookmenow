@@ -21,6 +21,19 @@
   margin-top:8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
+
+@keyframes flashText {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+#announcement-banner.flashing {
+  animation: flashText 1s infinite;
+}
 </style>
 
 </head>
@@ -110,10 +123,11 @@ async function loadBanner() {
     if (snap.exists()) {
       const data = snap.data();
       if (data.enabled && data.message) {
-        const banner = document.getElementById("announcement-banner");
-        banner.style.display = "block";
-        banner.textContent = data.message;
-      }
+  const banner = document.getElementById("announcement-banner");
+  banner.style.display = "block";
+  banner.textContent = data.message;
+  banner.classList.add("flashing"); // ← Add flashing effect
+}
     }
   } catch (err) {
     console.error("❌ Failed to load banner:", err);
