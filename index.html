@@ -6,6 +6,22 @@
   <title>BookMeNow – Home</title>
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/script.js"></script>
+  
+<style>
+  #announcement-banner {
+  display: none;
+  background-color: #facc15; /* amber-400 */
+  color: #111827; /* zinc-900 */
+  font-weight: 600;
+  text-align: center;
+  padding: 12px 16px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  position: relative; /* keeps it in the flow under navbar */
+  z-index: 1000;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+</style>
+
 </head>
 <body>
   <!-- HEADER -->
@@ -27,7 +43,8 @@
         </li>
       </ul>
     </nav>
-
+    
+<div id="announcement-banner" style="display: none;"></div>
     <!-- HERO -->
     <section class="hero">
       <img src="images/hero.jpg" alt="Hero Image" />
