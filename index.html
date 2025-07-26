@@ -18,6 +18,7 @@
   font-family: 'Segoe UI', Tahoma, sans-serif;
   position: relative; /* keeps it in the flow under navbar */
   z-index: 1000;
+  margin-top:8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 </style>
@@ -115,9 +116,11 @@ async function loadBanner() {
   } catch (err) {
     console.error("❌ Failed to load banner:", err);
   }
-}document.addEventListener("DOMContentLoaded", loadBanner());
+}
 
-    onAuthStateChanged(auth, (user) => {
+document.addEventListener("DOMContentLoaded", loadBanner);
+  
+       onAuthStateChanged(auth, (user) => {
       if (user) {
         // Show Logout button
         authSlot.innerHTML = `<button id="logout-btn" class="logout-btn" style="display:none">Logout</button>`;
