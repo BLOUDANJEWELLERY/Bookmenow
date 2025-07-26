@@ -35,7 +35,7 @@
   width: auto;                  /* ✅ content-based width */
   max-width: 90vw;
   min-width: 60vw;              /* ✅ prevent overflow on small screens */
-    max-height: 100px;         /* Add padding room around list */
+    max-height: 200px;         /* Add padding room around list */
   overflow: hidden;          /* Contain scroll inside the list */
   display: flex;
   flex-direction: column;
