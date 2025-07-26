@@ -168,24 +168,23 @@
         <input type="tel" id="phone" name="phone" required autocomplete="tel" />
       </div>
 
-<div class="custom-dropdown">
+<!-- Add as many of these as needed per page -->
+<div class="custom-dropdown" data-name="service">
   <div class="selected">-- Choose --</div>
   <input type="hidden" name="service" required>
+  <div class="dropdown-overlay">
+    <div class="gradient-border-box">
+      <ul class="overlay-options">
+        <li data-value="Beard Cutting">Beard Cutting</li>
+        <li data-value="Haircut">Haircut</li>
+        <li data-value="Facial">Facial</li>
+        <li data-value="Hair Coloring">Hair Coloring</li>
+        <li data-value="Shaving">Shaving</li>
+        <li data-value="Head Massage">Head Massage</li>
+      </ul>
+    </div>
+  </div>
 </div>
-
-<!-- Dropdown overlay -->
-<div class="dropdown-overlay" style="display: none;">
-  <ul class="overlay-options">
-    <li data-value="Beard Cutting">Beard Cutting</li>
-    <li data-value="Haircut">Haircut</li>
-    <li data-value="Facial">Facial</li>
-    <li data-value="Hair Coloring">Hair Coloring</li>
-    <li data-value="Shaving">Shaving</li>
-    <li data-value="Head Massage">Head Massage</li>
-  </ul>
-</div>
-
-
 
       <div class="form-group calendar-wrapper">
         <label for="date-input">Date</label>
@@ -211,40 +210,6 @@
 
   <!-- Firebase + Booking Logic -->
   <script type="module">
-
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const selectedBox = document.querySelector('.custom-dropdown .selected');
-    const hiddenInput = document.querySelector('.custom-dropdown input');
-    const overlay = document.querySelector('.dropdown-overlay');
-    const options = overlay.querySelectorAll('li');
-
-    selectedBox.addEventListener('click', () => {
-      overlay.style.display = 'flex';
-    });
-
-    options.forEach(option => {
-      option.addEventListener('click', () => {
-        selectedBox.textContent = option.textContent;
-        hiddenInput.value = option.dataset.value;
-
-        options.forEach(opt => opt.classList.remove('selected-option'));
-        option.classList.add('selected-option');
-
-        overlay.style.display = 'none';
-      });
-    });
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        overlay.style.display = 'none';
-      }
-    });
-  });
-
-
-
-
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, doc, getDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
@@ -487,6 +452,8 @@ async function updateTimeSlotsForDate(selectedDate) {
       }
     });
   </script>
+  
+<script src="js/dropdown.js"></script>
    <script type="module" src="js/calendar.js"></script>
 </body>
 </html>
