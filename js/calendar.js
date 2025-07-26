@@ -329,7 +329,7 @@ const isBeyondAdvanceLimit = diffDays > maxAdvanceDays;
     const now = new Date();
     renderCalendar(now.getFullYear(), now.getMonth());
   }
-
+await fetchAdvancedSettings(); // ✅ CRUCIAL LINE
   // Start the calendar
   initCalendar();
 });
