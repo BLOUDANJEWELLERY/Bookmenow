@@ -597,8 +597,8 @@ input[type="date"] {
           <input type="number" id="max-days" min="0" />
         </div>
         <div>
-          <label class="holiday-label">Cutoff Time (hours before):</label>
-          <input type="number" id="hours-before" min="0" />
+          <label class="holiday-label">Cutoff Time (mins before):</label>
+          <input type="number" id="mins-before"/>
         </div>
         <div class="save-button-wrapper">
       <button type="submit" class="save-button">Save Advanced Settings</button>
@@ -905,7 +905,7 @@ window.deleteHoliday = async (date, btn) => {
       const data = {
         bufferTime: parseInt(document.getElementById("buffer-time").value),
         maxAdvanceDays: parseInt(document.getElementById("max-days").value),
-        cutoffHours: parseInt(document.getElementById("hours-before").value)
+        cutoffmins: parseInt(document.getElementById("mins-before").value)
       };
       await setDoc(doc(db, "adminSettings", "advancedSettings"), data);
       showToast("Advanced settings saved.");
@@ -917,7 +917,7 @@ window.deleteHoliday = async (date, btn) => {
         const data = docSnap.data();
         document.getElementById("buffer-time").value = data.bufferTime || "";
         document.getElementById("max-days").value = data.maxAdvanceDays || "";
-        document.getElementById("hours-before").value = data.cutoffHours || "";
+        document.getElementById("mins-before").value = data.cutoffmins || "";
       }
     }
 
