@@ -193,14 +193,21 @@
 .overlay-options li {
   padding: 12px 20px;
   cursor: pointer;
-   background-image:  white,
-                linear-gradient(135deg, #007bff, #00c6ff);
-    background-clip: padding-box, border-box;
-    background-origin: border-box;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    line-height: 1.6;
-    border: 2px solid transparent;
+  position: relative;
+  z-index: 1;
+
+  border: 2px solid transparent;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box, /* inner white */
+    linear-gradient(135deg, #007bff, #00c6ff) border-box; /* border */
+  
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  line-height: 1.6;
   font-weight: 500;
   color: #007bff;
   transition: all 0.2s ease;
