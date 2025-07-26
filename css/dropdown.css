@@ -4,7 +4,6 @@
   font-weight: 600;
   cursor: pointer;
   width: 100%;
-  max-width: 200px;
   background: white;
   color: #007bff;
   border: 3px solid #ccc;
@@ -22,6 +21,9 @@
   background: rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(4px);
   display: none;
+  width: max-content;         /* ✅ key: shrink-to-fit content */
+  min-width: 160px;           /* ✅ optional: a decent base width */
+  max-width: 100vw; 
   align-items: center;
   justify-content: center;
   z-index: 1000;
