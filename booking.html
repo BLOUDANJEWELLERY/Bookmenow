@@ -192,11 +192,17 @@
         </div>
 
       <div class="form-group">
-        <label for="time">Time</label>
-        <select id="time" name="time" required>
-          <option value="">-- Choose --</option>
-        </select>
+  <label for="time">Time</label>
+  <div class="custom-dropdown" data-name="time">
+    <div class="selected">-- Choose --</div>
+    <input type="hidden" id="time" name="time" required>
+    <div class="dropdown-overlay">
+      <div class="gradient-border-box">
+        <ul class="overlay-options"></ul> <!-- Options will be dynamically populated -->
       </div>
+    </div>
+  </div>
+</div>
       
 
       <button type="submit" class="btn" id="submit-btn">Confirm Booking</button>
@@ -353,8 +359,15 @@ function generateTimeSlotsForDay(dayName) {
 
 // 🔄 Update dropdown based on selected date
 async function updateTimeSlotsForDate(selectedDate) {
-  const timeSelect = document.getElementById("time");
-  timeSelect.innerHTML = `<option value="">-- Choose --</option>`;
+  const dropdown = document.querySelector('.custom-dropdown[data-name="time"]');
+const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+const selectedBox = dropdown.querySelector('.selected');
+const optionsList = dropdown.querySelector('.overlay-options');
+
+optionsList.innerHTML = ''; // clear old options
+hiddenInput.value = '';
+selectedBox.textContent = '-- Choose --';
+
   if (!selectedDate) return;
 
   const now = new Date();
@@ -391,11 +404,20 @@ async function updateTimeSlotsForDate(selectedDate) {
     }
 
     filtered.forEach(slot => {
-      const opt = document.createElement("option");
-      opt.value = slot.value;
-      opt.textContent = slot.label;
-      timeSelect.appendChild(opt);
-    });
+  const li = document.createElement('li');
+  li.dataset.value = slot.value;
+  li.textContent = slot.label;
+  li.addEventListener('click', () => {
+    selectedBox.textContent = slot.label;
+    hiddenInput.value = slot.value;
+
+    optionsList.querySelectorAll('li').forEach(opt => opt.classList.remove('selected-option'));
+    li.classList.add('selected-option');
+
+    dropdown.querySelector('.dropdown-overlay').style.display = 'none';
+  });
+  optionsList.appendChild(li);
+});
 
     debug(`✅ ${filtered.length} slot(s) available`);
 
