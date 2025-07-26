@@ -25,6 +25,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   let workingSchedule = {};
   let holidayDates = [];
 
+
+let maxAdvanceDays = 30; // Default fallback
+
+async function fetchAdvancedSettings() {
+  try {
+    const docRef = doc(db, "adminSettings", "advancedSettings");
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      const data = snap.data();
+      maxAdvanceDays = data.maxAdvanceDays || 30;
+    }
+  } catch (e) {
+    console.error("Error fetching advanced settings:", e);
+  }
+}
+
   const calendar = document.getElementById("waleedcalendar");
 
   // Fetch working schedule from Firestore with debugging
@@ -195,23 +211,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       const isSelected = selectedDate === dateStr;
       const dayName = getDayName(dateObj);
       const isHoliday = holidayDates.includes(dateStr);
-      
+      const diffDays = Math.floor((utcDate - utcToday) / (1000 * 60 * 60 * 24));
+const isBeyondAdvanceLimit = diffDays > maxAdvanceDays;
       // STRICT AVAILABILITY CHECK - Only enabled if explicitly true
       const dayData = workingSchedule[dayName] || {};
       const isDayEnabled = dayData.enabled === true;
       
       console.log(`Day: ${dayName}, Date: ${dateStr}, Enabled: ${isDayEnabled}, Holiday: ${isHoliday}`);
 
-      if (isInPast || !isDayEnabled || isHoliday) {
-        dayEl.classList.add("disabled");
-        if (!isInPast) {
-          if (isHoliday) {
-            dayEl.title = "Holiday – Not bookable";
-          } else if (!isDayEnabled) {
-            dayEl.title = "Not available for booking";
-          }
-        }
-      } else {
+       if (isInPast || isBeyondAdvanceLimit || !isDayEnabled || isHoliday) {
+  dayEl.classList.add("disabled");
+  if (!isInPast) {
+    if (isHoliday) {
+      dayEl.title = "Holiday – Not bookable";
+    } else if (!isDayEnabled) {
+      dayEl.title = "Not available for booking";
+    } else if (isBeyondAdvanceLimit) {
+      dayEl.title = `Only bookable up to ${maxAdvanceDays} days ahead`;
+    }
+  }
+} else {
         if (isToday) dayEl.classList.add("today");
         if (isSelected) dayEl.classList.add("selected");
         dayEl.onclick = () => handleDayClick(dayEl, dateObj);
