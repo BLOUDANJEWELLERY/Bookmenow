@@ -315,8 +315,8 @@ const parseTime = (timeStr) => {
   return { hours, minutes };
 };
 
-// ⏱️ Generate slots for a specific day of the week
-function generateTimeSlotsForDay(dayName) {
+// ⏱️ Generate slots for a specific day of the week and date
+function generateTimeSlotsForDay(dayName, selectedDate) {
   const conf = workingSchedule[dayName];
   if (!conf || !conf.enabled) return [];
 
@@ -326,10 +326,8 @@ function generateTimeSlotsForDay(dayName) {
     const start = parseTime(startStr);
     const end = parseTime(endStr);
 
-    let slot = new Date();
-    slot.setHours(start.hours, start.minutes, 0, 0);
-    const endTime = new Date();
-    endTime.setHours(end.hours, end.minutes, 0, 0);
+    let slot = new Date(`${selectedDate}T${String(start.hours).padStart(2, "0")}:${String(start.minutes).padStart(2, "0")}:00`);
+    const endTime = new Date(`${selectedDate}T${String(end.hours).padStart(2, "0")}:${String(end.minutes).padStart(2, "0")}:00`);
 
     while (slot <= endTime) {
       const h = slot.getHours();
@@ -361,13 +359,13 @@ function generateTimeSlotsForDay(dayName) {
 // 🔄 Update dropdown based on selected date
 async function updateTimeSlotsForDate(selectedDate) {
   const dropdown = document.querySelector('.custom-dropdown[data-name="time"]');
-const hiddenInput = dropdown.querySelector('input[type="hidden"]');
-const selectedBox = dropdown.querySelector('.selected');
-const optionsList = dropdown.querySelector('.overlay-options');
+  const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+  const selectedBox = dropdown.querySelector('.selected');
+  const optionsList = dropdown.querySelector('.overlay-options');
 
-optionsList.innerHTML = ''; // clear old options
-hiddenInput.value = '';
-selectedBox.textContent = '-- Choose --';
+  optionsList.innerHTML = ''; // clear old options
+  hiddenInput.value = '';
+  selectedBox.textContent = '-- Choose --';
 
   if (!selectedDate) return;
 
@@ -375,10 +373,13 @@ selectedBox.textContent = '-- Choose --';
   const isToday = selectedDate === now.toISOString().split("T")[0];
   const weekdayName = new Date(selectedDate).toLocaleDateString("en-US", { weekday: "long" });
 
-  const allSlots = generateTimeSlotsForDay(weekdayName);
+  const allSlots = generateTimeSlotsForDay(weekdayName, selectedDate);
   if (allSlots.length === 0) {
-    timeSelect.innerHTML = `<option value="">No available slots</option>`;
     debug("🛑 No shifts enabled for " + weekdayName);
+    const li = document.createElement('li');
+    li.textContent = "No available slots";
+    li.classList.add("disabled");
+    optionsList.appendChild(li);
     return;
   }
 
@@ -389,42 +390,47 @@ selectedBox.textContent = '-- Choose --';
 
     const filtered = allSlots.filter(slot => {
       if (bookedTimes.includes(slot.value)) return false;
+
       if (isToday) {
-        const [hh, mm] = slot.value.split(":").map(Number);
-        const s = new Date();
-        s.setHours(hh, mm, 0, 0);
+        const s = new Date(`${selectedDate}T${slot.value}:00`);
         if (s <= now) return false;
       }
+
       return true;
     });
 
     if (filtered.length === 0) {
-      timeSelect.innerHTML = `<option value="">No available slots</option>`;
       debug("🕓 All slots blocked or booked.");
+      const li = document.createElement('li');
+      li.textContent = "No available slots";
+      li.classList.add("disabled");
+      optionsList.appendChild(li);
       return;
     }
 
     filtered.forEach(slot => {
-  const li = document.createElement('li');
-  li.dataset.value = slot.value;
-  li.textContent = slot.label;
-  li.addEventListener('click', () => {
-    selectedBox.textContent = slot.label;
-    hiddenInput.value = slot.value;
+      const li = document.createElement('li');
+      li.dataset.value = slot.value;
+      li.textContent = slot.label;
+      li.addEventListener('click', () => {
+        selectedBox.textContent = slot.label;
+        hiddenInput.value = slot.value;
 
-    optionsList.querySelectorAll('li').forEach(opt => opt.classList.remove('selected-option'));
-    li.classList.add('selected-option');
+        optionsList.querySelectorAll('li').forEach(opt => opt.classList.remove('selected-option'));
+        li.classList.add('selected-option');
 
-    dropdown.querySelector('.dropdown-overlay').style.display = 'none';
-  });
-  optionsList.appendChild(li);
-});
+        dropdown.querySelector('.dropdown-overlay').style.display = 'none';
+      });
+      optionsList.appendChild(li);
+    });
 
     debug(`✅ ${filtered.length} slot(s) available`);
-
   } catch (err) {
-    timeSelect.innerHTML = `<option value="">Error loading slots</option>`;
     debug("🚫 Firestore fetch failed: " + err.message);
+    const li = document.createElement('li');
+    li.textContent = "Error loading slots";
+    li.classList.add("disabled");
+    optionsList.appendChild(li);
   }
 }
 
