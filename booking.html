@@ -295,10 +295,23 @@ async function loadWorkingSchedule() {
   }
 }
 
-// 🔄 Fetch both configs on page load
+let blackoutSlots = [];
+
+// 🔄 Fetch all configs on page load
 document.addEventListener("DOMContentLoaded", async () => {
-  await Promise.all([loadBufferTime(), loadWorkingSchedule()]);
+  await Promise.all([
+    loadBufferTime(),
+    loadWorkingSchedule(),
+    loadBlackouts()
+  ]);
 });
+
+// 🧭 Load blackout slots
+async function loadBlackouts() {
+  const ref = doc(db, "adminSettings", "blackouts");
+  const snap = await getDoc(ref);
+  blackoutSlots = snap.exists() ? snap.data().slots || [] : [];
+}
 
 // 📅 Handle calendar date selection
 document.addEventListener("dateSelected", (e) => {
@@ -388,19 +401,30 @@ async function updateTimeSlotsForDate(selectedDate) {
     const snap = await getDocs(q);
     const bookedTimes = snap.docs.map(doc => doc.data().time?.trim());
 
+    const blackoutForDate = blackoutSlots.filter(b => b.date === selectedDate);
+
     const filtered = allSlots.filter(slot => {
       if (bookedTimes.includes(slot.value)) return false;
 
-      if (isToday) {
-        const s = new Date(`${selectedDate}T${slot.value}:00`);
-        if (s <= now) return false;
+      const slotDate = new Date(`${selectedDate}T${slot.value}:00`);
+      if (isToday && slotDate <= now) return false;
+
+      for (const blk of blackoutForDate) {
+        const blkStart = parseTime(blk.start);
+        const blkEnd = parseTime(blk.end);
+        const blkStartDate = new Date(`${selectedDate}T${String(blkStart.hours).padStart(2, "0")}:${String(blkStart.minutes).padStart(2, "0")}:00`);
+        const blkEndDate = new Date(`${selectedDate}T${String(blkEnd.hours).padStart(2, "0")}:${String(blkEnd.minutes).padStart(2, "0")}:00`);
+
+        if (slotDate >= blkStartDate && slotDate < blkEndDate) {
+          return false; // within blackout range
+        }
       }
 
       return true;
     });
 
     if (filtered.length === 0) {
-      debug("🕓 All slots blocked or booked.");
+      debug("🕓 All slots blocked, booked, or blacked out.");
       const li = document.createElement('li');
       li.textContent = "No available slots";
       li.classList.add("disabled");
@@ -433,7 +457,6 @@ async function updateTimeSlotsForDate(selectedDate) {
     optionsList.appendChild(li);
   }
 }
-
 
     // Booking time slots update on selectedDate change
     // Initially handled during calendar render for today
