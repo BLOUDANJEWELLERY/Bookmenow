@@ -50,7 +50,7 @@
   /* ✅ Height control */
   height: auto;
   min-height: fit-content;
-  max-height: 350px;
+  max-height: 250px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
