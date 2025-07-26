@@ -295,7 +295,16 @@ async function loadWorkingSchedule() {
   }
 }
 
+let cutoffMins = 0;
 
+async function loadAdvancedSettings() {
+  const ref = doc(db, "adminSettings", "advancedSettings");
+  const snap = await getDoc(ref);
+  if (snap.exists()) {
+    const data = snap.data();
+    cutoffMins = data.cutoffmins || 0;
+  }
+}
 let blackoutSlots = [];
 
 // 🔄 Fetch all configs on page load
@@ -303,7 +312,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   await Promise.all([
     loadBufferTime(),
     loadWorkingSchedule(),
-    loadBlackouts()
+    loadBlackouts(),
+    loadAdvancedSettings()
   ]);
 });
 
@@ -408,7 +418,10 @@ async function updateTimeSlotsForDate(selectedDate) {
       if (bookedTimes.includes(slot.value)) return false;
 
       const slotDate = new Date(`${selectedDate}T${slot.value}:00`);
-      if (isToday && slotDate <= now) return false;
+      if (isToday) {
+  const nowWithCutoff = new Date(now.getTime() + cutoffMins * 60000);
+  if (slotDate <= nowWithCutoff) return false;
+}
 
       for (const blk of blackoutForDate) {
         const blkStart = parseTime(blk.start);
