@@ -101,14 +101,14 @@ body {
   user-select: none;
 }
 
-.nav-links li a.active{
+.nav-links li .active{
   background: linear-gradient(to right, #007bff, #00c6ff);
   color: white;
   border: none;
   box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
-.nav-links li a:hover,
+.nav-links li .active:hover,
 .nav-links li button:hover {
  background: #d6ecff;
   border-color: #0056b3;
