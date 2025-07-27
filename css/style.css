@@ -82,37 +82,47 @@ body {
   gap: 1rem;
   margin-top: 3px;
   list-style: none;
-  width:100%;
+  width: 100%;
   padding: 2px;
   text-align: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
+/* General style for all links and buttons */
 .nav-links li a,
 .nav-links li button {
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  background: white;
-  padding: 0.5rem 0.75rem;
+  background: linear-gradient(to right, #e0f0ff, #ffffff);
+  padding: 0.6rem 2rem;
   transition: all 0.3s ease;
   color: var(--text);
   font-size: 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   user-select: none;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.1);
+  width: 100%; /* Full width on mobile/column layout */
+  max-width: 220px; /* Balanced size across devices */
+  text-align: center;
 }
 
-.nav-links li a.active{
+/* Active link */
+.nav-links li a.active {
   background: linear-gradient(to right, #007bff, #00c6ff);
   color: white;
-  border: none;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 123, 255, 0.4);
 }
 
-.nav-links li a:hover,
-.nav-links li button:hover {
- background: #d6ecff;
-  border-color: #0056b3;
+/* Hover effects for all except logout */
+.nav-links li a:hover:not(.logout-btn),
+.nav-links li button:hover:not(.logout-btn) {
+  background: linear-gradient(to right, #d0eaff, #b2dcff);
+  box-shadow: 0 0 16px rgba(0, 123, 255, 0.3);
+  transform: scale(1.03);
+  color: #003366;
 }
 
 /* HAMBURGER MENU ICON */
