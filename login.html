@@ -6,65 +6,64 @@
   <title>Login – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
-/* Layout wrapper */
 .booking-main {
   max-width: 420px;
   margin: 3rem auto;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
-/* Title */
 .booking-form-section h1 {
   text-align: center;
   font-size: 2rem;
   color: #003366;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
-/* Clean, flat form box */
+/* Glassy card form */
 .booking-form {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
   padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e6f0fa;
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 30px rgba(0, 51, 102, 0.08);
+  border: 1px solid rgba(0, 123, 255, 0.1);
   position: relative;
 }
 
-/* Removed the glowing border (form::before) for a calmer feel */
-
-/* Form groups */
+/* Form group */
 .form-group {
   margin-bottom: 1.5rem;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.4rem;
-  font-weight: bold;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
   color: #003366;
 }
 
+/* Rounded, elevated inputs */
 input[type="email"],
 input[type="password"] {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.85rem 1.2rem;
   border: 1px solid #ccddee;
-  border-radius: 6px;
+  border-radius: 50px;
   font-size: 1rem;
-  background-color: #fdfdfd;
-  color: #333;
-  transition: border 0.3s, box-shadow 0.3s;
+  background-color: #fefefe;
+  color: #003366;
+  transition: border 0.3s, box-shadow 0.3s, background-color 0.3s;
 }
 
 input[type="email"]:focus,
 input[type="password"]:focus {
   outline: none;
   border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
 }
 
-/* Buttons match branding */
+/* Buttons stay branded */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -92,7 +91,7 @@ input[type="password"]:focus {
   cursor: not-allowed;
 }
 
-/* Register prompt */
+/* Register link */
 .booking-form p {
   text-align: center;
   font-size: 0.95rem;
@@ -109,7 +108,6 @@ input[type="password"]:focus {
 .booking-form p a:hover {
   text-decoration: underline;
 }
-
  .message {
       margin-top: 1rem;
       font-size: 0.95rem;
