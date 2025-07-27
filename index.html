@@ -11,14 +11,14 @@
 .hero {
   position: relative;
   width: 100%;
-  height: 75vh;
-  max-height: 640px;
-  min-height: 420px;
-  overflow: hidden;
+  height: 60vh;
+  max-height: 520px;
+  min-height: 360px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1rem;
+  overflow: hidden;
+  padding: 0 1rem;
   box-sizing: border-box;
 }
 
@@ -29,60 +29,58 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center top;
   z-index: -1;
-  filter: brightness(0.7);
+  filter: brightness(0.75);
 }
 
 .hero-content {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 1.8rem 2.5rem;
+  border-radius: 12px;
+  color: #fff;
   text-align: center;
-  background: rgba(0, 0, 0, 0.55);
-  padding: 2rem;
-  border-radius: 14px;
-  color: #ffffff;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(4px);
+  max-width: 650px;
   width: 90%;
-  max-width: 720px;
 }
 
 .hero-content h1 {
   font-size: 2rem;
+  margin-bottom: 0.8rem;
   font-weight: 700;
-  margin-bottom: 1rem;
 }
 
 .hero-content p {
-  font-size: 1.05rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
   line-height: 1.5;
 }
 
 .hero-content .btn {
   display: inline-block;
-  padding: 0.7rem 1.7rem;
+  padding: 0.6rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #fff;
   background: linear-gradient(to right, #007bff, #00bfff);
   border: none;
-  border-radius: 30px;
+  border-radius: 25px;
+  color: #fff;
   text-decoration: none;
-  cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
 .hero-content .btn:hover {
-  background: linear-gradient(to right, #0056b3, #0099cc);
-  transform: translateY(-2px);
+  background: linear-gradient(to right, #0056b3, #00aaff);
+  transform: translateY(-1px);
 }
 
-/* Responsive */
+/* Responsive tweaks */
 @media (max-width: 768px) {
   .hero {
-    height: 65vh;
-    min-height: 380px;
+    height: 55vh;
+    min-height: 340px;
   }
 
   .hero-content {
@@ -90,7 +88,7 @@
   }
 
   .hero-content h1 {
-    font-size: 1.7rem;
+    font-size: 1.6rem;
   }
 
   .hero-content p {
@@ -100,12 +98,8 @@
 
 @media (max-width: 480px) {
   .hero {
-    height: 60vh;
-    min-height: 340px;
-  }
-
-  .hero-content {
-    padding: 1.3rem;
+    height: 50vh;
+    min-height: 300px;
   }
 
   .hero-content h1 {
@@ -118,7 +112,7 @@
 
   .hero-content .btn {
     font-size: 0.95rem;
-    padding: 0.6rem 1.4rem;
+    padding: 0.5rem 1.3rem;
   }
 }
   
