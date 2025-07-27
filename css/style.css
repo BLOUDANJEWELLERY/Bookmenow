@@ -218,21 +218,24 @@ footer {
   pointer-events: auto; /* Enable interaction */
 }
 
-/* Make logout button distinct */
 .nav-links li .logout-btn {
-  background: #ff4d4d;
+  background: linear-gradient(to right, #ff4d4d, #ff1a1a);
   color: white;
   font-weight: bold;
-  padding: 0.5rem 0.9rem;
-  border-radius: 6px;
+  padding: 0.6rem 2rem;
+  border-radius: 8px;
   border: none;
-  box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
-  transition: background 0.3s ease, transform 0.2s ease;
+  width: 100%; /* Full width in mobile menu */
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.4), 0 0 20px rgba(255, 0, 0, 0.2) inset;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  text-align: center;
+  font-size: 1rem;
 }
 
-/* Hover state for logout button */
+/* Glowing hover effect */
 .nav-links li .logout-btn:hover {
-  background: #cc0000;
+  background: linear-gradient(to right, #e60000, #ff3333);
   transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.6), 0 0 30px rgba(255, 0, 0, 0.3) inset;
   color: white;
 }
