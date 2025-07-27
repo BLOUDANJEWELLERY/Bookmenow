@@ -92,13 +92,14 @@ body {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  width: 250px;
+  width: 550px;
   background: linear-gradient(to right, #e0f0ff, #ffffff);
   padding: 0.6rem 2rem;
   transition: all 0.3s ease;
   color: var(--text);
   font-size: 1rem;
   border-radius: 6px;
+  box-sizing: border-box;
   user-select: none;
 }
 
