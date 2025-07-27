@@ -233,44 +233,6 @@ body {
   background: linear-gradient(to right, #0056b3, #0099cc);
       transform: translateY(-1px);
 }
-
-/* FEATURES SECTION */
-.features {
-  padding: 4rem 2rem;
-  text-align: center;
-  background: var(--bg);
-}
-
-.features h2 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-}
-
-.cards {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.card {
-  background: var(--card);
-  padding: 1.5rem;
-  border-radius: 10px;
-  width: 270px;
-  box-shadow: 0 4px 10px var(--shadow);
-  transition: transform 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.card h3 {
-  margin-bottom: 0.75rem;
-  color: var(--accent);
-}
-
 /* BOOKING FORM */
 .booking-main {
   padding: 4rem 2rem;
@@ -382,16 +344,6 @@ footer {
   .btn {
     font-size: 0.95rem;
     padding: 0.6rem 1rem;
-  }
-
-  .cards {
-    flex-direction: column;
-    gap: 1.5rem;
-    align-items: center;
-  }
-
-  .card {
-    width: 90%;
   }
 
   .booking-main {
