@@ -99,6 +99,7 @@ body {
   color: var(--text);
   font-size: 1rem;
   border-radius: 6px;
+  margin: 1px;
   user-select: none;
 }
 
