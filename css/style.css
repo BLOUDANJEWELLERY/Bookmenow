@@ -215,3 +215,20 @@ footer {
   padding: 1rem 0; /* Restore vertical padding */
   pointer-events: auto; /* Enable interaction */
 }
+
+.logout-btn {
+  background: #ff4d4d;
+  color: white !important;
+  font-weight: bold;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #e60000;
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(230, 0, 0, 0.4);
+}
