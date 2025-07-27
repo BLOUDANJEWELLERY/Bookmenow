@@ -925,7 +925,7 @@ window.deleteHoliday = async (date, btn) => {
       const enabled = document.getElementById("banner-enabled").checked;
       const message = document.getElementById("banner-message").value;
       await setDoc(doc(db, "adminSettings", "announcement"), { enabled, message });
-      alert("Banner settings saved.");
+      showToast("Banner settings saved.");
     });
 
     async function loadBannerSettings() {
