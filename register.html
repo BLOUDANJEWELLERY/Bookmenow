@@ -6,6 +6,104 @@
   <title>Register – BookMeNow</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
+  .booking-main {
+  max-width: 440px;
+  margin: 4rem auto;
+  padding: 1rem;
+}
+
+.booking-form-section h1 {
+  text-align: center;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #003366;
+  margin-bottom: 2rem;
+}
+
+/* Clean card form, no outer glowing border */
+.booking-form {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 51, 102, 0.1);
+  border: 1px solid #dce6f3;
+}
+
+/* Form group styling */
+.form-group {
+  margin-bottom: 1.75rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #003366;
+}
+
+/* Rounded, bold input style */
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  border: 1px solid #ccddee;
+  border-radius: 12px;
+  font-size: 1rem;
+  background-color: #f9fbff;
+  color: #003366;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.12);
+}
+
+/* Main gradient button */
+.btn {
+  display: inline-block;
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(to right, #007bff, #00bfff);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 123, 255, 0.25);
+}
+
+.btn:hover {
+  background: linear-gradient(to right, #0056b3, #0099cc);
+  transform: translateY(-2px);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Register link */
+.booking-form p {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #333;
+  margin-top: 1.75rem;
+}
+
+.booking-form p a {
+  color: #007bff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.booking-form p a:hover {
+  text-decoration: underline;
+}
     .message {
       margin-top: 1rem;
       font-size: 0.95rem;
