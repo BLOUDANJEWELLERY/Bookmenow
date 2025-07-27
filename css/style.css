@@ -80,7 +80,6 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-top: 3px;
   list-style: none;
   width:100%;
   padding: 2px;
@@ -99,7 +98,6 @@ body {
   color: var(--text);
   font-size: 1rem;
   border-radius: 6px;
-  margin-bottom: 5px;
   user-select: none;
 }
 
@@ -201,7 +199,6 @@ footer {
   top: 70px;
   left: 0;
   width:100%;
-  margin-top:2px;
   background: var(--nav);
   padding: 0 0; /* No vertical padding when closed */
   box-shadow: 0 4px 8px var(--shadow);
@@ -213,7 +210,6 @@ footer {
 .nav-links.show {
   max-height: 500px; /* Enough to fit all links */
   opacity: 1;
-  margin-top:2px;
   background: linear-gradient(to bottom, #5ab0ff, #99e0ff);
   padding: 1rem 0; /* Restore vertical padding */
   pointer-events: auto; /* Enable interaction */
