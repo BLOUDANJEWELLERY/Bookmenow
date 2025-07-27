@@ -105,7 +105,7 @@ body {
 }
 
 .nav-links li .active{
-  background: linear-gradient(to right, #007bff, #00c6ff);
+  background: linear-gradient(to bottom, #007bff, #00c6ff);
   color: white;
   border: none;
   box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
