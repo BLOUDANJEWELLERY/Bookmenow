@@ -219,7 +219,7 @@ footer {
 }
 
 .logout-btn {
-  background: #ff4d4d;
+  background: #ff4d4d !important;
   color: white !important;
   font-weight: bold;
   border: none;
