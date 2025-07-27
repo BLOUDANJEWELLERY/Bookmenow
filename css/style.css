@@ -94,7 +94,7 @@ body {
   border: none;
   cursor: pointer;
   background: white;
-  width:100%;
+  width: 40px;
   padding: 0.5rem 0.75rem;
   transition: all 0.3s ease;
   color: var(--text);
