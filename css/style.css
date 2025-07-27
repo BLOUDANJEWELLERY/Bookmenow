@@ -218,19 +218,21 @@ footer {
   pointer-events: auto; /* Enable interaction */
 }
 
-.logout-btn {
-  background: #ff4d4d !important;
-  color: white !important;
+/* Make logout button distinct */
+.nav-links li .logout-btn {
+  background: #ff4d4d;
+  color: white;
   font-weight: bold;
-  border: none;
   padding: 0.5rem 0.9rem;
   border-radius: 6px;
+  border: none;
   box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.logout-btn:hover {
-  background: #e60000;
+/* Hover state for logout button */
+.nav-links li .logout-btn:hover {
+  background: #cc0000;
   transform: scale(1.05);
-  box-shadow: 0 6px 14px rgba(230, 0, 0, 0.4);
+  color: white;
 }
