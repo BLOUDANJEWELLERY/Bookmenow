@@ -92,7 +92,7 @@ body {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  width: 100%;
+  width: 70px;
   background: linear-gradient(to right, #e0f0ff, #ffffff);
   padding: 0.6rem 2rem;
   transition: all 0.3s ease;
