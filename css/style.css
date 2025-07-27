@@ -82,7 +82,6 @@ body {
   gap: 1rem;
   margin-top: 3px;
   list-style: none;
-  width:100%;
   padding: 2px;
   text-align: center;
 }
@@ -94,7 +93,6 @@ body {
   border: none;
   cursor: pointer;
   background: white;
-  width: 40px;
   padding: 0.5rem 0.75rem;
   transition: all 0.3s ease;
   color: var(--text);
@@ -200,7 +198,6 @@ footer {
   position: absolute;
   top: 70px;
   left: 0;
-  width: 100%;
   margin-top:2px;
   background: var(--nav);
   padding: 0 0; /* No vertical padding when closed */
