@@ -79,6 +79,7 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-top: 1.2px;
   list-style: none;
   width:100%;
   text-align: center;
