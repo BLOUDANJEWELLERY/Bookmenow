@@ -93,7 +93,7 @@ body {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  width: 550px;
+  width: 270px;
   background: linear-gradient(to right, #e0f0ff, #ffffff);
   padding: 0.6rem 2rem;
   transition: all 0.3s ease;
@@ -225,7 +225,7 @@ footer {
   padding: 0.6rem 2rem;
   border-radius: 8px;
   border: none;
-  width: 100%; /* Full width in mobile menu */
+  width: 270px; /* Full width in mobile menu */
   box-shadow: 0 0 12px rgba(255, 0, 0, 0.4), 0 0 20px rgba(255, 0, 0, 0.2) inset;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   text-align: center;
@@ -248,8 +248,7 @@ footer {
   padding: 0.6rem 2rem;
   border-radius: 8px;
   border: none;
-  width: 100%;
-  max-width: 220px;
+  width: 270px;
   box-shadow: 0 0 10px rgba(40, 167, 69, 0.3), 0 0 20px rgba(40, 167, 69, 0.1) inset;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   font-size: 1rem;
