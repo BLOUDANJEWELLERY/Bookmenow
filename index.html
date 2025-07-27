@@ -11,115 +11,40 @@
 .hero {
   position: relative;
   width: 100%;
-  height: 60vh;
-  max-height: 520px;
-  min-height: 360px;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  padding: 0 1rem;
-  box-sizing: border-box;
 }
 
 .hero img {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 10%;
   z-index: -1;
-  filter: brightness(0.75);
 }
 
-
 .hero-content {
-  position: relative;
-  margin-top: 120px; /* Push content downward */
-  background: rgba(0, 0, 0, 0.4);
-  padding: 1.2rem 2rem;
-  border-radius: 12px;
-  color: #fff;
+  max-width: 90%;
   text-align: center;
-  backdrop-filter: blur(6px);
-  max-width: 550px;
-  width: 85%;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.55);
+  padding: 2rem;
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0 4px 15px var(--shadow);
 }
 
 .hero-content h1 {
-  font-size: 2rem;
-  margin-bottom: 0.8rem;
-  font-weight: 700;
+  font-size: 2.6rem;
+  margin-bottom: 1rem;
 }
 
 .hero-content p {
-  font-size: 1.1rem;
-  margin-bottom: 1.2rem;
-  line-height: 1.5;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
 }
-
-.hero-content .btn {
-  display: inline-block;
-  padding: 0.6rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  background: linear-gradient(to right, #007bff, #00bfff);
-  border: none;
-  border-radius: 25px;
-  color: #fff;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
-}
-
-.hero-content .btn:hover {
-  background: linear-gradient(to right, #0056b3, #00aaff);
-  transform: translateY(-1px);
-}
-
-/* Responsive tweaks */
-@media (max-width: 768px) {
-  .hero {
-    height: 55vh;
-    min-height: 340px;
-  }
-
-  .hero-content {
-    padding: 1.5rem;
-  }
-
-  .hero-content h1 {
-    font-size: 1.6rem;
-  }
-
-  .hero-content p {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero {
-    height: 50vh;
-    min-height: 300px;
-  }
-
-  .hero-content h1 {
-    font-size: 1.4rem;
-  }
-
-  .hero-content p {
-    font-size: 0.95rem;
-  }
-
-  .hero-content .btn {
-    font-size: 0.95rem;
-    padding: 0.5rem 1.3rem;
-  }
-}
-  
   
 /* FEATURES SECTION */
 .features {
