@@ -89,7 +89,7 @@ body {
 
 .nav-links li a,
 .nav-links li button {
-  font-weight: 500;
+  font-weight: bold;
   text-decoration: none;
   border: none;
   cursor: pointer;
