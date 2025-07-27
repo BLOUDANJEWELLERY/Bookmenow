@@ -110,6 +110,15 @@ body {
   border-color: #0056b3;
 }
 
+/* When shown, expand smoothly */
+.nav-links.show {
+  max-height: 500px; /* Enough to fit all links */
+  opacity: 1;
+  background: linear-gradient(to bottom, #5ab0ff, #99e0ff);
+  padding: 1rem 0; /* Restore vertical padding */
+  pointer-events: auto; /* Enable interaction */
+}
+
 .logout-btn {
   display: inline-flex;
   align-items: center;
@@ -131,8 +140,10 @@ body {
   z-index: 1;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   font-family: "Segoe UI", sans-serif;
+  width: 90%;
+    margin: 0.5rem auto 0;
+  
 }
-
 /* Inner glow ring */
 .logout-btn::before {
   content: '';
@@ -249,63 +260,3 @@ footer {
   .hamburger {
     display: flex;
   }
-
-  /* Initially hidden with zero height and invisible */
-.nav-links {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height 0.4s ease, opacity 0.4s ease;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  top: 70px;
-  left: 0;
-  width: 100%;
-  background: var(--nav);
-  padding: 0 0; /* No vertical padding when closed */
-  box-shadow: 0 4px 8px var(--shadow);
-  z-index: 999;
-  pointer-events: none; /* Prevent interaction when hidden */
-}
-
-/* When shown, expand smoothly */
-.nav-links.show {
-  max-height: 500px; /* Enough to fit all links */
-  opacity: 1;
-  background: linear-gradient(to bottom, #5ab0ff, #99e0ff);
-  padding: 1rem 0; /* Restore vertical padding */
-  pointer-events: auto; /* Enable interaction */
-}
-
-  .nav-links li {
-    width: 100%;
-    text-align: center;
-  }
-
-  /* Full width logout button on mobile */
-  .logout-btn {
-    width: 90%;
-    margin: 0.5rem auto 0;
-  }
-
-  .btn {
-    font-size: 0.95rem;
-    padding: 0.6rem 1rem;
-  }
-
-  .booking-main {
-    padding: 3rem 1rem;
-  }
-}
-  .btn {
-    width: 100%;
-    font-size: 0.95rem;
-    padding: 0.55rem 0.9rem;
-    text-align: center;
-  }
-
-  .logo {
-    font-size: 1.4rem;
-  }
-}
