@@ -14,15 +14,6 @@
   --shadow: rgba(0, 0, 0, 0.1);
 }
 
-body.dark {
-  --bg: #121212;
-  --text: #f1f1f1;
-  --accent: #1e90ff;
-  --card: #1f1f1f;
-  --nav: #1a1a1a;
-  --shadow: rgba(255, 255, 255, 0.08);
-}
-
 body {
   background: var(--bg);
   color: var(--text);
@@ -407,14 +398,6 @@ footer {
     padding: 3rem 1rem;
   }
 }
-
-@media (max-width: 480px) {
-  .hero-content h1 {
-    font-size: 1.7rem;
-  }
-
-  
-
   .btn {
     width: 100%;
     font-size: 0.95rem;
