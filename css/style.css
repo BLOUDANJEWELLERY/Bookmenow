@@ -265,6 +265,7 @@ footer {
   top: 70px;
   left: 0;
   width: 100%;
+  margin-top:2px;
   background: var(--nav);
   padding: 0 0; /* No vertical padding when closed */
   box-shadow: 0 4px 8px var(--shadow);
