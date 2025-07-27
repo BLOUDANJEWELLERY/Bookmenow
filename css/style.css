@@ -94,7 +94,7 @@ body {
   border: none;
   cursor: pointer;
   background: linear-gradient(to right, #e0f0ff, #ffffff);
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 2rem;
   transition: all 0.3s ease;
   color: var(--text);
   font-size: 1rem;
@@ -239,4 +239,27 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 0 20px rgba(255, 0, 0, 0.6), 0 0 30px rgba(255, 0, 0, 0.3) inset;
   color: white;
+}
+
+/* Login button style */
+.nav-links li .login-btn {
+  background: linear-gradient(to right, #28a745, #43d05c); /* Green shades */
+  color: white;
+  font-weight: 600;
+  padding: 0.6rem 2rem;
+  border-radius: 8px;
+  border: none;
+  width: 100%;
+  max-width: 220px;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.3), 0 0 20px rgba(40, 167, 69, 0.1) inset;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Hover effect */
+.nav-links li .login-btn:hover {
+  background: linear-gradient(to right, #1e7e34, #38c172);
+  transform: scale(1.05);
+  box-shadow: 0 0 18px rgba(40, 167, 69, 0.4), 0 0 30px rgba(40, 167, 69, 0.2) inset;
 }
