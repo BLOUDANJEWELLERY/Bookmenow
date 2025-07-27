@@ -80,6 +80,8 @@ body {
   align-items: center;
   gap: 1rem;
   list-style: none;
+  width:100%;
+  text-align: center;
 }
 
 .nav-links li a,
@@ -108,6 +110,25 @@ body {
 .nav-links li button:hover {
  background: #d6ecff;
   border-color: #0056b3;
+}
+
+  /* Initially hidden with zero height and invisible */
+.nav-links {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  background: var(--nav);
+  padding: 0 0; /* No vertical padding when closed */
+  box-shadow: 0 4px 8px var(--shadow);
+  z-index: 999;
+  pointer-events: none; /* Prevent interaction when hidden */
 }
 
 /* When shown, expand smoothly */
