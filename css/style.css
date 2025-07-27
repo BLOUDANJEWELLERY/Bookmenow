@@ -111,35 +111,6 @@ body {
  background: #d6ecff;
   border-color: #0056b3;
 }
-
-  /* Initially hidden with zero height and invisible */
-.nav-links {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height 0.4s ease, opacity 0.4s ease;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  top: 70px;
-  left: 0;
-  width: 100%;
-  background: var(--nav);
-  padding: 0 0; /* No vertical padding when closed */
-  box-shadow: 0 4px 8px var(--shadow);
-  z-index: 999;
-  pointer-events: none; /* Prevent interaction when hidden */
-}
-
-/* When shown, expand smoothly */
-.nav-links.show {
-  max-height: 500px; /* Enough to fit all links */
-  opacity: 1;
-  background: linear-gradient(to bottom, #5ab0ff, #99e0ff);
-  padding: 1rem 0; /* Restore vertical padding */
-  pointer-events: auto; /* Enable interaction */
-}
-
 .logout-btn {
   display: inline-flex;
   align-items: center;
@@ -281,3 +252,31 @@ footer {
   .hamburger {
     display: flex;
   }
+  
+  /* Initially hidden with zero height and invisible */
+.nav-links {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  background: var(--nav);
+  padding: 0 0; /* No vertical padding when closed */
+  box-shadow: 0 4px 8px var(--shadow);
+  z-index: 999;
+  pointer-events: none; /* Prevent interaction when hidden */
+}
+
+/* When shown, expand smoothly */
+.nav-links.show {
+  max-height: 500px; /* Enough to fit all links */
+  opacity: 1;
+  background: linear-gradient(to bottom, #5ab0ff, #99e0ff);
+  padding: 1rem 0; /* Restore vertical padding */
+  pointer-events: auto; /* Enable interaction */
+}
