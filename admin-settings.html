@@ -508,6 +508,12 @@ input[type="date"] {
   left: 25px;
 }
 
+.inline{
+  display: flex;
+    align-items: center;
+    gap: 8px; /* spacing between label and input */
+}
+
   </style>
 </head>
 <body>
@@ -609,7 +615,7 @@ input[type="date"] {
     <div id="announcement-tab" class="tab-content">
       <h2 class="section-title">Announcement</h2>
       <form id="announcement-form">
-        <div>
+        <div class="inline">
           <label class="holiday-label">Banner:</label>
           <input type="checkbox" class="banner-enable" id="banner-enabled"/>
         </div>
