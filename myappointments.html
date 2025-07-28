@@ -354,7 +354,7 @@
         card.innerHTML = `
           <h3>${appt.service}</h3>
           <p><strong>Date:</strong> ${appt.date}</p>
-          <p><strong>Time:</strong> ${appt.time}</p>
+          <p><strong>Time:</strong> ${formatTo12Hour(appt.time)}</p>
           <p><strong>Name:</strong> ${appt.name}</p>
           <p><strong>Phone:</strong> ${appt.phone}</p>
           <p><strong>Appointment ID:</strong> ${appt.bookingId}</p>
@@ -458,8 +458,7 @@
   y += gap; doc.text(`Phone: ${data.phone}`, 20, y);
   y += gap; doc.text(`Service: ${data.service}`, 20, y);
   y += gap; doc.text(`Date: ${data.date}`, 20, y);
-  y += gap; doc.text(`Time: ${data.time}`, 20, y);
-
+  y += gap; doc.text(`Time: ${formatTo12Hour(data.time)}`, 20, y);
   // === QR CODE ===
   const qr = new QRious({
     value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
