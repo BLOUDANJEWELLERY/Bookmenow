@@ -161,6 +161,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 
   <script type="module">
+  function formatTo12Hour(time24) {
+  const [hourStr, minute] = time24.split(":");
+  let hour = parseInt(hourStr, 10);
+  const ampm = hour >= 12 ? "PM" : "AM";
+  hour = hour % 12 || 12;
+  return `${hour}:${minute} ${ampm}`;
+}
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
@@ -224,7 +231,7 @@
           <p><strong>Phone:</strong> ${match.phone}</p>
           <p><strong>Service:</strong> ${match.service}</p>
           <p><strong>Date:</strong> ${match.date}</p>
-          <p><strong>Time:</strong> ${match.time}</p>
+          <p><strong>Time:</strong> ${formatTo12Hour(match.time)}</p>
         </div>
         <button class="btn-download" onclick="downloadPDF()">📄 Download PDF Receipt</button>
       `;
@@ -302,8 +309,7 @@
       y += gap; doc.text(`Phone: ${data.phone}`, 20, y);
       y += gap; doc.text(`Service: ${data.service}`, 20, y);
       y += gap; doc.text(`Date: ${data.date}`, 20, y);
-      y += gap; doc.text(`Time: ${data.time}`, 20, y);
-
+      y += gap; doc.text(`Time: ${formatTo12Hour(data.time)}`, 20, y);
       // QR Code
       const qr = new QRious({
         value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
