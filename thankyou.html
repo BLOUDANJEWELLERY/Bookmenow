@@ -109,6 +109,7 @@
 
   <!-- ✅ Firebase Auth -->
   <script type="module">
+  
     import { handleAuthUI, redirectIfNotLoggedIn } from "./js/auth.js";
 
     // 🔒 Ensure only logged in users can access
@@ -126,7 +127,7 @@
       document.getElementById("phone").textContent = data.phone;
       document.getElementById("service").textContent = data.service;
       document.getElementById("date").textContent = data.date;
-      document.getElementById("time").textContent = data.time;
+      document.getElementById("time").textContent = formatTo12Hour(data.time);
     } else {
       document.querySelector(".thankyou-main").innerHTML = "<h1>⚠️ No Booking Found</h1><p>Please make a booking first.</p>";
     }
@@ -167,8 +168,7 @@ window.downloadPDF = async function () {
   y += gap; doc.text(`Phone: ${data.phone}`, 20, y);
   y += gap; doc.text(`Service: ${data.service}`, 20, y);
   y += gap; doc.text(`Date: ${data.date}`, 20, y);
-  y += gap; doc.text(`Time: ${data.time}`, 20, y);
-
+  y += gap; doc.text(`Time: ${formatTo12Hour(data.time)}`, 20, y);
   // === QR CODE ===
   const qr = new QRious({
     value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
