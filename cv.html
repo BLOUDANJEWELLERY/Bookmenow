@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waleed Sheeraz - Professional CV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Color Scheme */
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --background: #f9f9f9;
+        }
+        
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .cv-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .name {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .objective {
+            font-size: 1.1rem;
+            margin-top: 15px;
+            font-style: italic;
+        }
+        
+        /* Section Styles */
+        .section {
+            padding: 25px 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section-title {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        /* Personal Info */
+        .personal-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .info-item i {
+            color: var(--secondary);
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Skills */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .skill-category {
+            margin-bottom: 20px;
+        }
+        
+        .skill-category h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .skill-item {
+            background: var(--light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+        
+        /* Experience & Education */
+        .timeline-item {
+            margin-bottom: 25px;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            border: 2px solid var(--secondary);
+            border-radius: 50%;
+            background: white;
+        }
+        
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 22px;
+            width: 2px;
+            height: calc(100% - 10px);
+            background: var(--secondary);
+        }
+        
+        .timeline-item:last-child:after {
+            display: none;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .timeline-date {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-content {
+            margin-top: 10px;
+        }
+        
+        /* Additional Info */
+        .additional-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .info-box {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .info-box h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        /* References */
+        .references {
+            font-style: italic;
+            color: #666;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+            
+            .cv-container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cv-container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1 class="name">Waleed Sheeraz</h1>
+            <p class="objective">Motivated and responsible professional seeking a full-time cashier position</p>
+        </div>
+        
+        <!-- Personal Information -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-user"></i> Personal Information</h2>
+            <div class="personal-info">
+                <div class="info-item">
+                    <i class="fas fa-user"></i>
+                    <span>19 years old</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+96599782299</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>waleedsheeraz06@gmail.com</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Kuwait</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Objective -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-bullseye"></i> Objective</h2>
+            <p>Motivated and responsible 19-year-old seeking a full-time cashier position at a supermarket. Currently working as a cheque collector, I bring strong numerical skills, excellent customer service, and a reliable work ethic. Quick learner with a strong command of English and Urdu, eager to contribute to a positive shopping experience.</p>
+        </div>
+        
+        <!-- Skills -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-tools"></i> Skills</h2>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h4>Communication</h4>
+                    <div class="skill-item">Fluent English</div>
+                    <div class="skill-item">Native Urdu</div>
+                    <div class="skill-item">Customer Service</div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>Technical</h4>
+                    <div class="skill-item">MS Word</div>
+                    <div class="skill-item">MS Excel</div>
+                    <div class="skill-item">MS Access</div>
+                    <div class="skill-item">MySQL</div>
+                    <div class="skill-item">MongoDB</div>
+                    <div class="skill-item">Firebase</div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>Cash Handling</h4>
+                    <div class="skill-item">Money Management</div>
+                    <div class="skill-item">Financial Tracking</div>
+                    <div class="skill-item">Documentation</div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>Personal Attributes</h4>
+                    <div class="skill-item">Reliable</div>
+                    <div class="skill-item">Punctual</div>
+                    <div class="skill-item">Organized</div>
+                    <div class="skill-item">Fast Learner</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Education -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Education</h2>
+            <div class="timeline-item">
+                <div class="timeline-title">Higher Secondary School Certificate (HSSC)</div>
+                <div class="timeline-date">Pakistan School Salmiya, Kuwait</div>
+            </div>
+        </div>
+        
+        <!-- Work Experience -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-briefcase"></i> Work Experience</h2>
+            <div class="timeline-item">
+                <div class="timeline-title">Cheque Collector</div>
+                <div class="timeline-date">Current</div>
+                <div class="timeline-content">
+                    <ul>
+                        <li>Managed collections efficiently and accurately</li>
+                        <li>Interacted with clients professionally, maintaining positive relationships</li>
+                        <li>Developed strong organizational and financial tracking skills</li>
+                    </ul>
+                    <p style="margin-top: 10px; font-style: italic;">
+                        Although no formal cashier experience, current role involves handling money, documentation, and client interactions, which translates directly to cashier responsibilities.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Information -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-info-circle"></i> Additional Information</h2>
+            <div class="additional-info">
+                <div class="info-box">
+                    <h4>Languages</h4>
+                    <ul>
+                        <li>English (Fluent)</li>
+                        <li>Urdu (Native)</li>
+                    </ul>
+                </div>
+                
+                <div class="info-box">
+                    <h4>Availability</h4>
+                    <ul>
+                        <li>Full-time</li>
+                        <li>Can join immediately</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- References -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-comments"></i> References</h2>
+            <p class="references">Available upon request</p>
+        </div>
+    </div>
+</body>
+</html>
