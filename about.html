@@ -3,381 +3,209 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bookin – BookMeNow</title>
+  <title>BookMeNow – About</title>
   <link rel="stylesheet" href="css/style.css" />
-  <script defer src="js/script.js"></script>
-</head>
-<body>
-  <header class="navbar">
-    <a href="index.html" class="logo">BookMeNow</a>
-    <div class="hamburger" id="hamburger">
-      <span></span><span></span><span></span>
-    </div>
-    <ul class="nav-links" id="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="booking.html">Booking</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><button id="theme-toggle">🌙</button></li>
-    </ul>
-  </header>
-
-  <main class="container">
-    <h1>Our Services</h1>
-    <p>Coming soon...</p>
-  </main>
-
-  <footer><p>© 2025 BookMeNow</p></footer>
-</body>
-</html>
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Book an Appointment – BookMeNow</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/calendar.css" />
-  <script defer src="js/script.js"></script>
- <style>
-    body {
-      background: #f0f4fa;
-    }
-
-    .booking-main {
-      max-width: 900px;
-      margin: 1rem auto;
-      padding: 1.5rem;
-    }
-
-    h1 {
+  <link rel="icon" type="image/png" href="images/favicon.PNG">
+  <link rel="apple-touch-icon" href="images/Home.png">
+  <link rel="shortcut icon" href="images/favicon.PNG" type="image/png">
+  
+  <style>
+    /* ABOUT HERO */
+    .about-hero {
+      position: relative;
+      width: 100%;
+      height: 65vh;
+      background: url("images/about-hero.jpg") center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
+      color: white;
+    }
+    .about-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+    }
+    .about-hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      padding: 2rem;
+      animation: fadeInUp 1.2s ease-out;
+    }
+    .about-hero-content h1 {
+      font-size: 2.4rem;
+      margin-bottom: 1rem;
+    }
+    .about-hero-content p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    /* ABOUT SECTION */
+    .about-section {
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .about-section h2 {
       font-size: 2rem;
-      color: #003366;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
     }
-
-    p.subtitle {
-      text-align: center;
+    .about-section p {
       font-size: 1.05rem;
-      color: #555;
+      line-height: 1.7;
+      color: var(--text);
       margin-bottom: 2rem;
     }
 
-    .booking-form {
-      background: white;
+    /* VALUES */
+    .values {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 3rem;
+    }
+    .value-card {
+      background: var(--card);
       padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 51, 102, 0.08);
-      border: 2px solid transparent;
-      background-clip: padding-box;
-      position: relative;
-      /*overflow: visible; /* To allow calendar dropdown overflow */
+      width: 280px;
+      box-shadow: 0 4px 14px var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+    }
+    .value-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 6px 18px var(--shadow);
+    }
+    .value-card h3 {
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .value-card p {
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
 
-    .booking-form::before {
-      content: '';
-  display: block; /* explicitly make it a full block */
-  position: absolute;
-  top: -2px; left: -2px; right: -2px; bottom: -2px;
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-  z-index: -1;
-  border-radius: 14px;
-  pointer-events: none; /* prevent weird hover bugs */
+    /* DEV INFO */
+    .developer-info {
+      margin-top: 4rem;
+      padding: 2.5rem;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 6px 20px var(--shadow);
+      text-align: center;
     }
-
-    .form-group {
-      margin-bottom: 1.5rem;
-      position: relative;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 0.4rem;
-      font-weight: bold;
-      color: #003366;
-    }
-
-    input[type="text"],
-    input[type="tel"],
-    select {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-      background-color: #fdfdfd;
-      color: #333;
-      transition: border 0.3s, box-shadow 0.3s;
-    }
-
-    input[type="text"]:focus,
-    input[type="tel"]:focus,
-    select:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.85rem 2rem;
-      font-size: 1rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 30px;
-      background: linear-gradient(to right, #007bff, #00bfff);
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
-      width: 100%;
-    }
-
-    .btn:hover {
-      background: linear-gradient(to right, #0056b3, #0099cc);
-      transform: translateY(-1px);
-    }
-
-    .btn:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-
-    .loader {
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid white;
+    .developer-info img {
+      width: 130px;
+      height: 130px;
       border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      animation: spin 0.6s linear infinite;
-      margin-left: 10px;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .developer-info h3 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
+    }
+    .developer-info p {
+      margin-bottom: 1rem;
+      color: var(--text);
+      font-size: 1.05rem;
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
     }
-}
+    .social-links img {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 3px 10px var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .social-links img:hover {
+      transform: scale(1.15);
+      box-shadow: 0 6px 16px var(--shadow);
+      cursor: pointer;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-  <!-- Header -->
+  <!-- HEADER -->
   <header>
     <nav class="navbar">
       <div class="logo">BookMeNow</div>
-      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
       <ul class="nav-links" id="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="myappointments.html">My Appointments</a></li>
-        <li><a href="booking.html" class="active">Booking</a></li>
-        <li><button id="theme-toggle">🌙</button></li>
-        <li><button id="logout-btn" class="logout-btn" style="display: none;">Logout</button></li>
+        <li><button onclick="window.location.href='index.html'">Home</button></li>
+        <li><button onclick="window.location.href='about.html'" class="active">About</button></li>
+        <li><button onclick="window.location.href='admin.html'">Admin Panel</button></li>
+        <li><button onclick="window.location.href='myappointments.html'">My Appointments</button></li>
+        <li><button onclick="window.location.href='booking.html'">Booking</button></li>
+        <li id="auth-button-slot"></li>
       </ul>
     </nav>
   </header>
 
+  <!-- ABOUT HERO -->
+  <section class="about-hero">
+    <div class="about-hero-content">
+      <h1>About BookMeNow</h1>
+      <p>Revolutionizing how you book salon appointments. Built with innovation, speed, and user satisfaction at its core.</p>
+    </div>
+  </section>
 
-  <!-- Main -->
-  <main class="booking-main">
-    <h1>Book an Appointment</h1>
-    <p class="subtitle">Fill out the form below to reserve your slot.</p>
+  <!-- ABOUT SECTION -->
+  <section class="about-section">
+    <h2>Our Mission</h2>
+    <p>
+      BookMeNow was designed with a single purpose: to simplify life. 
+      No more endless calls, no more waiting in line—just fast, reliable, and seamless booking.  
+      We’re here to empower both salons and clients with modern digital solutions that save time and deliver convenience.
+    </p>
 
-    <form id="booking-form" class="booking-form" autocomplete="off">
-      <div class="form-group">
-        <label for="full-name">Full Name</label>
-        <input type="text" id="full-name" name="full-name" required autocomplete="name" />
+    <h2>Our Core Values</h2>
+    <div class="values">
+      <div class="value-card">
+        <h3>⚡ Innovation</h3>
+        <p>Pushing boundaries to create smarter, faster, and easier solutions for clients and businesses alike.</p>
       </div>
-
-      <div class="form-group">
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="phone" required autocomplete="tel" />
+      <div class="value-card">
+        <h3>🤝 Trust</h3>
+        <p>Building lasting relationships through transparency, reliability, and consistent results.</p>
       </div>
-
-      <div class="form-group">
-        <label for="service">Select Service</label>
-        <select id="service" name="service" required>
-          <option value="">-- Choose --</option>
-          <option value="Beard Cutting">Beard Cutting</option>
-          <option value="Haircut">Haircut</option>
-          <option value="Facial">Facial</option>
-          <option value="Hair Coloring">Hair Coloring</option>
-          <option value="Shaving">Shaving</option>
-          <option value="Head Massage">Head Massage</option>
-        </select>
+      <div class="value-card">
+        <h3>🌍 Accessibility</h3>
+        <p>Ensuring our platform is simple and accessible for everyone, across all devices and regions.</p>
       </div>
+    </div>
+  </section>
 
-      <div class="form-group calendar-wrapper">
-        <label for="date-input">Date</label>
-        <input type="text" id="date-input" class="date-input" name="date" readonly placeholder="Select a date" required />
-        <div id="waleedcalendar" class="calendarwaleed" style="display:none"></div>
-      </div>
-
-      <div class="form-group">
-        <label for="time">Time</label>
-        <select id="time" name="time" required>
-          <option value="">-- Choose --</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn" id="submit-btn">Confirm Booking</button>
-    </form>
-  </main>
-
+  <!-- FOOTER -->
   <footer>
-    <p>© 2025 BookMeNow | Built by Captain</p>
+    <p>© 2025 BookMeNow | Built by WALEED SHEERAZ</p>
   </footer>
 
-  <!-- Firebase + Booking Logic -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
-      authDomain: "sampleportfolio-9450c.firebaseapp.com",
-      projectId: "sampleportfolio-9450c",
-      storageBucket: "sampleportfolio-9450c.appspot.com",
-      messagingSenderId: "725347523572",
-      appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    const logoutBtn = document.getElementById("logout-btn");
-    const dateInput = document.getElementById("date-input");
-    const calendar = document.getElementById("calendar");
-    const timeSelect = document.getElementById("time");
-    const submitBtn = document.getElementById("submit-btn");
-
-    onAuthStateChanged(auth, (user) => {
-      if (!user) window.location.href = "login.html";
-      else logoutBtn.style.display = "inline-block";
-    });
-
-    logoutBtn?.addEventListener("click", () => {
-      signOut(auth).then(() => window.location.href = "login.html").catch(console.error);
-    });
-
-
-  document.addEventListener("dateSelected", (e) => {
-    const selectedDate = e.detail.selectedDate;
-    updateTimeSlotsForDate(selectedDate);
-  });
-  
-    // Time slots generation (same as before)
-    const generateTimeSlots = () => {
-      const slots = [];
-      for (let h = 8; h <= 23; h++) {
-        for (let m = 0; m < 60; m += 30) {
-          if (h === 23 && m > 30) continue;
-          const hour = h % 12 === 0 ? 12 : h % 12;
-          const ampm = h < 12 ? "AM" : "PM";
-          const mm = m.toString().padStart(2, "0");
-          slots.push({
-            value: `${h.toString().padStart(2, "0")}:${mm}`,
-            label: `${hour}:${mm} ${ampm}`
-          });
-        }
-      }
-      return slots;
-    };
-
-    const allSlots = generateTimeSlots();
-
-    async function updateTimeSlotsForDate(selectedDate) {
-      timeSelect.innerHTML = `<option value="">-- Choose --</option>`;
-      if (!selectedDate) return;
-
-      const now = new Date();
-      const isToday = selectedDate === now.toISOString().split("T")[0];
-
-      const q = query(collection(db, "bookings"), where("date", "==", selectedDate));
-      const snapshot = await getDocs(q);
-      const bookedTimes = snapshot.docs.map(doc => doc.data().time);
-
-      const filteredSlots = allSlots.filter(slot => {
-        if (bookedTimes.includes(slot.value)) return false;
-        if (isToday) {
-          const [hh, mm] = slot.value.split(":").map(Number);
-          const slotTime = new Date();
-          slotTime.setHours(hh, mm, 0, 0);
-          if (slotTime <= now) return false;
-        }
-        return true;
-      });
-
-      if (filteredSlots.length === 0) {
-        timeSelect.innerHTML = `<option value="">No available slots</option>`;
-        return;
-      }
-
-      filteredSlots.forEach(slot => {
-        const opt = document.createElement("option");
-        opt.value = slot.value;
-        opt.textContent = slot.label;
-        timeSelect.appendChild(opt);
-      });
-    }
-
-
-    // Booking time slots update on selectedDate change
-    // Initially handled during calendar render for today
-
-    // --- Booking form submit logic (same as before) ---
-
-    document.getElementById("booking-form").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const name = document.getElementById("full-name").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const service = document.getElementById("service").value;
-      const date = dateInput.value;
-      const time = document.getElementById("time").value;
-      if (!date) {
-        alert("Please select a valid date.");
-        return;
-      }
-      const bookingId = "BMN" + Math.floor(100000 + Math.random() * 900000);
-
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = 'Booking <span class="loader"></span>';
-
-      try {
-        const user = auth.currentUser;
-        await addDoc(collection(db, "bookings"), {
-          userId: user.uid,
-          name,
-          phone,
-          service,
-          date,
-          time,
-          bookingId,
-          done: false,
-          createdAt: serverTimestamp()
-        });
-
-        localStorage.setItem("bookingData", JSON.stringify({ name, phone, service, date, time, bookingId }));
-        window.location.href = "thankyou.html";
-      } catch (err) {
-        console.error("Firestore Error:", err);
-        alert("Failed to save booking. Please try again.");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = "Confirm Booking";
-      }
-    });
-  </script>
-   <script type="module" src="js/calendar.js"></script>
+  <script type="module" src="js/script.js"></script>
 </body>
 </html>
