@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BookMeNow – About</title>
+  <title>LuxeStyle Salon – About Us</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" href="images/favicon.PNG">
   <link rel="apple-touch-icon" href="images/Home.png">
@@ -11,14 +11,14 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   
 <style>
-  /* MODERN ABOUT HERO */
+  /* SALON ABOUT HERO */
   .about-hero {
     position: relative;
     width: 100%;
     height: 70vh;
     min-height: 600px;
-    background: linear-gradient(135deg, rgba(0,87,179,0.85) 0%, rgba(0,87,179,0.7) 100%),
-                url("images/about-hero.jpg") center/cover no-repeat;
+    background: linear-gradient(135deg, rgba(184, 140, 107, 0.85) 0%, rgba(154, 110, 77, 0.8) 100%),
+                url("images/salon-interior.jpg") center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,10 +49,11 @@
     font-size: 4rem;
     font-weight: 800;
     margin-bottom: 1.5rem;
-    background: linear-gradient(45deg, #fff, #e6f0ff);
+    background: linear-gradient(45deg, #fff, #f8f3e6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
   }
   
   .about-hero p {
@@ -64,245 +65,280 @@
     opacity: 0.95;
   }
 
-  /* MODERN MISSION SECTION */
-  .mission {
+  /* SALON STORY SECTION */
+  .salon-story {
     padding: 8rem 2rem;
-    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+    background: linear-gradient(135deg, #fefaf5 0%, #ffffff 100%);
     position: relative;
   }
   
-  .mission::before {
-    content: '';
-    position: absolute;
-    top: -50px;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background: linear-gradient(180deg, transparent 0%, #f8fbff 100%);
-  }
-  
-  .mission-content {
-    max-width: 1000px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  
-  .mission h2 {
-    font-size: 3rem;
-    font-weight: 700;
-    background: linear-gradient(45deg, var(--accent), #0055cc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 2rem;
-  }
-  
-  .mission p {
-    font-size: 1.3rem;
-    line-height: 1.9;
-    color: var(--text);
-    max-width: 800px;
-    margin: 0 auto;
-    font-weight: 400;
-  }
-
-  /* ENHANCED CORE VALUES */
-  .values-strip {
-    padding: 6rem 2rem;
-    background: radial-gradient(circle at top right, #f0f7ff, transparent 70%),
-                radial-gradient(circle at bottom left, #f0f7ff, transparent 70%);
-  }
-  
-  .values-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2.5rem;
-    text-align: center;
-  }
-  
-  .value {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 3rem 2rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,87,179,0.08);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(0,87,179,0.1);
-    backdrop-filter: blur(10px);
-  }
-  
-  .value:hover {
-    transform: translateY(-15px) scale(1.02);
-    box-shadow: 0 25px 60px rgba(0,87,179,0.15);
-    border-color: rgba(0,87,179,0.2);
-  }
-  
-  .value-icon {
-    width: 100px;
-    height: 100px;
-    background: linear-gradient(135deg, var(--accent), #0055cc);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 2rem;
-    font-size: 2.5rem;
-    transition: transform 0.3s ease;
-  }
-  
-  .value:hover .value-icon {
-    transform: rotate(10deg) scale(1.1);
-  }
-  
-  .value h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    font-weight: 700;
-    color: var(--accent);
-  }
-  
-  .value p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: var(--text);
-    opacity: 0.9;
-  }
-
-  /* MODERN CONTACT SECTION */
-  .contact-section {
-    padding: 8rem 2rem;
-    background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
-    position: relative;
-  }
-  
-  .contact-container {
+  .story-content {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
-    align-items: start;
+    align-items: center;
   }
   
-  .contact-info {
-    padding: 2rem 0;
+  .story-text h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #b88c6b;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+  }
+  
+  .story-text p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #5a4a3a;
+    margin-bottom: 2rem;
+  }
+  
+  .story-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  
+  .stat {
+    text-align: center;
+  }
+  
+  .stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #b88c6b;
+    display: block;
+  }
+  
+  .stat-label {
+    font-size: 1rem;
+    color: #7a6a5a;
+    font-weight: 600;
+  }
+  
+  .story-image {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(184, 140, 107, 0.2);
+  }
+  
+  .story-image img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+  }
+  
+  .story-image:hover img {
+    transform: scale(1.05);
+  }
+
+  /* SALON VALUES */
+  .salon-values {
+    padding: 6rem 2rem;
+    background: linear-gradient(135deg, #ffffff 0%, #fefaf5 100%);
+  }
+  
+  .values-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 4rem;
+  }
+  
+  .values-header h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #b88c6b;
+    margin-bottom: 1rem;
+  }
+  
+  .values-header p {
+    font-size: 1.2rem;
+    color: #5a4a3a;
+    line-height: 1.6;
+  }
+  
+  .values-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2.5rem;
+  }
+  
+  .value-card {
+    background: white;
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(184, 140, 107, 0.1);
+    transition: all 0.4s ease;
+    text-align: center;
+    border: 2px solid transparent;
+  }
+  
+  .value-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 60px rgba(184, 140, 107, 0.15);
+    border-color: #b88c6b;
+  }
+  
+  .value-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #b88c6b, #9a6e4d);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    font-size: 2rem;
+    color: white;
+  }
+  
+  .value-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #b88c6b;
+    margin-bottom: 1rem;
+  }
+  
+  .value-card p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #5a4a3a;
+  }
+
+  /* TEAM SECTION */
+  .team-section {
+    padding: 8rem 2rem;
+    background: linear-gradient(135deg, #fefaf5 0%, #ffffff 100%);
+  }
+  
+  .team-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 4rem;
+  }
+  
+  .team-header h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #b88c6b;
+    margin-bottom: 1rem;
+  }
+  
+  .team-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+  }
+  
+  .team-member {
+    text-align: center;
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(184, 140, 107, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .team-member:hover {
+    transform: translateY(-5px);
+  }
+  
+  .member-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1.5rem;
+    border: 4px solid #b88c6b;
+  }
+  
+  .team-member h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #b88c6b;
+    margin-bottom: 0.5rem;
+  }
+  
+  .team-member .role {
+    font-size: 1.1rem;
+    color: #7a6a5a;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .team-member p {
+    font-size: 1rem;
+    color: #5a4a3a;
+    line-height: 1.6;
+  }
+
+  /* CONTACT SECTION */
+  .contact-section {
+    padding: 6rem 2rem;
+    background: linear-gradient(135deg, #b88c6b 0%, #9a6e4d 100%);
+    color: white;
+  }
+  
+  .contact-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
   }
   
   .contact-section h2 {
     font-size: 3rem;
     font-weight: 700;
-    background: linear-gradient(45deg, var(--accent), #0055cc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     margin-bottom: 2rem;
+    color: white;
   }
   
-  .contact-details {
+  .contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
     margin-bottom: 3rem;
   }
   
   .contact-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    color: var(--text);
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
   }
   
-  .contact-icon {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, var(--accent), #0055cc);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 1rem;
+  .contact-item h3 {
     font-size: 1.3rem;
-    color: white;
+    margin-bottom: 1rem;
+    font-weight: 600;
   }
   
-  .contact-details a {
-    color: var(--accent);
+  .contact-item p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+  
+  .contact-item a {
+    color: white;
     text-decoration: none;
     font-weight: 600;
-    transition: color 0.3s ease;
   }
   
-  .contact-details a:hover {
-    color: #0055cc;
+  .contact-item a:hover {
     text-decoration: underline;
-  }
-  
-  .contact-form {
-    background: #fff;
-    padding: 3rem;
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0,87,179,0.1);
-    border: 1px solid rgba(0,87,179,0.1);
-  }
-  
-  .form-group {
-    margin-bottom: 2rem;
-    position: relative;
-  }
-  
-  .contact-form input,
-  .contact-form textarea {
-    width: 100%;
-    padding: 1.2rem;
-    border: 2px solid #eef5ff;
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: #fafcff;
-  }
-  
-  .contact-form input:focus,
-  .contact-form textarea:focus {
-    border-color: var(--accent);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(0,87,179,0.1);
-    outline: none;
-    transform: translateY(-2px);
-  }
-  
-  .contact-form button {
-    background: linear-gradient(135deg, var(--accent), #0055cc);
-    color: #fff;
-    padding: 1.2rem 3rem;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    width: 100%;
-  }
-  
-  .contact-form button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(0,87,179,0.3);
-  }
-
-  /* MODERN FOOTER */
-  footer {
-    background: linear-gradient(135deg, var(--accent) 0%, #0055cc 100%);
-    color: #fff;
-    text-align: center;
-    padding: 3rem 1rem;
-    font-size: 1rem;
   }
 
   /* RESPONSIVE DESIGN */
   @media (max-width: 768px) {
-    .about-hero {
-      height: 60vh;
-      min-height: 500px;
-    }
-    
     .about-hero h1 {
       font-size: 2.5rem;
     }
@@ -311,17 +347,21 @@
       font-size: 1.2rem;
     }
     
-    .mission h2,
-    .contact-section h2 {
-      font-size: 2.2rem;
-    }
-    
-    .contact-container {
+    .story-content {
       grid-template-columns: 1fr;
       gap: 2rem;
     }
     
-    .values-container {
+    .story-stats {
+      grid-template-columns: 1fr;
+    }
+    
+    .values-grid,
+    .team-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .contact-info {
       grid-template-columns: 1fr;
     }
   }
@@ -332,7 +372,7 @@
   <!-- HEADER -->
   <header>
     <nav class="navbar">
-      <div class="logo">BookMeNow</div>
+      <div class="logo">LuxeStyle Salon</div>
       <div class="hamburger" id="hamburger">
         <span></span><span></span><span></span>
       </div>
@@ -347,90 +387,134 @@
     </nav>
   </header>
 
-  <!-- MODERN ABOUT HERO -->
+  <!-- SALON HERO -->
   <section class="about-hero">
     <div class="about-hero-content">
-      <h1 data-aos="fade-up">About BookMeNow</h1>
-      <p data-aos="fade-up" data-aos-delay="200">Making salon bookings effortless, reliable, and fast — because your time is valuable.</p>
+      <h1 data-aos="fade-up">Welcome to LuxeStyle Salon</h1>
+      <p data-aos="fade-up" data-aos-delay="200">Where beauty meets elegance. For over 15 years, we've been transforming looks and boosting confidence in Kuwait.</p>
     </div>
   </section>
 
-  <!-- MODERN MISSION -->
-  <section class="mission">
-    <div class="mission-content">
-      <h2 data-aos="fade-up">Our Mission</h2>
-      <p data-aos="fade-up" data-aos-delay="200">
-        At BookMeNow, we aim to redefine how clients and salons connect. 
-        With cutting-edge technology at the core, we eliminate the old hassle of calls and waiting lines, 
-        replacing them with a seamless digital experience that works anytime, anywhere. 
-        We're committed to creating a platform that empowers both beauty professionals and their clients.
-      </p>
-    </div>
-  </section>
-
-  <!-- ENHANCED CORE VALUES -->
-  <section class="values-strip">
-    <div class="values-container">
-      <div class="value" data-aos="fade-up" data-aos-delay="100">
-        <div class="value-icon">⚡</div>
-        <h3>Innovation</h3>
-        <p>We create smarter, faster tools that make bookings simple and stress-free. Our platform evolves with the latest technology to serve you better.</p>
-      </div>
-      <div class="value" data-aos="fade-up" data-aos-delay="200">
-        <div class="value-icon">🤝</div>
-        <h3>Trust</h3>
-        <p>Our platform ensures reliability and builds confidence with every appointment. Your data security and privacy are our top priorities.</p>
-      </div>
-      <div class="value" data-aos="fade-up" data-aos-delay="300">
-        <div class="value-icon">🌍</div>
-        <h3>Accessibility</h3>
-        <p>Designed for everyone, everywhere, on any device — without barriers. We believe beauty services should be accessible to all.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- MODERN CONTACT SECTION -->
-  <section class="contact-section">
-    <div class="contact-container">
-      <div class="contact-info" data-aos="fade-right">
-        <h2>Get In Touch</h2>
-        <div class="contact-details">
-          <div class="contact-item">
-            <div class="contact-icon">🏢</div>
-            <div>Al-Rai, Kuwait City, Kuwait</div>
+  <!-- SALON STORY -->
+  <section class="salon-story">
+    <div class="story-content">
+      <div class="story-text" data-aos="fade-right">
+        <h2>Our Story of Beauty & Excellence</h2>
+        <p>Founded in 2008, LuxeStyle Salon began as a small beauty studio with a big vision: to provide world-class salon services in the heart of Kuwait City. What started with three styling chairs has grown into Kuwait's premier beauty destination.</p>
+        <p>Today, we serve over 200 clients weekly with a team of 25 internationally trained professionals. Our commitment to quality, hygiene, and customer satisfaction has made us the trusted choice for Kuwait's most discerning clients.</p>
+        
+        <div class="story-stats">
+          <div class="stat">
+            <span class="stat-number">15+</span>
+            <span class="stat-label">Years Experience</span>
           </div>
-          <div class="contact-item">
-            <div class="contact-icon">📞</div>
-            <div><a href="tel:+96599782299">+965 9978 2299</a></div>
+          <div class="stat">
+            <span class="stat-number">25</span>
+            <span class="stat-label">Expert Stylists</span>
           </div>
-          <div class="contact-item">
-            <div class="contact-icon">📧</div>
-            <div><a href="mailto:info@bookmenow.com">info@bookmenow.com</a></div>
+          <div class="stat">
+            <span class="stat-number">10K+</span>
+            <span class="stat-label">Happy Clients</span>
           </div>
         </div>
-        <p>We'd love to hear from you. Whether you have questions about our services or need support, our team is here to help.</p>
       </div>
       
-      <div class="contact-form" data-aos="fade-left" data-aos-delay="200">
-        <form>
-          <div class="form-group">
-            <input type="text" name="name" placeholder="Your Name" required />
-          </div>
-          <div class="form-group">
-            <input type="email" name="email" placeholder="Your Email" required />
-          </div>
-          <div class="form-group">
-            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-          </div>
-          <button type="submit">Send Message</button>
-        </form>
+      <div class="story-image" data-aos="fade-left" data-aos-delay="200">
+        <img src="images/salon-team.jpg" alt="LuxeStyle Salon Team">
       </div>
+    </div>
+  </section>
+
+  <!-- SALON VALUES -->
+  <section class="salon-values">
+    <div class="values-header" data-aos="fade-up">
+      <h2>Why Choose LuxeStyle?</h2>
+      <p>We believe every client deserves exceptional service and stunning results. Here's what sets us apart:</p>
+    </div>
+    
+    <div class="values-grid">
+      <div class="value-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="value-icon">✂️</div>
+        <h3>Expert Stylists</h3>
+        <p>Our team includes internationally trained professionals with years of experience in the latest hair and beauty trends.</p>
+      </div>
+      
+      <div class="value-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="value-icon">🌟</div>
+        <h3>Premium Products</h3>
+        <p>We use only the highest quality, professional-grade products from leading brands to ensure the best results.</p>
+      </div>
+      
+      <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="value-icon">💫</div>
+        <h3>Luxury Experience</h3>
+        <p>From the moment you enter, enjoy a relaxing atmosphere with complimentary beverages and personalized service.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM SECTION -->
+  <section class="team-section">
+    <div class="team-header" data-aos="fade-up">
+      <h2>Meet Our Expert Team</h2>
+      <p>Our talented professionals are dedicated to making you look and feel your absolute best.</p>
+    </div>
+    
+    <div class="team-grid">
+      <div class="team-member" data-aos="fade-up" data-aos-delay="100">
+        <img src="images/stylist1.jpg" alt="Sarah Johnson" class="member-photo">
+        <h3>Sarah Johnson</h3>
+        <div class="role">Head Stylist & Color Specialist</div>
+        <p>15 years experience in luxury salons across London and Dubai. Specializes in balayage and precision cutting.</p>
+      </div>
+      
+      <div class="team-member" data-aos="fade-up" data-aos-delay="200">
+        <img src="images/stylist2.jpg" alt="Maria Rodriguez" class="member-photo">
+        <h3>Maria Rodriguez</h3>
+        <div class="role">Beauty Director</div>
+        <p>Expert in skincare and bridal makeup. Trained in Paris with 12 years of experience in luxury beauty.</p>
+      </div>
+      
+      <div class="team-member" data-aos="fade-up" data-aos-delay="300">
+        <img src="images/stylist3.jpg" alt="Ahmed Al-Farsi" class="member-photo">
+        <h3>Ahmed Al-Farsi</h3>
+        <div class="role">Men's Grooming Expert</div>
+        <p>Specialist in modern men's hairstyles and beard grooming. Bringing contemporary styles to Kuwait.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section class="contact-section">
+    <div class="contact-container">
+      <h2 data-aos="fade-up">Visit Our Salon</h2>
+      
+      <div class="contact-info">
+        <div class="contact-item" data-aos="fade-up" data-aos-delay="100">
+          <h3>📍 Location</h3>
+          <p>Al-Rai, Kuwait City<br>Near Marina Mall</p>
+        </div>
+        
+        <div class="contact-item" data-aos="fade-up" data-aos-delay="200">
+          <h3>📞 Contact</h3>
+          <p><a href="tel:+96599782299">+965 9978 2299</a><br>
+             <a href="mailto:info@luxestyle.com">info@luxestyle.com</a></p>
+        </div>
+        
+        <div class="contact-item" data-aos="fade-up" data-aos-delay="300">
+          <h3>🕒 Hours</h3>
+          <p>Sat-Thu: 9AM - 10PM<br>
+             Friday: 12PM - 10PM</p>
+        </div>
+      </div>
+      
+      <p data-aos="fade-up">Ready for your transformation? Book your appointment online or visit us today!</p>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer>
-    <p>© 2025 BookMeNow | All Rights Reserved | Making Beauty Accessible</p>
+  <footer style="background: linear-gradient(135deg, #9a6e4d 0%, #7a5435 100%); color: white; padding: 3rem 1rem; text-align: center;">
+    <p>© 2025 LuxeStyle Salon | Where Beauty Meets Perfection | All Rights Reserved</p>
   </footer>
 
   <!-- AOS Animation Library -->
