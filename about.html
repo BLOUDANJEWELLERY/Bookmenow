@@ -10,98 +10,81 @@
   <link rel="shortcut icon" href="images/favicon.PNG" type="image/png">
   
   <style>
-/* ABOUT HERO */
-.about-hero {
-  position: relative;
-  width: 100%;
-  height: 60vh;
-  background: url("images/about-hero.jpg") center/cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: white;
-}
+    /* ABOUT HERO */
+    .about-hero {
+      position: relative;
+      width: 100%;
+      height: 55vh;
+      background: linear-gradient(rgba(0,87,179,0.75), rgba(0,87,179,0.75)),
+                  url("images/about-hero.jpg") center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 2rem;
+    }
+    .about-hero h1 {
+      font-size: 2.6rem;
+      margin-bottom: 1rem;
+    }
+    .about-hero p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
 
-.about-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 87, 179, 0.65); /* Deep blue overlay instead of grey */
-}
-
-.about-hero-content {
-  position: relative;
-  z-index: 1;
-  max-width: 800px;
-  padding: 2rem;
-  animation: fadeInUp 1.2s ease-out;
-}
-
-.about-hero-content h1 {
-  font-size: 2.4rem;
-  margin-bottom: 1rem;
-  color: #fff; /* clean white */
-}
-
-.about-hero-content p {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  color: #f0f6ff; /* soft blue-tinted white for contrast */
-}
-
-    /* ABOUT SECTION */
-    .about-section {
+    /* MISSION */
+    .mission {
       padding: 4rem 2rem;
-      max-width: 1000px;
+      max-width: 900px;
       margin: 0 auto;
       text-align: center;
     }
-    .about-section h2 {
+    .mission h2 {
       font-size: 2rem;
-      margin-bottom: 1rem;
       color: var(--accent);
+      margin-bottom: 1rem;
     }
-    .about-section p {
-      font-size: 1.05rem;
-      line-height: 1.7;
+    .mission p {
+      font-size: 1.1rem;
+      line-height: 1.8;
       color: var(--text);
-      margin-bottom: 2rem;
     }
 
-    /* VALUES */
-    .values {
+    /* CORE VALUES STRIP */
+    .values-strip {
+      background: var(--bg);
+      padding: 3rem 2rem;
       display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
       justify-content: center;
-      margin-top: 3rem;
-    }
-    .value-card {
-      background: var(--card);
-      padding: 2rem;
-      border-radius: 12px;
-      width: 280px;
-      box-shadow: 0 4px 14px var(--shadow);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      gap: 3rem;
+      flex-wrap: wrap;
       text-align: center;
     }
-    .value-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 6px 18px var(--shadow);
+    .value {
+      max-width: 250px;
     }
-    .value-card h3 {
+    .value span {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 0.8rem;
       color: var(--accent);
-      margin-bottom: 0.75rem;
     }
-    .value-card p {
+    .value h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+    .value p {
       font-size: 0.95rem;
       line-height: 1.5;
+      color: var(--text);
     }
 
     /* CONTACT SECTION */
     .contact-section {
-      background: var(--bg);
       padding: 4rem 2rem;
       text-align: center;
     }
@@ -109,11 +92,6 @@
       font-size: 2rem;
       color: var(--accent);
       margin-bottom: 1rem;
-    }
-    .contact-section p {
-      margin-bottom: 2rem;
-      color: var(--text);
-      font-size: 1.05rem;
     }
     .contact-details {
       margin-bottom: 2rem;
@@ -126,7 +104,6 @@
       text-decoration: none;
     }
 
-    /* CONTACT FORM */
     .contact-form {
       max-width: 600px;
       margin: 0 auto;
@@ -143,12 +120,11 @@
       border: 1px solid #ddd;
       border-radius: 8px;
       font-size: 1rem;
-      outline: none;
-      transition: border 0.3s ease;
     }
     .contact-form input:focus,
     .contact-form textarea:focus {
       border: 1px solid var(--accent);
+      outline: none;
     }
     .contact-form button {
       background: var(--accent);
@@ -161,12 +137,7 @@
       transition: background 0.3s ease;
     }
     .contact-form button:hover {
-      background: #e25c5c; /* slightly lighter tone of accent */
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      background: #005bbd;
     }
   </style>
 </head>
@@ -191,43 +162,44 @@
 
   <!-- ABOUT HERO -->
   <section class="about-hero">
-    <div class="about-hero-content">
+    <div>
       <h1>About BookMeNow</h1>
-      <p>Revolutionizing how you book salon appointments. Built with innovation, speed, and user satisfaction at its core.</p>
+      <p>Making salon bookings effortless, reliable, and fast — because your time is valuable.</p>
     </div>
   </section>
 
-  <!-- ABOUT SECTION -->
-  <section class="about-section">
+  <!-- MISSION -->
+  <section class="mission">
     <h2>Our Mission</h2>
     <p>
-      BookMeNow was designed with a single purpose: to simplify life. 
-      No more endless calls, no more waiting in line—just fast, reliable, and seamless booking.  
-      We’re here to empower both salons and clients with modern digital solutions that save time and deliver convenience.
+      At BookMeNow, we aim to redefine how clients and salons connect. 
+      With technology at the core, we eliminate the old hassle of calls and waiting lines, 
+      replacing them with a seamless digital experience that works anytime, anywhere.
     </p>
+  </section>
 
-    <h2>Our Core Values</h2>
-    <div class="values">
-      <div class="value-card">
-        <h3>⚡ Innovation</h3>
-        <p>Pushing boundaries to create smarter, faster, and easier solutions for clients and businesses alike.</p>
-      </div>
-      <div class="value-card">
-        <h3>🤝 Trust</h3>
-        <p>Building lasting relationships through transparency, reliability, and consistent results.</p>
-      </div>
-      <div class="value-card">
-        <h3>🌍 Accessibility</h3>
-        <p>Ensuring our platform is simple and accessible for everyone, across all devices and regions.</p>
-      </div>
+  <!-- CORE VALUES STRIP -->
+  <section class="values-strip">
+    <div class="value">
+      <span>⚡</span>
+      <h3>Innovation</h3>
+      <p>We create smarter, faster tools that make bookings simple and stress-free.</p>
+    </div>
+    <div class="value">
+      <span>🤝</span>
+      <h3>Trust</h3>
+      <p>Our platform ensures reliability and builds confidence with every appointment.</p>
+    </div>
+    <div class="value">
+      <span>🌍</span>
+      <h3>Accessibility</h3>
+      <p>Designed for everyone, everywhere, on any device — without barriers.</p>
     </div>
   </section>
 
   <!-- CONTACT SECTION -->
   <section class="contact-section">
     <h2>Contact Us</h2>
-    <p>We’d love to hear from you. Reach out directly or send us a quick message below.</p>
-
     <div class="contact-details">
       <p><strong>🏢 Address:</strong> Al-Rai, Kuwait City, Kuwait</p>
       <p><strong>📞 Phone:</strong> <a href="tel:+96599782299">+965 9978 2299</a></p>
