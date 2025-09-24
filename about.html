@@ -8,14 +8,16 @@
   <link rel="icon" type="image/png" href="images/favicon.PNG">
   <link rel="apple-touch-icon" href="images/Home.png">
   <link rel="shortcut icon" href="images/favicon.PNG" type="image/png">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   
 <style>
-  /* ABOUT HERO */
+  /* MODERN ABOUT HERO */
   .about-hero {
     position: relative;
     width: 100%;
-    height: 55vh;
-    background: linear-gradient(rgba(0,87,179,0.75), rgba(0,87,179,0.75)),
+    height: 70vh;
+    min-height: 600px;
+    background: linear-gradient(135deg, rgba(0,87,179,0.85) 0%, rgba(0,87,179,0.7) 100%),
                 url("images/about-hero.jpg") center/cover no-repeat;
     display: flex;
     align-items: center;
@@ -23,149 +25,305 @@
     text-align: center;
     color: #fff;
     padding: 2rem;
+    overflow: hidden;
   }
+  
+  .about-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="white" opacity="0.05"/></svg>');
+    background-size: cover;
+  }
+  
+  .about-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+  }
+  
   .about-hero h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, #fff, #e6f0ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
+  
   .about-hero p {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     max-width: 700px;
     margin: 0 auto;
     line-height: 1.8;
+    font-weight: 300;
+    opacity: 0.95;
   }
 
-  /* MISSION */
+  /* MODERN MISSION SECTION */
   .mission {
-    padding: 5rem 2rem;
-    max-width: 900px;
+    padding: 8rem 2rem;
+    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+    position: relative;
+  }
+  
+  .mission::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(180deg, transparent 0%, #f8fbff 100%);
+  }
+  
+  .mission-content {
+    max-width: 1000px;
     margin: 0 auto;
     text-align: center;
   }
+  
   .mission h2 {
-    font-size: 2.4rem;
+    font-size: 3rem;
     font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 1.5rem;
-  }
-  .mission p {
-    font-size: 1.1rem;
-    line-height: 1.9;
-    color: var(--text);
-  }
-
-  /* CORE VALUES STRIP */
-  .values-strip {
-    background: #f9fbff;
-    padding: 4rem 2rem;
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    flex-wrap: wrap;
-    text-align: center;
-  }
-  .value {
-    max-width: 280px;
-    background: #fff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .value:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 22px rgba(0,0,0,0.12);
-  }
-  .value span {
-    font-size: 2.5rem;
-    display: block;
-    margin-bottom: 1rem;
-    color: var(--accent);
-  }
-  .value h3 {
-    font-size: 1.3rem;
-    margin-bottom: 0.6rem;
-    font-weight: 600;
-    color: var(--accent);
-  }
-  .value p {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--text);
-  }
-
-  /* CONTACT SECTION */
-  .contact-section {
-    padding: 5rem 2rem;
-    background: #f4f9ff;
-    text-align: center;
-  }
-  .contact-section h2 {
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: var(--accent);
+    background: linear-gradient(45deg, var(--accent), #0055cc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 2rem;
   }
-  .contact-details {
-    margin-bottom: 2.5rem;
-    font-size: 1.05rem;
+  
+  .mission p {
+    font-size: 1.3rem;
     line-height: 1.9;
     color: var(--text);
+    max-width: 800px;
+    margin: 0 auto;
+    font-weight: 400;
   }
+
+  /* ENHANCED CORE VALUES */
+  .values-strip {
+    padding: 6rem 2rem;
+    background: radial-gradient(circle at top right, #f0f7ff, transparent 70%),
+                radial-gradient(circle at bottom left, #f0f7ff, transparent 70%);
+  }
+  
+  .values-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2.5rem;
+    text-align: center;
+  }
+  
+  .value {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,87,179,0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0,87,179,0.1);
+    backdrop-filter: blur(10px);
+  }
+  
+  .value:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 25px 60px rgba(0,87,179,0.15);
+    border-color: rgba(0,87,179,0.2);
+  }
+  
+  .value-icon {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--accent), #0055cc);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    font-size: 2.5rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .value:hover .value-icon {
+    transform: rotate(10deg) scale(1.1);
+  }
+  
+  .value h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  
+  .value p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--text);
+    opacity: 0.9;
+  }
+
+  /* MODERN CONTACT SECTION */
+  .contact-section {
+    padding: 8rem 2rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+    position: relative;
+  }
+  
+  .contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  
+  .contact-info {
+    padding: 2rem 0;
+  }
+  
+  .contact-section h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, var(--accent), #0055cc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+  }
+  
+  .contact-details {
+    margin-bottom: 3rem;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+  
+  .contact-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--accent), #0055cc);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1.3rem;
+    color: white;
+  }
+  
   .contact-details a {
     color: var(--accent);
     text-decoration: none;
     font-weight: 600;
+    transition: color 0.3s ease;
   }
-
+  
+  .contact-details a:hover {
+    color: #0055cc;
+    text-decoration: underline;
+  }
+  
   .contact-form {
-    max-width: 650px;
-    margin: 0 auto;
     background: #fff;
-    padding: 2.5rem;
-    border-radius: 14px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,87,179,0.1);
+    border: 1px solid rgba(0,87,179,0.1);
   }
+  
+  .form-group {
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  
   .contact-form input,
   .contact-form textarea {
     width: 100%;
-    padding: 1rem;
-    margin-bottom: 1.2rem;
-    border: 1px solid #dcdcdc;
-    border-radius: 8px;
+    padding: 1.2rem;
+    border: 2px solid #eef5ff;
+    border-radius: 12px;
     font-size: 1rem;
-    transition: border 0.3s ease;
+    transition: all 0.3s ease;
+    background: #fafcff;
   }
+  
   .contact-form input:focus,
   .contact-form textarea:focus {
-    border: 1px solid var(--accent);
+    border-color: var(--accent);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0,87,179,0.1);
     outline: none;
-    box-shadow: 0 0 6px rgba(0,87,179,0.2);
-  }
-  .contact-form button {
-    background: var(--accent);
-    color: #fff;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: background 0.3s ease, transform 0.2s ease;
-  }
-  .contact-form button:hover {
-    background: #005bbd;
     transform: translateY(-2px);
   }
+  
+  .contact-form button {
+    background: linear-gradient(135deg, var(--accent), #0055cc);
+    color: #fff;
+    padding: 1.2rem 3rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+  
+  .contact-form button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,87,179,0.3);
+  }
 
-  /* FOOTER */
+  /* MODERN FOOTER */
   footer {
-    background: var(--accent);
+    background: linear-gradient(135deg, var(--accent) 0%, #0055cc 100%);
     color: #fff;
     text-align: center;
-    padding: 1.5rem 1rem;
-    font-size: 0.95rem;
+    padding: 3rem 1rem;
+    font-size: 1rem;
+  }
+
+  /* RESPONSIVE DESIGN */
+  @media (max-width: 768px) {
+    .about-hero {
+      height: 60vh;
+      min-height: 500px;
+    }
+    
+    .about-hero h1 {
+      font-size: 2.5rem;
+    }
+    
+    .about-hero p {
+      font-size: 1.2rem;
+    }
+    
+    .mission h2,
+    .contact-section h2 {
+      font-size: 2.2rem;
+    }
+    
+    .contact-container {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .values-container {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 
@@ -189,101 +347,136 @@
     </nav>
   </header>
 
-  <!-- ABOUT HERO -->
+  <!-- MODERN ABOUT HERO -->
   <section class="about-hero">
-    <div>
-      <h1>About BookMeNow</h1>
-      <p>Making salon bookings effortless, reliable, and fast — because your time is valuable.</p>
+    <div class="about-hero-content">
+      <h1 data-aos="fade-up">About BookMeNow</h1>
+      <p data-aos="fade-up" data-aos-delay="200">Making salon bookings effortless, reliable, and fast — because your time is valuable.</p>
     </div>
   </section>
 
-  <!-- MISSION -->
+  <!-- MODERN MISSION -->
   <section class="mission">
-    <h2>Our Mission</h2>
-    <p>
-      At BookMeNow, we aim to redefine how clients and salons connect. 
-      With technology at the core, we eliminate the old hassle of calls and waiting lines, 
-      replacing them with a seamless digital experience that works anytime, anywhere.
-    </p>
+    <div class="mission-content">
+      <h2 data-aos="fade-up">Our Mission</h2>
+      <p data-aos="fade-up" data-aos-delay="200">
+        At BookMeNow, we aim to redefine how clients and salons connect. 
+        With cutting-edge technology at the core, we eliminate the old hassle of calls and waiting lines, 
+        replacing them with a seamless digital experience that works anytime, anywhere. 
+        We're committed to creating a platform that empowers both beauty professionals and their clients.
+      </p>
+    </div>
   </section>
 
-  <!-- CORE VALUES STRIP -->
+  <!-- ENHANCED CORE VALUES -->
   <section class="values-strip">
-    <div class="value">
-      <span>⚡</span>
-      <h3>Innovation</h3>
-      <p>We create smarter, faster tools that make bookings simple and stress-free.</p>
-    </div>
-    <div class="value">
-      <span>🤝</span>
-      <h3>Trust</h3>
-      <p>Our platform ensures reliability and builds confidence with every appointment.</p>
-    </div>
-    <div class="value">
-      <span>🌍</span>
-      <h3>Accessibility</h3>
-      <p>Designed for everyone, everywhere, on any device — without barriers.</p>
+    <div class="values-container">
+      <div class="value" data-aos="fade-up" data-aos-delay="100">
+        <div class="value-icon">⚡</div>
+        <h3>Innovation</h3>
+        <p>We create smarter, faster tools that make bookings simple and stress-free. Our platform evolves with the latest technology to serve you better.</p>
+      </div>
+      <div class="value" data-aos="fade-up" data-aos-delay="200">
+        <div class="value-icon">🤝</div>
+        <h3>Trust</h3>
+        <p>Our platform ensures reliability and builds confidence with every appointment. Your data security and privacy are our top priorities.</p>
+      </div>
+      <div class="value" data-aos="fade-up" data-aos-delay="300">
+        <div class="value-icon">🌍</div>
+        <h3>Accessibility</h3>
+        <p>Designed for everyone, everywhere, on any device — without barriers. We believe beauty services should be accessible to all.</p>
+      </div>
     </div>
   </section>
 
-  <!-- CONTACT SECTION -->
+  <!-- MODERN CONTACT SECTION -->
   <section class="contact-section">
-    <h2>Contact Us</h2>
-    <div class="contact-details">
-      <p><strong>🏢 Address:</strong> Al-Rai, Kuwait City, Kuwait</p>
-      <p><strong>📞 Phone:</strong> <a href="tel:+96599782299">+965 9978 2299</a></p>
-      <p><strong>📧 Email:</strong> <a href="mailto:info@bookmenow.com">info@bookmenow.com</a></p>
+    <div class="contact-container">
+      <div class="contact-info" data-aos="fade-right">
+        <h2>Get In Touch</h2>
+        <div class="contact-details">
+          <div class="contact-item">
+            <div class="contact-icon">🏢</div>
+            <div>Al-Rai, Kuwait City, Kuwait</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div><a href="tel:+96599782299">+965 9978 2299</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📧</div>
+            <div><a href="mailto:info@bookmenow.com">info@bookmenow.com</a></div>
+          </div>
+        </div>
+        <p>We'd love to hear from you. Whether you have questions about our services or need support, our team is here to help.</p>
+      </div>
+      
+      <div class="contact-form" data-aos="fade-left" data-aos-delay="200">
+        <form>
+          <div class="form-group">
+            <input type="text" name="name" placeholder="Your Name" required />
+          </div>
+          <div class="form-group">
+            <input type="email" name="email" placeholder="Your Email" required />
+          </div>
+          <div class="form-group">
+            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+          </div>
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
     </div>
-
-    <form class="contact-form">
-      <input type="text" name="name" placeholder="Your Name" required />
-      <input type="email" name="email" placeholder="Your Email" required />
-      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <p>© 2025 BookMeNow | All Rights Reserved</p>
+    <p>© 2025 BookMeNow | All Rights Reserved | Making Beauty Accessible</p>
   </footer>
 
+  <!-- AOS Animation Library -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100
+    });
+  </script>
+
   <!-- Firebase Auth Logic -->
- <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  <script type="module">
+    // Your existing Firebase code remains the same
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
-    authDomain: "sampleportfolio-9450c.firebaseapp.com",
-    projectId: "sampleportfolio-9450c",
-    storageBucket: "sampleportfolio-9450c.appspot.com",
-    messagingSenderId: "725347523572",
-    appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
+      authDomain: "sampleportfolio-9450c.firebaseapp.com",
+      projectId: "sampleportfolio-9450c",
+      storageBucket: "sampleportfolio-9450c.appspot.com",
+      messagingSenderId: "725347523572",
+      appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const authSlot = document.getElementById("auth-button-slot");
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const authSlot = document.getElementById("auth-button-slot");
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // Show Logout button
-      authSlot.innerHTML = `<button id="logout-btn" class="logout-btn">Logout</button>`;
-      // Wait a tick for it to be in the DOM, then attach listener
-      const logoutBtn = document.getElementById("logout-btn");
-      logoutBtn?.addEventListener("click", async () => {
-        await signOut(auth);
-        location.href = "index.html";
-      });
-    } else {
-      // Show Login link
-      authSlot.innerHTML = `<button class="login-btn" onclick="window.location.href='login.html'">Login</button>`;
-    }
-  });
-</script>
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        authSlot.innerHTML = `<button id="logout-btn" class="logout-btn">Logout</button>`;
+        const logoutBtn = document.getElementById("logout-btn");
+        logoutBtn?.addEventListener("click", async () => {
+          await signOut(auth);
+          location.href = "index.html";
+        });
+      } else {
+        authSlot.innerHTML = `<button class="login-btn" onclick="window.location.href='login.html'">Login</button>`;
+      }
+    });
+  </script>
 
   <script type="module" src="js/script.js"></script>
 </body>
