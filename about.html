@@ -219,6 +219,43 @@
     <p>© 2025 BookMeNow | All Rights Reserved</p>
   </footer>
 
+  <!-- Firebase Auth Logic -->
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
+    authDomain: "sampleportfolio-9450c.firebaseapp.com",
+    projectId: "sampleportfolio-9450c",
+    storageBucket: "sampleportfolio-9450c.appspot.com",
+    messagingSenderId: "725347523572",
+    appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const authSlot = document.getElementById("auth-button-slot");
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Show Logout button
+      authSlot.innerHTML = `<button id="logout-btn" class="logout-btn">Logout</button>`;
+      // Wait a tick for it to be in the DOM, then attach listener
+      const logoutBtn = document.getElementById("logout-btn");
+      logoutBtn?.addEventListener("click", async () => {
+        await signOut(auth);
+        location.href = "index.html";
+      });
+    } else {
+      // Show Login link
+      authSlot.innerHTML = `<button class="login-btn" onclick="window.location.href='login.html'">Login</button>`;
+    }
+  });
+</script>
+
   <script type="module" src="js/script.js"></script>
 </body>
 </html>
