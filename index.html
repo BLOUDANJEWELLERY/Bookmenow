@@ -204,30 +204,66 @@
     </section>
 
   <!-- PORTFOLIO / ABOUT ME SECTION -->
-  <section class="portfolio" style="padding: 3rem 2rem; background: var(--bg); text-align: center;">
-    <h2 style="font-size: 2rem; margin-bottom: 1.5rem;">About the Developer</h2>
-    <div style="max-width: 600px; margin: 0 auto; background: var(--card); padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px var(--shadow);">
-      <img src="images/Profile.jpg" alt="Waleed Sheeraz" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; box-shadow: 0 3px 8px var(--shadow);">
-      <h3 style="margin-bottom: 0.5rem; color: var(--accent);">WALEED SHEERAZ</h3>
-      <p style="margin-bottom: 1rem; font-size: 1rem; color: var(--text);">Freelance Web Developer | Specialist in Modern Web Solutions</p>
+  <section class="portfolio" style="padding: 4rem 2rem; background: var(--bg); text-align: center;">
+    <h2 style="font-size: 2.2rem; margin-bottom: 2rem; position: relative;">
+      About the Developer
+      <span style="display: block; width: 70px; height: 4px; background: var(--accent); margin: 0.8rem auto 0; border-radius: 2px;"></span>
+    </h2>
+
+    <div style="max-width: 650px; margin: 0 auto; background: var(--card); padding: 2.5rem; border-radius: 16px; box-shadow: 0 6px 20px var(--shadow); transition: transform 0.3s ease, box-shadow 0.3s ease;">
       
-      <p><strong>📞 Phone:</strong> +965 9978 2299</p>
-      <p><strong>📧 Email:</strong> <a href="mailto:waleedsheeraz06@gmail.com" style="color: var(--accent);">waleedsheeraz06@gmail.com</a></p>
+      <!-- Profile Image -->
+      <img src="images/Profile.jpg" alt="Waleed Sheeraz" 
+           style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; box-shadow: 0 4px 12px var(--shadow); animation: fadeIn 1s ease-in-out;">
+
+      <!-- Name -->
+      <h3 style="margin-bottom: 0.5rem; color: var(--accent); font-size: 1.6rem; font-weight: bold;">
+        WALEED SHEERAZ
+      </h3>
+      <p style="margin-bottom: 1.2rem; font-size: 1.05rem; color: var(--text);">
+        Freelance Web Developer | Specialist in Modern Web Solutions
+      </p>
       
-      <!-- Social Links with Circle Logos -->
-      <div style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
-        <a href="https://www.linkedin.com/in/YOUR-LINK" target="_blank">
-          <img src="images/Linkedin.JPG" alt="LinkedIn" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 6px var(--shadow);">
+      <!-- Contact Info -->
+      <div style="margin-bottom: 1.5rem; font-size: 1rem; line-height: 1.6; color: var(--text);">
+        <p><strong>📞 Phone:</strong> <a href="tel:+96599782299" style="color: var(--accent); text-decoration: none;">+965 9978 2299</a></p>
+        <p><strong>📧 Email:</strong> <a href="mailto:waleedsheeraz06@gmail.com" style="color: var(--accent); text-decoration: none;">waleedsheeraz06@gmail.com</a></p>
+      </div>
+
+      <!-- Social Links -->
+      <div style="display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; margin-top: 1rem;">
+        <a href="https://www.linkedin.com/in/YOUR-LINK" target="_blank" style="display: inline-block; transition: transform 0.3s ease;">
+          <img src="images/Linkedin.JPG" alt="LinkedIn" 
+               style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover; box-shadow: 0 3px 10px var(--shadow); transition: all 0.3s ease;">
         </a>
-        <a href="https://www.freelancer.com/u/YOUR-LINK" target="_blank">
-          <img src="images/Freelancer.WEBP" alt="Freelancer" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 6px var(--shadow);">
+        <a href="https://www.freelancer.com/u/YOUR-LINK" target="_blank" style="display: inline-block; transition: transform 0.3s ease;">
+          <img src="images/Freelancer.WEBP" alt="Freelancer" 
+               style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover; box-shadow: 0 3px 10px var(--shadow); transition: all 0.3s ease;">
         </a>
-        <a href="https://www.fiverr.com/YOUR-LINK" target="_blank">
-          <img src="images/Fiverr.jpg" alt="Fiverr" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 6px var(--shadow);">
+        <a href="https://www.fiverr.com/YOUR-LINK" target="_blank" style="display: inline-block; transition: transform 0.3s ease;">
+          <img src="images/Fiverr.jpg" alt="Fiverr" 
+               style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover; box-shadow: 0 3px 10px var(--shadow); transition: all 0.3s ease;">
         </a>
       </div>
     </div>
   </section>
+
+  <!-- ANIMATIONS -->
+  <style>
+    .portfolio a:hover img {
+      transform: scale(1.15);
+      box-shadow: 0 6px 16px var(--shadow);
+    }
+
+    .portfolio img:hover {
+      cursor: pointer;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 
 </main>
   <!-- FOOTER -->
