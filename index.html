@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" href="images/favicon.PNG">
   <link rel="apple-touch-icon" href="images/Home.png">
-    <link rel="shortcut icon" href="images/favicon.PNG" type="image/png">
+  <link rel="shortcut icon" href="images/favicon.PNG" type="image/png">
   
   <style>
 /* HERO SECTION */
@@ -33,22 +33,24 @@
   max-width: 90%;
   text-align: center;
   background: rgba(0, 0, 0, 0.55);
-  padding: 0.7rem;
-  border-radius: 10px;
+  padding: 1.2rem;
+  border-radius: 12px;
   color: white;
-  box-shadow: 0 4px 15px var(--shadow);
+  box-shadow: 0 6px 18px var(--shadow);
+  animation: fadeInUp 1.2s ease-out;
 }
 
 .hero-content h1 {
-  font-size: 1.5rem;
+  font-size: 2rem;
   margin-bottom: 0.7rem;
+  letter-spacing: 1px;
 }
 
 .hero-content p {
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  margin-bottom: 1.2rem;
 }
-  
+
 /* FEATURES SECTION */
 .features {
   padding: 4rem 2rem;
@@ -57,8 +59,19 @@
 }
 
 .features h2 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  font-size: 2.2rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.features h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--accent);
+  margin: 1rem auto 0;
+  border-radius: 2px;
 }
 
 .cards {
@@ -66,31 +79,73 @@
   gap: 2rem;
   flex-wrap: wrap;
   justify-content: center;
-    flex-direction: column;
-    gap: 1.5rem;
-    align-items: center;
+  align-items: stretch;
 }
 
 .card {
   background: var(--card);
-  padding: 1.5rem;
-  border-radius: 10px;
-  width: 270px;
-  box-shadow: 0 4px 10px var(--shadow);
-  transition: transform 0.2s;
+  padding: 2rem 1.5rem;
+  border-radius: 12px;
+  width: 280px;
+  box-shadow: 0 4px 12px var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-7px);
+  box-shadow: 0 6px 16px var(--shadow);
 }
 
 .card h3 {
   margin-bottom: 0.75rem;
   color: var(--accent);
+  font-size: 1.3rem;
 }
-  
-</style>
-  </head>
+
+.card p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* CTA SECTION */
+.cta {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: var(--accent);
+  color: white;
+}
+
+.cta h2 {
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.cta p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.cta .btn {
+  background: white;
+  color: var(--accent);
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.cta .btn:hover {
+  background: rgba(255,255,255,0.85);
+}
+
+/* ANIMATIONS */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+  </style>
+</head>
 <body>
   <!-- HEADER -->
   <header>
@@ -100,26 +155,23 @@
         <span></span><span></span><span></span>
       </div>
       <ul class="nav-links" id="nav-links">
-         <li><button onclick="window.location.href='index.html'" class="active">Home</button></li>
+        <li><button onclick="window.location.href='index.html'" class="active">Home</button></li>
         <li><button onclick="window.location.href='admin.html'">Admin Panel</button></li>
         <li><button onclick="window.location.href='myappointments.html'">My Appointments</button></li>
         <li><button onclick="window.location.href='booking.html'">Booking</button></li>
-
-        <!-- Auth-dependent button -->
-        <li id="auth-button-slot">
-          <!-- JS will insert either Login or Logout here -->
-        </li>
+        <li id="auth-button-slot"></li>
       </ul>
     </nav>
     
-<div id="announcement-banner" style="display: none;"></div>
+    <div id="announcement-banner" style="display: none;"></div>
+    
     <!-- HERO -->
     <section class="hero">
-      <img src="images/hero.jpg" alt="Hero Image" />
+      <img src="images/hero.jpg" alt="Salon background" />
       <div class="hero-content">
         <h1>Book Smarter. Live Better.</h1>
-        <p>Instant appointments for your saloon's services.</p>
-        <a href="booking.html" class="btn">Get Started</a>
+        <p>Skip the wait. Get instant salon appointments at your fingertips.</p>
+        <a href="booking.html" class="btn">Book Now</a>
       </div>
     </section>
   </header>
@@ -127,21 +179,28 @@
   <!-- MAIN -->
   <main>
     <section class="features">
-      <h2>Why Choose Us?</h2>
+      <h2>Why Choose BookMeNow?</h2>
       <div class="cards">
         <div class="card">
-          <h3>Fast Booking</h3>
-          <p>Book any service instantly.</p>
+          <h3>⚡ Fast Booking</h3>
+          <p>Instantly book any service in just a few taps—no calls, no hassle.</p>
         </div>
         <div class="card">
-          <h3>Reliable</h3>
-          <p>Get instant confirmations & reminders.</p>
+          <h3>✅ Reliable</h3>
+          <p>Automatic confirmations & reminders keep you on schedule, always.</p>
         </div>
         <div class="card">
-          <h3>Mobile Ready</h3>
-          <p>Works smoothly on all devices.</p>
+          <h3>📱 Mobile Friendly</h3>
+          <p>Designed to work seamlessly across all your devices.</p>
         </div>
       </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <h2>Ready to Experience Convenience?</h2>
+      <p>Join hundreds of happy clients booking their salon appointments in seconds.</p>
+      <a href="booking.html" class="btn">Get Started Today</a>
     </section>
   </main>
 
@@ -149,6 +208,7 @@
   <footer>
     <p>© 2025 BookMeNow | Built by WALEED SHEERAZ</p>
   </footer>
+</body>
 
   <!-- Firebase Auth Logic -->
  <script type="module">
