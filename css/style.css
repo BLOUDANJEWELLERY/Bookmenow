@@ -38,7 +38,6 @@ body {
 
 .logo {
   font-size: 1.4rem;
-  padding-right: 40px;
   font-weight: bold;
   color: #ffffff;
   user-select: none;
@@ -113,19 +112,7 @@ body {
     width: 150px; /* adjust this number as you like */
     font-size: 0.95rem; /* optional, make text slightly smaller */
     padding: 0.6rem 1.2rem; /* tighten padding*/
-  }
-  
-  .nav-links li .logout-btn {
-    width: 180px; /* match nav links */
-    font-size: 0.95rem;
-    padding: 0.6rem 1.2rem;
-  }
-
-  .nav-links li .login-btn {
-    width: 180px; /* match nav links */
-    font-size: 0.95rem;
-    padding: 0.6rem 1.2rem;
-  
+  } 
 }
 
 .nav-links li .active{
