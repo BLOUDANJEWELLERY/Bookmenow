@@ -149,7 +149,7 @@ body {
   box-shadow: 0 0 18px rgba(40, 167, 69, 0.4), 0 0 30px rgba(40, 167, 69, 0.2) inset;
 }
 /* On large screens (laptops/desktops) reduce width */
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .navbar {
     display: flex;
     align-items: center;
