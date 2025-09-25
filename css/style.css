@@ -87,13 +87,14 @@ body {
   overflow: hidden;
 }
 
+/* Default (mobile/tablet) */
 .nav-links li a,
 .nav-links li button {
   font-weight: bold;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  width: 270px;
+  width: 270px; /* mobile/tablet comfortable size */
   background: linear-gradient(to right, #e0f0ff, #ffffff);
   padding: 0.6rem 2rem;
   transition: all 0.3s ease;
@@ -102,6 +103,16 @@ body {
   border-radius: 6px;
   box-sizing: border-box;
   user-select: none;
+}
+
+/* On large screens (laptops/desktops) reduce width */
+@media (min-width: 1024px) {
+  .nav-links li a,
+  .nav-links li button {
+    width: 180px; /* adjust this number as you like */
+    font-size: 0.95rem; /* optional, make text slightly smaller */
+    padding: 0.6rem 1.2rem; /* tighten padding */
+  }
 }
 
 .nav-links li .active{
