@@ -119,7 +119,7 @@ body {
     display: flex;
     gap: 1rem;
     padding: 0;
-    margin-left: 20px;
+    margin-left: 30px;
   }
 
   .nav-links li {
@@ -135,7 +135,7 @@ body {
   .nav-links li button,
   .nav-links li .login-btn,
   .nav-links li .logout-btn {
-    width: 150px;
+    width: 160px;
   }
 }
 
