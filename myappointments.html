@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Appointments – BookMeNow</title>
+  <title>My Appointments – Grooming Den</title>
   <link rel="stylesheet" href="css/style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
@@ -221,7 +221,7 @@
 <body>
   <header>
     <nav class="navbar">
-      <div class="logo">BookMeNow</div>
+      <div class="logo">Grooming Den</div>
       <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
       <ul class="nav-links" id="nav-links">
         <li><button onclick="window.location.href='index.html'">Home</button></li>
@@ -249,7 +249,7 @@
   </main>
 
   <footer>
-    <p>© 2025 BookMeNow | Built by WALEED SHEERAZ</p>
+    <p>© 2025 Grooming Den | Built by WALEED SHEERAZ</p>
   </footer>
 
   <div id="confirm-dialog" class="confirm-dialog" style="display: none;">
@@ -430,7 +430,7 @@
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
   doc.setTextColor("#007bff");
-  doc.text("BookMeNow", 20, 20);
+  doc.text("Grooming Den", 20, 20);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(13);
@@ -482,9 +482,9 @@
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
   doc.setTextColor("#007bff");
-  doc.text("Powered by WALEED SHEERAZ | BookMeNow", 20, 145);
+  doc.text("Powered by WALEED SHEERAZ | Grooming Den", 20, 145);
 
-  doc.save(`BookMeNow_Receipt_${data.bookingId}.pdf`);
+  doc.save(`Grooming Den_Receipt_${data.bookingId}.pdf`);
 }
 
   </script>
