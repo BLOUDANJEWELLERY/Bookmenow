@@ -3,757 +3,841 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grooming Den – About Us</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" type="image/png" href="images/favicon.PNG">
-  <link rel="apple-touch-icon" href="images/Home.png">
-  <link rel="shortcut icon" href="images/favicon.PNG" type="image/png">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-<style>
-  /* GLOBAL STYLES */
-  body {
-    font-family: 'Montserrat', sans-serif;
-    line-height: 1.6;
-    color: #333;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
-  }
-  
-  /* MEN'S SALON HERO */
-  .about-hero {
-    position: relative;
-    width: 100%;
-    height: 70vh;
-    min-height: 600px;
-    background: linear-gradient(135deg, rgba(0, 123, 255, 0.85) 0%, rgba(0, 191, 255, 0.8) 100%),
-                url("images/mens-salon-interior.jpg") center/cover no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #fff;
-    padding: 2rem;
-    overflow: hidden;
-  }
-  
-  .about-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="white" opacity="0.05"/></svg>');
-    background-size: cover;
-  }
-  
-  .about-hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 800px;
-  }
-  
-  .about-hero h1 {
-    font-size: 4rem;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
-  }
-  
-  .about-hero p {
-    font-size: 1.4rem;
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.8;
-    font-weight: 400;
-    opacity: 0.95;
-  }
-
-  /* SALON STORY SECTION */
-  .salon-story {
-    padding: 8rem 2rem;
-    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
-    position: relative;
-  }
-  
-  .story-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-  }
-  
-  .story-text h2 {
-    font-size: 3rem;
-    font-weight: 700;
-    color: #007bff;
-    margin-bottom: 2rem;
-    line-height: 1.2;
-  }
-  
-  .story-text p {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: #444;
-    margin-bottom: 2rem;
-  }
-  
-  .story-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-top: 3rem;
-  }
-  
-  .stat {
-    text-align: center;
-    padding: 1.5rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.1);
-  }
-  
-  .stat-number {
-    font-size: 3rem;
-    font-weight: 700;
-    color: #007bff;
-    display: block;
-  }
-  
-  .stat-label {
-    font-size: 1rem;
-    color: #666;
-    font-weight: 600;
-  }
-  
-  .story-image {
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 123, 255, 0.15);
-  }
-  
-  .story-image img {
-    width: 100%;
-    height: 500px;
-    object-fit: cover;
-    border-radius: 20px;
-    transition: transform 0.3s ease;
-  }
-  
-  .story-image:hover img {
-    transform: scale(1.05);
-  }
-
-  /* SALON VALUES */
-  .salon-values {
-    padding: 6rem 2rem;
-    background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
-  }
-  
-  .values-header {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 4rem;
-  }
-  
-  .values-header h2 {
-    font-size: 3rem;
-    font-weight: 700;
-    color: #007bff;
-    margin-bottom: 1rem;
-  }
-  
-  .values-header p {
-    font-size: 1.2rem;
-    color: #555;
-    line-height: 1.6;
-  }
-  
-  .values-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2.5rem;
-  }
-  
-  .value-card {
-    background: white;
-    padding: 3rem 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 123, 255, 0.08);
-    transition: all 0.4s ease;
-    text-align: center;
-    border: 2px solid transparent;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .value-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #007bff, #00bfff);
-  }
-  
-  .value-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(0, 123, 255, 0.15);
-    border-color: #007bff;
-  }
-  
-  .value-icon {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #007bff, #00bfff);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 2rem;
-    font-size: 2rem;
-    color: white;
-  }
-  
-  .value-card h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #007bff;
-    margin-bottom: 1rem;
-  }
-  
-  .value-card p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: #555;
-  }
-
-  /* SERVICES SECTION */
-  .services-section {
-    padding: 8rem 2rem;
-    background: linear-gradient(135deg, #007bff 0%, #00bfff 100%);
-    color: white;
-  }
-  
-  .services-header {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 4rem;
-  }
-  
-  .services-header h2 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: white;
-  }
-  
-  .services-header p {
-    font-size: 1.2rem;
-    opacity: 0.9;
-    line-height: 1.6;
-  }
-  
-  .services-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-  }
-  
-  .service-card {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2.5rem 2rem;
-    border-radius: 15px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: transform 0.3s ease;
-  }
-  
-  .service-card:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.15);
-  }
-  
-  .service-icon {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-    display: block;
-  }
-  
-  .service-card h3 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-  }
-  
-  .service-card p {
-    font-size: 1rem;
-    opacity: 0.9;
-    line-height: 1.6;
-  }
-
-  /* TEAM SECTION */
-  .team-section {
-    padding: 8rem 2rem;
-    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
-  }
-  
-  .team-header {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 4rem;
-  }
-  
-  .team-header h2 {
-    font-size: 3rem;
-    font-weight: 700;
-    color: #007bff;
-    margin-bottom: 1rem;
-  }
-  
-  .team-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 3rem;
-  }
-  
-  .team-member {
-    text-align: center;
-    background: white;
-    padding: 2.5rem 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 123, 255, 0.08);
-    transition: transform 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .team-member::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #007bff, #00bfff);
-  }
-  
-  .team-member:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 123, 255, 0.15);
-  }
-  
-  .member-photo {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto 1.5rem;
-    border: 4px solid #007bff;
-  }
-  
-  .team-member h3 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #007bff;
-    margin-bottom: 0.5rem;
-  }
-  
-  .team-member .role {
-    font-size: 1.1rem;
-    color: #666;
-    font-weight: 600;
-    margin-bottom: 1rem;
-  }
-  
-  .team-member p {
-    font-size: 1rem;
-    color: #555;
-    line-height: 1.6;
-  }
-
-  /* CONTACT SECTION */
-  .contact-section {
-    padding: 6rem 2rem;
-    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
-  }
-  
-  .contact-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  
-  .contact-section h2 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    color: #007bff;
-  }
-  
-  .contact-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
-  }
-  
-  .contact-item {
-    padding: 2rem;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.1);
-  }
-  
-  .contact-item h3 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-    color: #007bff;
-  }
-  
-  .contact-item p {
-    font-size: 1.1rem;
-    color: #555;
-  }
-  
-  .contact-item a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
-  }
-  
-  .contact-item a:hover {
-    color: #00bfff;
-    text-decoration: underline;
-  }
-
-  /* CTA SECTION */
-  .cta-section {
-    padding: 5rem 2rem;
-    background: linear-gradient(135deg, #007bff 0%, #00bfff 100%);
-    color: white;
-    text-align: center;
-  }
-  
-  .cta-content {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .cta-section h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-  }
-  
-  .cta-section p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-  }
-  
-  .cta-button {
-    display: inline-block;
-    background: white;
-    color: #007bff;
-    padding: 1rem 2.5rem;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    background: #f8f9fa;
-  }
-
-  /* RESPONSIVE DESIGN */
-  @media (max-width: 768px) {
+  <title>Gentleman's Grooming – About</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #007bff;
+      --secondary: #00bfff;
+      --accent: #0056b3;
+      --light: #f8f9fa;
+      --dark: #343a40;
+      --text: #495057;
+      --brown: #8B7355;
+      --tan: #D2B48C;
+      --dark-brown: #654321;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: white;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    /* HEADER & NAVIGATION */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+      text-decoration: none;
+    }
+    
+    .logo span {
+      color: var(--secondary);
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+    
+    .nav-links li {
+      margin-left: 2rem;
+    }
+    
+    .nav-links button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-links button:hover, .nav-links button.active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: white;
+      margin: 3px 0;
+      transition: 0.3s;
+    }
+    
+    /* UPDATED ABOUT HERO - Sophisticated Brown Theme */
+    .about-hero {
+      position: relative;
+      width: 100%;
+      height: 70vh;
+      min-height: 500px;
+      background: linear-gradient(rgba(50, 50, 50, 0.85), rgba(30, 30, 30, 0.9)),
+                  url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 2rem;
+      overflow: hidden;
+    }
+    
+    .about-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(139, 115, 85, 0.3) 0%, rgba(210, 180, 140, 0.2) 100%);
+      z-index: 1;
+    }
+    
+    .about-hero-content {
+      max-width: 800px;
+      position: relative;
+      z-index: 2;
+    }
+    
     .about-hero h1 {
-      font-size: 2.5rem;
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(to right, #D2B48C, #F5F5DC);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     
     .about-hero p {
+      font-size: 1.3rem;
+      font-weight: 300;
+      opacity: 0.95;
+      margin-bottom: 2rem;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--brown), var(--dark-brown));
+      color: white;
+      padding: 1rem 2.5rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, var(--dark-brown), #3d2b1f);
+    }
+    
+    /* MISSION SECTION */
+    .mission {
+      padding: 6rem 2rem;
+      background: white;
+    }
+    
+    .mission-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .mission h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .mission h2:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+    
+    .mission p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    /* VALUES SECTION */
+    .values {
+      padding: 6rem 2rem;
+      background: var(--light);
+    }
+    
+    .values-header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 4rem;
+    }
+    
+    .values-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .values-header p {
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+    
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .value-card {
+      background: white;
+      padding: 2.5rem 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .value-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .value-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+      color: white;
+    }
+    
+    .value-card h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .value-card p {
+      color: var(--text);
+    }
+    
+    /* TEAM SECTION */
+    .team {
+      padding: 6rem 2rem;
+      background: white;
+    }
+    
+    .team-header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 4rem;
+    }
+    
+    .team-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .team-header p {
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+    
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .team-member {
+      text-align: center;
+      background: var(--light);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease;
+    }
+    
+    .team-member:hover {
+      transform: translateY(-5px);
+    }
+    
+    .member-img {
+      height: 250px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .member-info {
+      padding: 1.5rem;
+    }
+    
+    .team-member h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .team-member .role {
+      font-size: 1rem;
+      color: var(--secondary);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    
+    .team-member p {
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    
+    /* SERVICES SECTION */
+    .services {
+      padding: 6rem 2rem;
+      background: var(--light);
+    }
+    
+    .services-header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 4rem;
+    }
+    
+    .services-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .service-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease;
+    }
+    
+    .service-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .service-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .service-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .service-card p {
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    
+    /* CONTACT SECTION */
+    .contact {
+      padding: 6rem 2rem;
+      background: white;
+    }
+    
+    .contact-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+    
+    .contact-info h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 2rem;
+    }
+    
+    .contact-details {
+      margin-bottom: 2rem;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .contact-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      color: white;
       font-size: 1.2rem;
     }
     
-    .story-content {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+    .contact-form {
+      background: var(--light);
+      padding: 2.5rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
     }
     
-    .story-stats {
-      grid-template-columns: 1fr;
+    .form-group {
+      margin-bottom: 1.5rem;
     }
     
-    .values-grid,
-    .team-grid,
-    .services-grid {
-      grid-template-columns: 1fr;
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border 0.3s ease;
     }
     
-    .contact-info {
-      grid-template-columns: 1fr;
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--primary);
+      outline: none;
     }
     
-    .services-header h2,
-    .team-header h2,
-    .contact-section h2 {
-      font-size: 2.2rem;
+    .contact-form button {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: transform 0.3s ease;
+      width: 100%;
     }
-  }
-</style>
-
+    
+    .contact-form button:hover {
+      transform: translateY(-3px);
+    }
+    
+    /* FOOTER */
+    footer {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: white;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .footer-logo {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      margin: 2rem 0;
+    }
+    
+    .footer-links li {
+      margin: 0 1rem;
+    }
+    
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: var(--secondary);
+    }
+    
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+    
+    .social-icons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      margin: 0 0.5rem;
+      color: white;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+    
+    .social-icons a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .copyright {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--primary);
+        padding: 1rem;
+      }
+      
+      .nav-links.active {
+        display: flex;
+      }
+      
+      .nav-links li {
+        margin: 0.5rem 0;
+      }
+      
+      .hamburger {
+        display: flex;
+      }
+      
+      .about-hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .about-hero p {
+        font-size: 1.1rem;
+      }
+      
+      .contact-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+      }
+      
+      .footer-links li {
+        margin: 0.5rem 0;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- HEADER -->
   <header>
     <nav class="navbar">
-      <div class="logo">Grooming Den</div>
-      <div class="hamburger" id="hamburger">
-        <span></span><span></span><span></span>
-      </div>
+      <a href="#" class="logo">Gentleman's <span>Grooming</span></a>
       <ul class="nav-links" id="nav-links">
         <li><button onclick="window.location.href='index.html'">Home</button></li>
         <li><button onclick="window.location.href='about.html'" class="active">About</button></li>
-        <li><button onclick="window.location.href='admin.html'">Admin Panel</button></li>
-        <li><button onclick="window.location.href='myappointments.html'">My Appointments</button></li>
+        <li><button onclick="window.location.href='services.html'">Services</button></li>
         <li><button onclick="window.location.href='booking.html'">Booking</button></li>
-        <li id="auth-button-slot"></li>
+        <li><button onclick="window.location.href='contact.html'">Contact</button></li>
+        <li><button class="login-btn" onclick="window.location.href='login.html'">Login</button></li>
       </ul>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </nav>
   </header>
 
-  <!-- MEN'S SALON HERO -->
+  <!-- UPDATED ABOUT HERO -->
   <section class="about-hero">
     <div class="about-hero-content">
-      <h1 data-aos="fade-up">Welcome to Grooming Den</h1>
-      <p data-aos="fade-up" data-aos-delay="200">Kuwait's premier men's grooming destination. Where precision meets style for the modern gentleman.</p>
+      <h1>Precision Grooming for the Modern Gentleman</h1>
+      <p>Experience the art of traditional barbering with contemporary style. Where every detail matters and every client leaves feeling confident.</p>
+      <a href="booking.html" class="cta-button">Book Your Appointment</a>
     </div>
   </section>
 
-  <!-- SALON STORY -->
-  <section class="salon-story">
-    <div class="story-content">
-      <div class="story-text" data-aos="fade-right">
-        <h2>Established for the Modern Gentleman</h2>
-        <p>Founded in 2012, Grooming Den emerged as Kuwait's first dedicated men's salon with a clear vision: to provide a sanctuary where men could access premium grooming services in an environment designed exclusively for them.</p>
-        <p>We've grown from a single-chair establishment to Kuwait's most respected men's grooming destination, serving executives, professionals, and gentlemen who appreciate attention to detail and uncompromising quality.</p>
-        
-        <div class="story-stats">
-          <div class="stat">
-            <span class="stat-number">12+</span>
-            <span class="stat-label">Years Excellence</span>
-          </div>
-          <div class="stat">
-            <span class="stat-number">18</span>
-            <span class="stat-label">Expert Barbers</span>
-          </div>
-          <div class="stat">
-            <span class="stat-number">15K+</span>
-            <span class="stat-label">Satisfied Clients</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="story-image" data-aos="fade-left" data-aos-delay="200">
-        <img src="images/mens-salon-team.JPG" alt="Grooming Den Team">
-      </div>
+  <!-- MISSION SECTION -->
+  <section class="mission">
+    <div class="mission-content">
+      <h2>Our Mission</h2>
+      <p>At Gentleman's Grooming, we're committed to elevating the modern man's grooming experience. Founded in 2010, we've become Kuwait's premier destination for men who value quality, precision, and style. Our team of master barbers combines traditional techniques with contemporary trends to deliver exceptional results every time.</p>
     </div>
   </section>
 
-  <!-- SALON VALUES -->
-  <section class="salon-values">
-    <div class="values-header" data-aos="fade-up">
-      <h2>The Grooming Den Difference</h2>
-      <p>We've built our reputation on principles that matter to discerning gentlemen</p>
+  <!-- VALUES SECTION -->
+  <section class="values">
+    <div class="values-header">
+      <h2>Our Values</h2>
+      <p>What sets us apart in the world of men's grooming</p>
     </div>
-    
     <div class="values-grid">
-      <div class="value-card" data-aos="fade-up" data-aos-delay="100">
-        <div class="value-icon">✂️</div>
+      <div class="value-card">
+        <div class="value-icon"><i class="fas fa-cut"></i></div>
         <h3>Precision Craftsmanship</h3>
-        <p>Every haircut, shave, and grooming service is executed with meticulous attention to detail by our master barbers.</p>
+        <p>Every cut, shave, and style is executed with meticulous attention to detail and artistic precision.</p>
       </div>
-      
-      <div class="value-card" data-aos="fade-up" data-aos-delay="200">
-        <div class="value-icon">⚡</div>
-        <h3>Efficiency & Punctuality</h3>
-        <p>We respect your time. Our streamlined booking system and efficient service ensure you're in and out on schedule.</p>
+      <div class="value-card">
+        <div class="value-icon"><i class="fas fa-star"></i></div>
+        <h3>Premium Quality</h3>
+        <p>We use only the finest grooming products and tools to ensure exceptional results and comfort.</p>
       </div>
-      
-      <div class="value-card" data-aos="fade-up" data-aos-delay="300">
-        <div class="value-icon">🌟</div>
-        <h3>Premium Products</h3>
-        <p>We use only the finest men's grooming products from world-renowned brands to ensure superior results.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- SERVICES SECTION -->
-  <section class="services-section">
-    <div class="services-header" data-aos="fade-up">
-      <h2>Our Signature Services</h2>
-      <p>Specialized grooming services designed specifically for men</p>
-    </div>
-    
-    <div class="services-grid">
-      <div class="service-card" data-aos="fade-up" data-aos-delay="100">
-        <span class="service-icon">💈</span>
-        <h3>Precision Haircuts</h3>
-        <p>Expert cuts tailored to your face shape, hair type, and personal style.</p>
-      </div>
-      
-      <div class="service-card" data-aos="fade-up" data-aos-delay="200">
-        <span class="service-icon">🧔</span>
-        <h3>Beard Grooming</h3>
-        <p>Professional trimming, shaping, and conditioning for the perfect beard.</p>
-      </div>
-      
-      <div class="service-card" data-aos="fade-up" data-aos-delay="300">
-        <span class="service-icon">🧴</span>
-        <h3>Hot Towel Shaves</h3>
-        <p>The ultimate traditional shaving experience with premium products.</p>
+      <div class="value-card">
+        <div class="value-icon"><i class="fas fa-users"></i></div>
+        <h3>Client-First Approach</h3>
+        <p>Your satisfaction is our priority. We listen carefully to understand your style preferences and needs.</p>
       </div>
     </div>
   </section>
 
   <!-- TEAM SECTION -->
-  <section class="team-section">
-    <div class="team-header" data-aos="fade-up">
+  <section class="team">
+    <div class="team-header">
       <h2>Meet Our Master Barbers</h2>
-      <p>Our team of internationally trained professionals specializes in men's grooming</p>
+      <p>Our skilled team brings years of experience and passion to every service</p>
     </div>
-    
     <div class="team-grid">
-      <div class="team-member" data-aos="fade-up" data-aos-delay="100">
-        <img src="images/barber1.jpg" alt="Khalid Al-Mansour" class="member-photo">
-        <h3>Khalid Al-Mansour</h3>
-        <div class="role">Head Barber & Founder</div>
-        <p>15 years experience in men's grooming. Trained in London and Milan. Specializes in classic and contemporary cuts.</p>
+      <div class="team-member">
+        <div class="member-img" style="background-image: url('https://images.unsplash.com/photo-1562157873-818bc0726f68?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+        <div class="member-info">
+          <h3>Ahmed Al-Farsi</h3>
+          <div class="role">Head Barber & Founder</div>
+          <p>With over 15 years of experience, Ahmed specializes in classic cuts and modern fades.</p>
+        </div>
       </div>
-      
-      <div class="team-member" data-aos="fade-up" data-aos-delay="200">
-        <img src="images/barber2.JPG" alt="Omar Hassan" class="member-photo">
-        <h3>Omar Hassan</h3>
-        <div class="role">Beard Specialist</div>
-        <p>Expert in beard design and maintenance. Known for precision shaping and styling techniques.</p>
+      <div class="team-member">
+        <div class="member-img" style="background-image: url('https://images.unsplash.com/photo-1580618672591-eb180b1a973f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+        <div class="member-info">
+          <h3>Mark Johnson</h3>
+          <div class="role">Beard Specialist</div>
+          <p>Mark is renowned for his precision beard shaping and grooming techniques.</p>
+        </div>
       </div>
-      
-      <div class="team-member" data-aos="fade-up" data-aos-delay="300">
-        <img src="images/barber3.JPG" alt="Rashid Al-Fares" class="member-photo">
-        <h3>Rashid Al-Fares</h3>
-        <div class="role">Traditional Shaving Expert</div>
-        <p>Master of the straight razor shave with 12 years of experience in traditional barbering.</p>
+      <div class="team-member">
+        <div class="member-img" style="background-image: url('https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+        <div class="member-info">
+          <h3>Carlos Rodriguez</h3>
+          <div class="role">Senior Stylist</div>
+          <p>Carlos brings European styling techniques to create contemporary looks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES SECTION -->
+  <section class="services">
+    <div class="services-header">
+      <h2>Our Services</h2>
+      <p>Premium grooming services tailored for the modern gentleman</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-user"></i></div>
+        <h3>Haircut & Style</h3>
+        <p>Precision cuts tailored to your face shape and personal style.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-air-freshener"></i></div>
+        <h3>Beard Grooming</h3>
+        <p>Expert shaping, trimming, and conditioning for the perfect beard.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-spa"></i></div>
+        <h3>Hot Towel Shave</h3>
+        <p>The ultimate traditional shaving experience with premium products.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fas fa-hand-sparkles"></i></div>
+        <h3>Facial Treatments</h3>
+        <p>Revitalizing treatments to refresh and nourish your skin.</p>
       </div>
     </div>
   </section>
 
   <!-- CONTACT SECTION -->
-  <section class="contact-section">
+  <section class="contact">
     <div class="contact-container">
-      <h2 data-aos="fade-up">Visit Grooming Den</h2>
-      
       <div class="contact-info">
-        <div class="contact-item" data-aos="fade-up" data-aos-delay="100">
-          <h3>📍 Location</h3>
-          <p>Al-Rai, Kuwait City<br>Opposite The Avenues Mall</p>
+        <h2>Visit Our Salon</h2>
+        <div class="contact-details">
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div>
+              <h3>Location</h3>
+              <p>Al-Rai, Kuwait City, Kuwait</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <div>
+              <h3>Phone</h3>
+              <p><a href="tel:+96599782299" style="color: var(--primary); text-decoration: none;">+965 9978 2299</a></p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+            <div>
+              <h3>Email</h3>
+              <p><a href="mailto:info@gentsgrooming.com" style="color: var(--primary); text-decoration: none;">info@gentsgrooming.com</a></p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-clock"></i></div>
+            <div>
+              <h3>Hours</h3>
+              <p>Sat-Thu: 9AM - 10PM<br>Friday: 12PM - 10PM</p>
+            </div>
+          </div>
         </div>
-        
-        <div class="contact-item" data-aos="fade-up" data-aos-delay="200">
-          <h3>📞 Contact</h3>
-          <p><a href="tel:+96599782299">+965 9978 2299</a><br>
-             <a href="mailto:info@groomingden.com">info@groomingden.com</a></p>
-        </div>
-        
-        <div class="contact-item" data-aos="fade-up" data-aos-delay="300">
-          <h3>🕒 Hours</h3>
-          <p>Sat-Thu: 8AM - 11PM<br>
-             Friday: 1PM - 11PM</p>
-        </div>
+      </div>
+      <div class="contact-form">
+        <h2>Get In Touch</h2>
+        <form>
+          <div class="form-group">
+            <input type="text" placeholder="Your Name" required>
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="Your Email" required>
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Subject">
+          </div>
+          <div class="form-group">
+            <textarea rows="5" placeholder="Your Message" required></textarea>
+          </div>
+          <button type="submit">Send Message</button>
+        </form>
       </div>
     </div>
   </section>
 
-  <!-- CTA SECTION -->
-  <section class="cta-section">
-    <div class="cta-content" data-aos="fade-up">
-      <h2>Ready for Your Transformation?</h2>
-      <p>Book your appointment online and experience the Grooming Den difference</p>
-      <a href="booking.html" class="cta-button">Book Appointment Now</a>
-    </div>
-  </section>
-
   <!-- FOOTER -->
-  <footer style="background: linear-gradient(135deg, #007bff 0%, #00bfff 100%); color: white; padding: 3rem 1rem; text-align: center;">
-    <p>© 2025 Grooming Den | Kuwait's Premier Men's Grooming Destination | All Rights Reserved</p>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">Gentleman's Grooming</div>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="booking.html">Booking</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <div class="copyright">
+        <p>© 2023 Gentleman's Grooming. All Rights Reserved. | Designed for Modern Men</p>
+      </div>
+    </div>
   </footer>
 
-  <!-- AOS Animation Library -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    AOS.init({
-      duration: 800,
-      once: true,
-      offset: 100
+    // Mobile menu toggle
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('nav-links').classList.toggle('active');
+    });
+    
+    // Simple form submission handler
+    document.querySelector('.contact-form form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for your message! We will get back to you soon.');
+      this.reset();
     });
   </script>
-
-  <!-- Firebase Auth Logic -->
-  <script type="module">
-    // Your existing Firebase code remains the same
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBmeipVXF09s9Y9TLDMefIroUWcX4KOw-k",
-      authDomain: "sampleportfolio-9450c.firebaseapp.com",
-      projectId: "sampleportfolio-9450c",
-      storageBucket: "sampleportfolio-9450c.appspot.com",
-      messagingSenderId: "725347523572",
-      appId: "1:725347523572:web:203fa6c32aa6254f02b7a1"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const authSlot = document.getElementById("auth-button-slot");
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        authSlot.innerHTML = `<button id="logout-btn" class="logout-btn">Logout</button>`;
-        const logoutBtn = document.getElementById("logout-btn");
-        logoutBtn?.addEventListener("click", async () => {
-          await signOut(auth);
-          location.href = "index.html";
-        });
-      } else {
-        authSlot.innerHTML = `<button class="login-btn" onclick="window.location.href='login.html'">Login</button>`;
-      }
-    });
-  </script>
-
-  <script type="module" src="js/script.js"></script>
 </body>
 </html>
