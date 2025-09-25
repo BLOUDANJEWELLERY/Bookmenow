@@ -39,6 +39,7 @@ body {
 .logo {
   font-size: 1.4rem;
   font-weight: bold;
+  width: 80px;
   color: #ffffff;
   user-select: none;
 }
@@ -131,7 +132,7 @@ body {
   .nav-links li button,
   .nav-links li .login-btn,
   .nav-links li .logout-btn {
-    width: 180px;
+    width: 150px;
   }
 }
 
