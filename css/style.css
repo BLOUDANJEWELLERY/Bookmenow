@@ -106,26 +106,32 @@ body {
 }
 
 /* On large screens (laptops/desktops) reduce width */
-/* Desktop / large screens */
 @media (min-width: 1024px) {
   .navbar {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Logo left, nav links right */
+    justify-content: space-between; /* Logo left, nav right */
     padding: 0 2rem;
   }
 
+  /* Make nav-links inline-flex and remove default padding/margin */
   .nav-links {
     display: flex;
     gap: 1rem;
-    margin-left: auto; /* push to rightmost side */
+    padding: 0;
+    margin: 0;
   }
 
+  .nav-links li {
+    list-style: none;
+  }
+
+  /* Narrow buttons for large screens */
   .nav-links li a,
   .nav-links li button,
   .nav-links li .login-btn,
   .nav-links li .logout-btn {
-    width: 150px; /* narrowed */
+    width: 180px;
   }
 }
 
