@@ -10,6 +10,18 @@
   <link rel="shortcut icon" href="images/favicon.PNG" type="image/png">
   
   <style>
+  
+  * {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Prevents horizontal scroll */
+}
+
 /* HERO SECTION */
 .hero {
   position: relative;
@@ -160,6 +172,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2.5rem;
+    padding: 0 1rem;
   }
   
   .value-card {
@@ -248,6 +261,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
+    padding: 0 1rem;
   }
   
   .service-card {
@@ -308,6 +322,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 3rem;
+    padding: 0 1rem;
   }
   
   .team-member {
@@ -466,35 +481,96 @@
     background: #f8f9fa;
   }
 
+
+/* UPDATE SECTIONS TO INCLUDE CONTAINMENT */
+.salon-story,
+.salon-values,
+.services-section,
+.team-section,
+.contact-section,
+.cta-section {
+    width: 100%;
+    overflow: hidden;
+}
+
+
   /* RESPONSIVE DESIGN */
-  @media (max-width: 750px) {
-   
+/* IMPROVE MOBILE MEDIA QUERY */
+@media (max-width: 750px) {
+    .hero-content {
+        max-width: 90%;
+        padding: 1rem;
+    }
     
     .story-content {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 0 1rem;
     }
     
     .story-stats {
-      grid-template-columns: 1fr;
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
     
     .values-grid,
     .team-grid,
     .services-grid {
-      grid-template-columns: 1fr;
+        grid-template-columns: 1fr;
+        padding: 0 0.5rem;
     }
     
     .contact-info {
-      grid-template-columns: 1fr;
+        grid-template-columns: 1fr;
     }
     
+    /* Reduce font sizes for mobile */
+    .story-text h2,
+    .values-header h2,
     .services-header h2,
     .team-header h2,
     .contact-section h2 {
-      font-size: 2.2rem;
+        font-size: 2rem !important;
     }
-  }
+    
+    .story-text p,
+    .values-header p,
+    .services-header p {
+        font-size: 1rem !important;
+    }
+    
+    /* Ensure images don't overflow */
+    .story-image img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* ADD EXTRA SMALL SCREEN PROTECTION */
+@media (max-width: 480px) {
+    .salon-story,
+    .salon-values,
+    .services-section,
+    .team-section,
+    .contact-section {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .value-card,
+    .service-card,
+    .team-member {
+        padding: 1.5rem 1rem;
+    }
+    
+    .hero-content h1 {
+        font-size: 1.4rem;
+    }
+    
+    .hero-content p {
+        font-size: 0.9rem;
+    }
+}
 
 /* ANIMATIONS */
 @keyframes fadeInUp {
