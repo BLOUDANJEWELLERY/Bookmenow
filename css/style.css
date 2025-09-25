@@ -106,13 +106,27 @@ body {
 }
 
 /* On large screens (laptops/desktops) reduce width */
+/* Desktop / large screens */
 @media (min-width: 1024px) {
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Logo left, nav links right */
+    padding: 0 2rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto; /* push to rightmost side */
+  }
+
   .nav-links li a,
-  .nav-links li button {
-    width: 150px; /* adjust this number as you like */
-    font-size: 0.95rem; /* optional, make text slightly smaller */
-    padding: 0.6rem 1.2rem; /* tighten padding*/
-  } 
+  .nav-links li button,
+  .nav-links li .login-btn,
+  .nav-links li .logout-btn {
+    width: 150px; /* narrowed */
+  }
 }
 
 .nav-links li .active{
