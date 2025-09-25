@@ -107,14 +107,14 @@ body {
 }
 
 /* On large screens (laptops/desktops) reduce width */
-@media (min-width: 1024px) {
+/*@media (min-width: 1024px) {
   .nav-links li a,
   .nav-links li button {
-    width: 150px; /* adjust this number as you like */
-    font-size: 0.95rem; /* optional, make text slightly smaller */
-    padding: 0.6rem 1.2rem; /* tighten padding */
+    width: 150px; /* adjust this number as you like 
+    font-size: 0.95rem; /* optional, make text slightly smaller 
+    padding: 0.6rem 1.2rem; /* tighten padding 
   }
-}
+}*/
 
 .nav-links li .active{
   background: linear-gradient(to bottom, #007bff, #00c6ff);
