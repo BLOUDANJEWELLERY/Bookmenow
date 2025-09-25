@@ -125,6 +125,10 @@ body {
   .nav-links li {
     list-style: none;
   }
+  
+.navbar .logo {
+  flex-shrink: 0; /* logo keeps its size */
+}
 
   /* Narrow buttons for large screens */
   .nav-links li a,
