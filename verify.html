@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Verify Appointment – BookMeNow</title>
+  <title>Verify Appointment – Sapphire Groom</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" href="images/favicon.PNG">
   
@@ -137,7 +137,7 @@
   <!-- HEADER -->
   <header>
     <nav class="navbar">
-      <div class="logo">BookMeNow</div>
+      <div class="logo">Sapphire Groom</div>
       <ul class="nav-links" id="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="admin.html">Admin Panel</a></li>
@@ -156,7 +156,7 @@
   </main>
 
   <footer>
-    <p>© 2025 BookMeNow | Verification powered by WALEED SHEERAZ</p>
+    <p>© 2025 Sapphire Groom | Verification powered by WALEED SHEERAZ</p>
   </footer>
 
   <!-- Scripts -->
@@ -284,7 +284,7 @@
       doc.setFont("helvetica", "bold");
       doc.setFontSize(22);
       doc.setTextColor("#007bff");
-      doc.text("BookMeNow", 20, 20);
+      doc.text("Sapphire Groom", 20, 20);
 
       doc.setFontSize(13);
       doc.setFont("helvetica", "normal");
@@ -315,7 +315,7 @@
       y += gap; doc.text(`Time: ${formatTo12Hour(data.time)}`, 20, y);
       // QR Code
       const qr = new QRious({
-        value: `https://bloudanjewellery.github.io/Bookmenow/verify.html?bookingId=${data.bookingId}`,
+        value: `https://bloudanjewellery.github.io/Sapphire Groom/verify.html?bookingId=${data.bookingId}`,
         size: 100,
       });
       doc.addImage(qr.toDataURL(), 'PNG', 150, 45, 40, 40);
@@ -332,9 +332,9 @@
       doc.setFont("helvetica", "bold");
       doc.setFontSize(10);
       doc.setTextColor("#007bff");
-      doc.text("Powered by WALEED SHEERAZ | BookMeNow", 20, 145);
+      doc.text("Powered by WALEED SHEERAZ | Sapphire Groom", 20, 145);
 
-      doc.save(`BookMeNow_Receipt_${data.bookingId}.pdf`);
+      doc.save(`Sapphire Groom_Receipt_${data.bookingId}.pdf`);
     };
 
     verifyAppointment();
