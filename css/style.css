@@ -22,6 +22,95 @@ body {
   line-height: 1.6;
 }
 
+
+
+
+
+  /* CONTACT SECTION */
+  .contact-section {
+    padding: 2rem 2rem;
+    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+  }
+  
+  .contact-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .contact-section h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #007bff;
+  }
+  
+  .contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .contact-item {
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.1);
+  }
+  
+  .contact-item h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #007bff;
+  }
+  
+  .contact-item p {
+    font-size: 1.1rem;
+    color: #555;
+  }
+  
+  .contact-item a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .contact-item a:hover {
+    color: #00bfff;
+    text-decoration: underline;
+  }
+
+/* UPDATE SECTIONS TO INCLUDE CONTAINMENT */
+.contact-section {
+    width: 100%;
+    overflow: hidden;
+}
+
+@media (max-width: 750px) {
+    .contact-info {
+        grid-template-columns: 1fr;
+    }
+    .contact-section h2 {
+        font-size: 2rem !important;
+    }
+}
+
+/* ADD EXTRA SMALL SCREEN PROTECTION */
+@media (max-width: 480px) {
+   .contact-section {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+
+
+
+
+
 /* NAVIGATION */
 .navbar {
   display: flex;
